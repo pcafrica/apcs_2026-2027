@@ -57,7 +57,7 @@ To be defined.
 # Links and resources
 - [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **You are required to join. Please use your full name (no nicknames allowed)**.
 - [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: 324 167 740 720 546, passcode: 6Ck7Rm3C).
-- [Recordings (Moodle)](https://moodle2.units.it/course/view.php?id=17112) (access key: *APCS2627*).
+- [Recordings](https://sissa-my.sharepoint.com/:f:/g/personal/pafrica_sissa_it/IgAEC61lXTp7Rr0rYPLrm6TbAdxyDiAUQ8CKFAMXnZwfKjo?e=0czbes) (passcode: APCS2627).
 
 ---
 
@@ -92,6 +92,7 @@ To be defined.
 [lecture-01-md]: lectures/01/01-intro_unix.md
 [lecture-01-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.html
 [lecture-01-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.pdf
+[lecture-01-recording]: 
 
 [exercise-01-md]: exercises/01/01-intro_unix.md
 [exercise-01-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/01/01-intro_unix.html
