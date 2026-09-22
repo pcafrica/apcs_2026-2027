@@ -1,6 +1,16 @@
-# Advanced Programming for Computational Science: course material
+# Advanced Programming for Computational Science 2026/2027 - Course material
 
 [![md-to-pages](https://github.com/pcafrica/apcs_2026-2027/actions/workflows/md-to-pages.yml/badge.svg)](https://github.com/pcafrica/apcs_2026-2027/actions/workflows/md-to-pages.yml)
+
+**Instructor**: Dr. Pasquale Claudio Africa <<pafrica@sissa.it>><br>
+**Tutor**: Dr. Valentin Nkana <<vnkanang@sissa.it>>
+
+**Programs**:
+- (M.Sc.) Data Science and Artificial Intelligence @ UniTS.
+- (M.Sc.) Mathematics @ UniTS.
+- (Ph.D.) Mathematical Analysis, Modelling, and Applications @ SISSA.
+
+---
 
 This repository contains material for the *Advanced Programming for Computational Science* course. Academic Year 2026-2027.
 <br>
@@ -22,6 +32,20 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
+# :warning: Exam rules
+
+:warning: Detailed exam rules are available [here](exam_rules.md) and [here](exam_rules_anticheating.md).
+
+---
+
+# :calendar: Exam dates
+
+To be defined.
+
+:information_source: Students from UniTS: please register on Esse3.
+
+:information_source: Students from SISSA: please register by sending the instructor an email.
+
 ---
 
 # Documents
@@ -31,6 +55,9 @@ Unless otherwise specified, all content here is licensed under a
 - [Exam rules - Anti-cheating](exam_rules_anticheating.md).
 
 # Links and resources
+- [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **You are required to join. Please use your full name (no nicknames allowed)**.
+- [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: 324 167 740 720 546, passcode: 6Ck7Rm3C).
+- [Recordings (Moodle)](https://moodle2.units.it/course/view.php?id=17112) (access key: *APCS2627*).
 
 ---
 

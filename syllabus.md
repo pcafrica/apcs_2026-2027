@@ -1,13 +1,10 @@
 # Course syllabus
 ## Advanced Programming for Computational Science 2026/2027
 
-### Instructor
-Dr. Pasquale Claudio Africa <[pafrica@sissa.it](mailto:pafrica@sissa.it)>
+**Instructor**: Dr. Pasquale Claudio Africa <<pafrica@sissa.it>><br>
+**Tutor**: Dr. Valentin Nkana <<vnkanang@sissa.it>>
 
-### Tutor
-Dr. Valentin Nkana <[vnkanang@sissa.it](mailto:vnkanang@sissa.it)>
-
-### Programs
+**Programs**:
 - (M.Sc.) Data Science and Artificial Intelligence @ UniTS.
 - (M.Sc.) Mathematics @ UniTS.
 - (Ph.D.) Mathematical Analysis, Modelling, and Applications @ SISSA.
