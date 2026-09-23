@@ -73,13 +73,13 @@ The course is designed to be highly interactive, with ample opportunities for st
 
 # Verification of learning
 
-The evaluation of students in this course comprises an optional course project and a written exam.
+The evaluation of students comprises an optional course project and a written exam.
 
 Throughout the course, students may optionally complete an incremental programming group project. The instructor will provide a small set of project tracks of comparable scope and difficulty. The project will start from a simple computational problem and will be extended through milestones addressing software design, object-oriented and generic programming, testing, documentation, build systems, third-party libraries, and integration between C++ and Python.
 
 The project will conclude with a final software submission, a group presentation, and an individual verification of each student's understanding and contribution.
 
-The written exam consists of two parts: a first part including theoretical questions to be answered in written form, and a second part requiring the solution of a programming exercise to be developed and submitted electronically.
+The main exam consists of two parts: a first part including theoretical questions to be answered in written form, and a second part requiring the solution of a programming exercise to be developed and submitted electronically.
 
 Additionally, an optional oral exam may be requested by either the student or the instructor. The oral exam may increase or decrease the student's grade by up to 3 points.
 

@@ -43,13 +43,15 @@ To be defined.
 ---
 
 # Documents
+
 - [Syllabus](syllabus.md).
 - [Exam rules](exam_rules.md).
 - [Project rules](project_rules.md).
 - [Academic integrity and anti-cheating rules](anticheating_rules.md).
 
 # Links and resources
-- [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **You are required to join. Please use your full name (no nicknames allowed)**.
+
+- [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **Please join using your full name (no nicknames allowed)**.
 - [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: 324 167 740 720 546, passcode: 6Ck7Rm3C).
 - [Recordings](https://sissa-my.sharepoint.com/:f:/g/personal/pafrica_sissa_it/IgAEC61lXTp7Rr0rYPLrm6TbAdxyDiAUQ8CKFAMXnZwfKjo?e=0czbes) (passcode: APCS2627).
 
