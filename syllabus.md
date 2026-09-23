@@ -27,7 +27,7 @@ Students will develop critical thinking and analytical skills, enabling them to 
 
 ## 4. Communication skills
 
-Through a combination of homework assignments, code documentation, and presentations, students will learn to effectively communicate their design decisions, code rationale, and problem-solving strategies. They will be skilled at conveying technical information to both technical and non-technical audiences.
+Through the course project, code documentation, and presentations, students will learn to effectively communicate their design decisions, code rationale, and problem-solving strategies. They will be skilled at conveying technical information to both technical and non-technical audiences.
 
 ## 5. Learning skills
 
@@ -73,9 +73,11 @@ The course is designed to be highly interactive, with ample opportunities for st
 
 # Verification of learning
 
-The evaluation of students in this course comprises homework assignments and a written exam.
+The evaluation of students in this course comprises an optional course project and a written exam.
 
-Throughout the course, students will be assigned a series of small homework projects to complete either individually or in groups. Students are expected to submit the solution code, outlining their proposed solution and design choices.
+Throughout the course, students may optionally complete an incremental programming group project. The instructor will provide a small set of project tracks of comparable scope and difficulty. The project will start from a simple computational problem and will be extended through milestones addressing software design, object-oriented and generic programming, testing, documentation, build systems, third-party libraries, and integration between C++ and Python.
+
+The project will conclude with a final software submission, a group presentation, and an individual verification of each student's understanding and contribution.
 
 The written exam consists of two parts: a first part including theoretical questions to be answered in written form, and a second part requiring the solution of a programming exercise to be developed and submitted electronically.
 
