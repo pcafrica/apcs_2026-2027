@@ -32,12 +32,6 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
-# :warning: Exam rules
-
-:warning: Detailed exam rules are available [here](exam_rules.md) and [here](exam_rules_anticheating.md).
-
----
-
 # :calendar: Exam dates
 
 To be defined.
@@ -50,9 +44,9 @@ To be defined.
 
 # Documents
 - [Syllabus](syllabus.md).
-- [Homework assignment rules](homework_rules.md).
 - [Exam rules](exam_rules.md).
-- [Exam rules - Anti-cheating](exam_rules_anticheating.md).
+- [Project rules](project_rules.md).
+- [Academic integrity and anti-cheating rules](anticheating_rules.md).
 
 # Links and resources
 - [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **You are required to join. Please use your full name (no nicknames allowed)**.
@@ -92,7 +86,6 @@ To be defined.
 [lecture-01-md]: lectures/01/01-intro_unix.md
 [lecture-01-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.html
 [lecture-01-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.pdf
-[lecture-01-recording]: 
 
 [exercise-01-md]: exercises/01/01-intro_unix.md
 [exercise-01-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/01/01-intro_unix.html
