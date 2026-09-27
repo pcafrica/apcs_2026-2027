@@ -1,4 +1,5 @@
-# Advanced Programming for Computational Science 2026/2027 - Course material
+# Advanced Programming for Computational Science 2026/2027
+## Course material
 
 [![md-to-pages](https://github.com/pcafrica/apcs_2026-2027/actions/workflows/md-to-pages.yml/badge.svg)](https://github.com/pcafrica/apcs_2026-2027/actions/workflows/md-to-pages.yml)
 
@@ -17,7 +18,7 @@ This repository contains material for the *Advanced Programming for Computationa
 
 This course is offered jointly by SISSA (International School for Advanced Studies) and UniTS (Università degli Studi di Trieste), Trieste, Italy.
 
-# License
+## License
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
@@ -32,32 +33,32 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
-# :calendar: Exam dates
+## :calendar: Exam dates
 
 To be defined.
 
-:information_source: Students from UniTS: please register on Esse3.
+:information_source: Students from UniTS: please register on [Esse3](https://esse3.units.it/Root.do).
 
 :information_source: Students from SISSA: please register by sending the instructor an email.
 
 ---
 
-# Documents
+## Documents
 
 - [Syllabus](syllabus.md).
 - [Exam rules](exam_rules.md).
 - [Project rules](project_rules.md).
-- [Academic integrity and anti-cheating rules](anticheating_rules.md).
+- [Academic integrity](academic_integrity.md).
 
-# Links and resources
+## Links and resources
 
 - [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **Please join using your full name (no nicknames allowed)**.
-- [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: 324 167 740 720 546, passcode: 6Ck7Rm3C).
-- [Recordings](https://sissa-my.sharepoint.com/:f:/g/personal/pafrica_sissa_it/IgAEC61lXTp7Rr0rYPLrm6TbAdxyDiAUQ8CKFAMXnZwfKjo?e=0czbes) (passcode: APCS2627).
+- [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: _324 167 740 720 546_, passcode: _6Ck7Rm3C_).
+- [Recordings](https://sissa-my.sharepoint.com/:f:/g/personal/pafrica_sissa_it/IgAEC61lXTp7Rr0rYPLrm6TbAdxyDiAUQ8CKFAMXnZwfKjo?e=0czbes) (passcode: _APCS2627_).
 
 ---
 
-# Timetable
+## Timetable
 | Date            | Time          | Room    | Topic                                                                                     |
 |-----------------|---------------|---------|-------------------------------------------------------------------------------------------|
 | Tue 29 Sep 2026 | 14:00 - 16:00 | 004  | Introduction to the course. The UNIX shell. The build process. [[Markdown][lecture-01-md]] [[HTML][lecture-01-html]] [[PDF][lecture-01-pdf]] |

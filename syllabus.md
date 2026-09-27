@@ -1,41 +1,30 @@
 # Course syllabus
-## Advanced Programming for Computational Science 2026/2027
 
-**Instructor**: Dr. Pasquale Claudio Africa <<pafrica@sissa.it>><br>
-**Tutor**: Dr. Valentin Nkana <<vnkanang@sissa.it>>
+## Goals
 
-**Programs**:
-- (M.Sc.) Data Science and Artificial Intelligence @ UniTS.
-- (M.Sc.) Mathematics @ UniTS.
-- (Ph.D.) Mathematical Analysis, Modelling, and Applications @ SISSA.
-
----
-
-# Goals
-
-## 1. Knowledge and understanding
+### 1. Knowledge and understanding
 
 Students will acquire a comprehensive understanding of advanced programming concepts in C++ and Python, with particular emphasis on programming paradigms, data structures, and algorithmic techniques used in computational science. They will become familiar with object-oriented and generic programming, efficient data structures and data representation, and the use of common libraries and frameworks for scientific computing and data processing. Furthermore, students will be introduced to fundamental software development tools in a Linux environment, encompassing essential aspects like software documentation, version control, testing, and project management.
 
-## 2. Applying knowledge and understanding
+### 2. Applying knowledge and understanding
 
 Students will be adept at applying advanced programming techniques to formulate and solve computational problems arising in scientific computing and data analysis. They will be able to design appropriate data structures and algorithms, develop efficient implementations in C++ and Python, and tackle problems involving vectors and matrices, numerical linear algebra, numerical approximation, and scientific data processing.
 
-## 3. Making judgments
+### 3. Making judgments
 
 Students will develop critical thinking and analytical skills, enabling them to assess the effectiveness, flexibility, and efficiency of code implementations. They will be capable of evaluating different approaches to problem-solving and selecting optimal solutions based on informed analysis. By the end of the course, students will have developed the ability to design, implement, test, debug, analyze, and optimize algorithms and scientific software for computational applications.
 
-## 4. Communication skills
+### 4. Communication skills
 
 Through the course project, code documentation, and presentations, students will learn to effectively communicate their design decisions, code rationale, and problem-solving strategies. They will be skilled at conveying technical information to both technical and non-technical audiences.
 
-## 5. Learning skills
+### 5. Learning skills
 
 Students will acquire self-directed learning abilities, enabling them to stay current with evolving programming languages, tools, and technologies. They will be equipped to independently identify and troubleshoot coding issues and propose innovative solutions. They will also gain experience in team-based software development practices by working on group programming projects.
 
 ---
 
-# Required skills
+## Required skills
 
 Former knowledge of programming fundamentals (syntax, data types, variables, control structures, functions) is required for this course.
 
@@ -45,7 +34,7 @@ Students are also expected to possess a basic mathematical background, including
 
 ---
 
-# Course content
+## Course content
 
 The course focuses on programming paradigms, data structures, and algorithms for solving problems arising in computational science, including vector and matrix manipulation, numerical linear algebra, numerical approximation, and scientific data processing.
 
@@ -59,7 +48,7 @@ Integrating C++ and Python codes.
 
 ---
 
-# Teaching methods
+## Teaching methods
 
 The course will utilize a combination of frontal lectures and live programming demonstrations.
 
@@ -71,7 +60,7 @@ The course is designed to be highly interactive, with ample opportunities for st
 
 ---
 
-# Verification of learning
+## Verification of learning
 
 The evaluation of students comprises an optional course project and a written exam.
 
@@ -89,7 +78,7 @@ Overall, the evaluation process is designed to encourage students to actively en
 
 ---
 
-# Books and material
+## Books and material
 
 The instructor will provide support material and references throughout the course. In addition, there are many free online resources available to supplement the course material.
 
@@ -103,14 +92,14 @@ These books provide in-depth coverage of the course material and can serve as va
 
 ---
 
-# Sustainable Development Goals - Agenda 2030
+## Sustainable Development Goals - Agenda 2030
 
 - Goal 9 - Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation
 - Goal 12 - Ensure sustainable consumption and production patterns
 
 ---
 
-# Extra info
+## Extra info
 
 To participate in this course, students will be requested to bring their own laptop equipped with a working Linux or UNIX environment, whether standalone or virtualized. Students are expected to utilize either a text editor, such as Emacs, Vim, or Nano, or an Integrated Development Environment (IDE), such as VSCode, Eclipse, or Code::Blocks, according to their preference.
 
