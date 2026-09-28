@@ -46,7 +46,7 @@ _class: titlepage
 
 # Course material
 - GitHub: timetable, lecture notes, exercise sessions, general information.
-- Google Classroom: homeworks, exams. **You are required to join. Please use your full name (no nicknames allowed)**.
+- Google Classroom: project, exams. **You are required to join. Please use your full name (no nicknames allowed)**.
 
 # Other resources
 - Books (see course syllabus).
@@ -60,7 +60,7 @@ Lectures at SISSA. Check out the GitHub page regularly for up-to-date timetable,
 
 Course balance (approximate):
 - C++: **70%**, Python: **30%**.
-- Frontal lectures: **50%**, live programming sessions: **50%**.
+- Classroom lectures: **50%**, live programming sessions: **50%**.
 
 For live programming sessions please **bring your own laptop**.
 
@@ -79,8 +79,8 @@ For live programming sessions please **bring your own laptop**.
 - Software development practices.
 
 # Required skills
-- Former knowledge of programming fundamentals (syntax, data types, variables, control structures, functions).
-- Prior experience with C, C++, Java, or Python, is **recommended**, not mandatory.
+- Prior knowledge of programming fundamentals (syntax, data types, variables, control structures, functions).
+- Prior experience with C, C++, Java, or Python is **recommended**, not mandatory.
 
 ---
 
@@ -331,7 +331,7 @@ Python is a versatile and widely-used programming language known for its simplic
 ## Python's name and design philosophy
 Python was created by Guido van Rossum, a Dutch programmer, in the late 1980s. Guido started working on Python in December 1989 during his time at the Centrum Wiskunde & Informatica (CWI) in the Netherlands. His motivation was to develop a language that combined the simplicity of ABC (a programming language he had worked on previously) with the extensibility of the Amoeba operating system.
 
-Guido named the language after his love for the British comedy group Monty Python. Python's design philosophy, often referred to as the *"Zen of Python"* emphasizes readability, simplicity, and elegance. This philosophy is encapsulated in the [PEP 20](https://peps.python.org/pep-0020/) document, which includes guiding aphorisms like *"Readability counts"* and *"There should be one - and preferably only one - obvious way to do it"*.
+Guido named the language after his love for the British comedy group Monty Python. Python's design philosophy, often referred to as the *"Zen of Python,"* emphasizes readability, simplicity, and elegance. This philosophy is encapsulated in [PEP 20](https://peps.python.org/pep-0020/), which includes guiding aphorisms like *"Readability counts"* and *"There should be one—and preferably only one—obvious way to do it."*
 
 ---
 
@@ -355,7 +355,7 @@ Python 2.x and Python 3.x marked a significant phase in Python's history. Python
 # Python's popularity and versatility
 Python's readability, simplicity, and extensive standard library contributed to its widespread adoption. It became a go-to language for web development, scientific computing, data analysis, and automation. Popular web frameworks like Django and Flask further fueled Python's growth.
 
-## Python in Data science and Machine learning
+## Python in data science and machine learning
 Python gained prominence in data science and machine learning due to libraries like NumPy, pandas, scikit-learn, and TensorFlow. Its ease of use and rich ecosystem made it a favorite among data scientists and engineers.
 
 ## Python in education
@@ -447,7 +447,7 @@ _class: titlepage
 3. Semantic analysis: Checking.
 4. Code generation: Assembly/machine code.
 5. Optimization: Efficiency improvement.
-6. Output: Object files. Example: `g++ main.cpp -o main.o`
+6. Output: Object files. Example: `g++ -c main.cpp -o main.o`
 
 ### Common compiler options
 `-O`: Optimization levels; `-g`: Debugging info; `-std`: C++ standard.
@@ -507,41 +507,41 @@ From [http://www.linfo.org/shell.html](http://www.linfo.org/shell.html):
 
 # What shells are available?
 
-`Bash` stands for: `Bourne Again Shell`, a homage to its creator Stephen Bourne. It is the default shell for most UNIX systems and Linux distributions. It is both a command interpreter and a scripting language. The shell might be changed by simply typing its name and even the default shell might be changed for all sessions.
+`Bash` stands for `Bourne Again Shell`, a reference to the Bourne shell created by Stephen Bourne. It is widely used and is the default shell on many Linux distributions. It is both a command interpreter and a scripting language. The current shell can be changed by running another shell, and the default login shell can also be changed.
 
 macOS has replaced it with [zsh](https://support.apple.com/en-us/HT208050), which is mostly compatible with `Bash`, since v10.15 Catalina.
 
-Other shells available: tsh, ksh, csh, Dash, Fish, Windows PowerShell, ...
+Other shells available include `tcsh`, `ksh`, `csh`, `dash`, `fish`, and Windows PowerShell.
 
 ---
 
-# Variables and environmental variables
+# Variables and environment variables
 
-As shell is a program, it has its variables. You can assign a value to a variable with the equal sign **(no spaces!)**, for instance type `A=1`. You can then retrieve its value using the dollar sign and curly braces, for instance to display it the user may type `echo ${A}`. Some variables can affect the way running processes will behave on a computer, these are called **environmental variables**. For this reason, some variables are set by default, for instance to display the user home directory type `echo ${HOME}`. To set an environmental variable just prepend `export`, for instance `export PATH="/usr/sbin:$PATH"` adds the folder `/usr/sbin` to the `PATH` environment variable. `PATH` specifies a set of directories where executable programs are located.
+As a shell is a program, it has its own variables. You can assign a value to a variable with the equal sign **(no spaces!)**; for instance, type `A=1`. You can then retrieve its value using the dollar sign and curly braces; for instance, to display it, type `echo ${A}`. Some variables can affect the behavior of programs started by the shell; these are called **environment variables**. Some variables are set by default; for instance, to display the user's home directory, type `echo ${HOME}`. To set an environment variable, prepend `export`; for instance, `export PATH="/usr/sbin:$PATH"` adds the directory `/usr/sbin` to the `PATH` environment variable. `PATH` specifies a set of directories where executable programs are located.
 
 ---
 
 # Types of shell (login vs. non-login)
 
-- A **login** shell logs you into the system as a specific user (it requires username and password). When you hit `Ctrl+Alt+F1` to login into a virtual terminal you get after successful login: a login shell (that is interactive).
-- A **non-login** shell is executed without logging in (it requires a current logged in user). When you open a graphic terminal it is a non-login (interactive) shell. 
+- A **login** shell is the first shell started for a user session. For example, after logging in through a virtual terminal, you normally get an interactive login shell.
+- A **non-login** shell is started within an existing user session. For example, opening a graphical terminal emulator normally starts an interactive non-login shell.
 
 ---
 
 # Types of shell (interactive vs. non-interactive)
 
-- In an **interactive** shell (login or non-login) you can interactively type or interrupt commands. For example a graphic terminal (non-login) or a virtual terminal (login). In an interactive shell the prompt variable must be set (`$PS1`).
+- In an **interactive** shell (login or non-login), you can type and interrupt commands interactively. Examples include a graphical terminal emulator (normally non-login) and a virtual terminal (normally login). In Bash, the primary prompt is controlled by the shell variable `PS1`.
 - A **non-interactive** shell is usually run from an automated process. Input and output are not exposed (unless explicitly handled by the calling process). This is normally a non-login shell, because the calling user has logged in already. A shell running a script is always a non-interactive shell (but the script can emulate an interactive shell by prompting the user to input values).
 
 ---
 
 # The shell as a command line interpreter
 
-When launching a terminal a UNIX system first launches the shell interpreter specified in the `SHELL` **environment variable**. If `SHELL` is unset it uses the system default.
+When launching a terminal, the terminal emulator starts the configured shell. By default, this is often the user's login shell recorded in the system account database. The `SHELL` environment variable usually contains the path to that login shell, but it does not necessarily identify the shell that is currently running.
 
-After having sourced the initialization files, the interpreter shows the **prompt** (defined by the environment variable `$PS1`).
+After reading the applicable initialization files, an interactive shell shows the **prompt**. In Bash, the primary prompt is defined by the shell variable `PS1`.
 
-Initialization files are hidden files stored in the user's home directory, executed as soon as an **interactive** shell is run. 
+Initialization files are system-wide or user-specific scripts read when a shell starts. The files that are read depend on the shell and on whether it is a login, non-login, interactive, or non-interactive shell.
 
 ---
 
@@ -549,25 +549,21 @@ Initialization files are hidden files stored in the user's home directory, execu
 
 Initialization files in a shell are scripts or configuration files that are executed or sourced when the shell starts. These files are used to set up the shell environment, customize its behavior, and define various settings that affect how the shell operates.
 
-- **login**:
-  - `/etc/profile`, `/etc/profile.d/*`, `~/.profile` for Bourne-compatible shells
-  - `~/.bash_profile` (or `~/.bash_login`) for `Bash`
-  - `/etc/zprofile`, `~/.zprofile` for `zsh`
-  - `/etc/csh.login`, `~/.login` for `csh`
-
-- **non-login**: `/etc/bash.bashrc`, `~/.bashrc` for `Bash`
+- **Bash login shell**:
+  - reads `/etc/profile`;
+  - then reads the first existing file among `~/.bash_profile`, `~/.bash_login`, and `~/.profile`.
+- **Bash interactive non-login shell**:
+  - reads `~/.bashrc`;
+  - on some distributions, a system-wide file such as `/etc/bash.bashrc` is also read.
+- Other shells, such as `zsh` and `csh`, use different initialization files.
 
 ---
 
 # Initialization files
 
-- **interactive**:
-  - `/etc/profile`, `/etc/profile.d/*` and `~/.profile`
-  - `/etc/bash.bashrc`, `~/.bashrc` for `Bash`
-
-- **non-interactive**:
-  - `/etc/bash.bashrc` for `Bash` (but most of the times the script begins with: `[ -z "$PS1" ] && return`, *i.e.* don't do anything if it's a non-interactive shell).
-  - depending on the shell, the file specified in `$ENV` (or `$BASH_ENV`)  might be read.
+- An **interactive** Bash shell reads either the login-shell files or the non-login file `~/.bashrc`, depending on how it was started.
+- A **non-interactive** Bash shell does not normally read the interactive startup files. If `BASH_ENV` is set, Bash expands its value and reads the resulting file before executing a script.
+- Initialization behavior differs among shells; consult the documentation for the shell in use.
 
 ---
 
@@ -575,14 +571,14 @@ Initialization files in a shell are scripts or configuration files that are exec
 To get a little hang of the shell, let’s try a few simple commands:
 - `echo`: prints whatever you type at the shell prompt.
 - `date`: displays the current time and date.
-- `clear`: clean the terminal.
+- `clear`: clears the terminal.
 
 ---
 
 # Basic shell commands (1/2)
 
-- `pwd` stands for **Print working directory** and it points to the current working directory, that is, the directory that the shell is currently looking at. It’s also the default place where the shell commands will look for data files.
-- `ls` stands for a **List** and it lists the contents of a directory. ls usually starts out looking at our home directory. This means if we print ls by itself, it will always print the contents of the current directory.
+- `pwd` stands for **Print working directory** and prints the path of the current working directory. This is also the default place where shell commands look for data files.
+- `ls` stands for **List** and lists the contents of a directory. If run without a path argument, `ls` lists the contents of the current directory.
 - `cd` stands for **Change directory** and changes the active directory to the path specified.
 
 ---
@@ -601,7 +597,7 @@ To get a little hang of the shell, let’s try a few simple commands:
 
 Commands can be written in a **script file**, i.e. a text file that can be executed.
 
-Remember that the **first line of the script** (the so-called *shebang*) tells the shell which interpreter to use while executing the file. So, for example, if your script starts with `#!/bin/bash` it will be run by `Bash`, if is starts with `#!/usr/bin/env python` it will be run by `Python`.
+Remember that the **first line of the script** (the so-called *shebang*) tells the operating system which interpreter to use while executing the file. For example, if your script starts with `#!/bin/bash`, it will be run by `Bash`; if it starts with `#!/usr/bin/env python`, it will be run by `Python`.
 
 To run your brand new script you may need to change the access permissions of the file. To make a file executable run
 ```bash
@@ -610,13 +606,13 @@ chmod +x script_file
 
 ---
 
-# Not all commands are equals
+# Not all commands are equal
 
-When executing a command, like `ls` a subprocess is created. A subprocess inherits all the environment variables from the parent process, executes the command and returns the control to the calling process.
+When executing an external command such as `ls`, the shell normally creates a subprocess. A subprocess inherits the exported environment variables from the parent process, executes the command, and returns control to the calling process.
 
 **A subprocess cannot change the state of the calling process.**
 
-The command `source script_file` executes the commands contained in `script_file` as if they were typed directly on the terminal. It is only used on scripts that have to change some environmental variables or define aliases or function. Typing `. script_file` does the same.
+The command `source script_file` executes the commands contained in `script_file` in the current shell, as if they were typed directly in the terminal. It is commonly used for scripts that change environment variables or define aliases or functions. Typing `. script_file` does the same.
 
 If the environment should not be altered, use `./script_file`, instead.
 
@@ -628,7 +624,7 @@ Some commands, like `cd` are executed directly by the shell, without creating a 
 
 Indeed it would be impossible to have `cd` as a regular command!
 
-**The reason is**: a subprocess cannot change the state of the calling process, whereas `cd` needs to change the value of the environmental variable `PWD`(that contains the name of the current working directory).
+**The reason is**: a subprocess cannot change the state of the calling process, whereas `cd` needs to change the current working directory of the shell itself. Bash also updates the `PWD` shell variable, which contains the path of the current working directory.
 
 ---
 
@@ -681,11 +677,11 @@ In this example, `greet` is a function that takes one argument and echoes a gree
 
 # Input arguments in a script or in a function
 
-- `$0`: The name of the script/function itself.
+- `$0`: The name of the shell or script. In Bash, it is not replaced by the function name inside a function; use `${FUNCNAME[0]}` for that.
 - `$1`, `$2`, `$3`, etc.: The first, second, third (and so on) argument passed to the script/function.
 - `$#`: The number of arguments passed.
-- `$@`: The list of all the arguments passed as a single string.
-- `$*`: All the arguments as a single word (not often used).
+- `$@`: All the arguments. When quoted as `"$@"`, each argument remains a separate word.
+- `$*`: All the arguments. When quoted as `"$*"`, they are joined into a single word.
 
 ---
 
@@ -696,48 +692,48 @@ In this example, `greet` is a function that takes one argument and echoes a gree
 - `grep` stands for **Global regular expression print**. It searches for lines with a given string or looks for a pattern in a given input stream.
 - `head` shows the first line(s) of a file.
 - `tail` shows the last line(s) of a file.
-- `file` reads the files specified and performs a series of tests in attempt to classify them by type.
+- `file` reads the files specified and performs a series of tests in an attempt to classify them by type.
 
 ---
 
 # Redirection, pipelines and filters
 
 We can add operators between commands in order to chain them together.
-- The pipe operator `|`, forwards the output of one command to another. E.g., `cat /etc/passwd | grep my_username` checks system information about "my_username".
+- The pipe operator `|` forwards the output of one command to another. E.g., `grep my_username /etc/passwd` checks system information about "my_username".
 - The redirect operator `>` sends the standard output of one command to a file. E.g., `ls > files-in-this-folder.txt` saves a file with the list of files.
 - The append operator `>>` appends the output of one command to a file.
-- The operator `&>` sends the standard output and the standard error to file.
-- `&&`  pipe is activated only if the return status of the first command is 0. It is used to chain commands together: e.g., `sudo apt update && sudo apt upgrade`
-- `||` pipe is activated only if the return status of first command is different from 0.
-- `;` is a way to execute to commands regardless of the output status.
-- `$?` is a variable containing the output status of the last command.
+- In Bash, the operator `&>` sends both standard output and standard error to a file.
+- The `&&` operator executes the second command only if the exit status of the first command is 0. It is used to chain commands together: e.g., `sudo apt update && sudo apt upgrade`.
+- The `||` operator executes the second command only if the exit status of the first command is not 0.
+- The `;` operator separates commands and executes them sequentially regardless of their exit status.
+- `$?` is a variable containing the exit status of the last command.
 
 ---
 
 # Advanced commands (1/3)
 - `tr` stands for **translate**. It supports a range of transformations including uppercase to lowercase, squeezing repeating characters, deleting specific characters, and basic find and replace. For instance:
-     - `echo "Welcome to Advanced Programming!" | tr [a-z] [A-Z]` converts all characters to upper case.
+     - `echo "Welcome to Advanced Programming!" | tr '[:lower:]' '[:upper:]'` converts all lowercase characters to uppercase.
      - `echo -e "A;B;c\n1,2;1,4;1,8" | tr "," "." | tr ";" ","` replaces commas with dots and semi-colons with commas.
-     - `echo "My ID is 73535" | tr -d [:digit:]` deletes all the digits from the string.
+     - `echo "My ID is 73535" | tr -d '[:digit:]'` deletes all the digits from the string.
 
 ---
 
 # Advanced commands (2/3)
-- `sed` stands for **stream editor** and it can perform lots of functions on file like searching, find and replace, insertion or deletion. We give just an hint of its true power
+- `sed` stands for **stream editor**, and it can perform many operations on files, such as searching, finding and replacing, inserting, or deleting. We give just a hint of its true power:
     - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/"` replaces the first occurrence of "UNIX" with "Linux".
     - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/2"` replaces the second occurrence of "UNIX" with "Linux".
-    - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/g"` replaces all occurrencies of "UNIX" with "Linux".
-    - `echo -e "ABC\nabc" | sed "/abc/d"` delete lines matching "abc".
-    - `echo -e "1\n2\n3\n4\n5\n6\n7\n8" | sed "3,6d"` delete lines from 3 to 6.
+    - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/g"` replaces all occurrences of "UNIX" with "Linux".
+    - `echo -e "ABC\nabc" | sed "/abc/d"` deletes lines matching "abc".
+    - `echo -e "1\n2\n3\n4\n5\n6\n7\n8" | sed "3,6d"` deletes lines from 3 to 6.
 
 ---
 
 # Advanced commands (3/3)
 - `cut` is a command for cutting out the sections from each line of files and writing the result to standard output.
-     - `cut -b 1-3,7- state.txt` cut bytes (`-b`) from 1 to 3 and from 7 to end of the line
-     - `echo -e "A,B,C\n1.22,1.2,3\n5,6,7\n9.99999,0,0" | cut -d "," -f 1` get the first column of a CSV (`-d` specifies the column delimiter, `-f n` specifies to pick the $n$-th column from each line)
- - `find` is used to find files in specified directories that meet certain conditions. For example: `find . -type d -name "*lib*"` find all directories (not files) starting from the current one (`.`) whose name contain "lib".
- - `locate` is less powerful than `find` but much faster since it relies on a database that is updated on a daily base or manually using the command `updatedb`. For example: `locate -i foo` finds all files or directories whose name contains `foo` ignoring case.
+     - `cut -b 1-3,7- state.txt` cuts bytes (`-b`) from 1 to 3 and from 7 to the end of each line.
+     - `echo -e "A,B,C\n1.22,1.2,3\n5,6,7\n9.99999,0,0" | cut -d "," -f 1` gets the first column of a CSV (`-d` specifies the column delimiter; `-f n` selects the $n$-th field from each line).
+ - `find` is used to find files in specified directories that meet certain conditions. For example, `find . -type d -name "*lib*"` finds all directories (not files), starting from the current one (`.`), whose names contain "lib".
+ - `locate` is less powerful than `find` but much faster, since it relies on a database that is updated on a daily basis or manually using the command `updatedb`. For example, `locate -i foo` finds all files or directories whose names contain `foo`, ignoring case.
 
 ---
 
@@ -766,15 +762,15 @@ list=$(ls -l)
 - `Ctrl-C` terminates the subprocess in the foreground (when not trapped).
 - `kill pid` sends termination signal to the subprocess with id `pid`. You can get a list of the most computationally expensive processes with `top` and a complete list with `ps aux` (usually `ps aux` is filtered through a pipe with `grep`)
 
-All subprocesses in the background of the terminal are terminated when the terminal is closed (unless launched with `nohup`, but that is another story...)
+When the terminal is closed, background jobs may receive the `SIGHUP` signal. Whether they terminate depends on the shell, its configuration, and how the processes handle that signal. Tools such as `nohup` can be used to make a command ignore `SIGHUP`.
 
 ---
 
 # How to get help
 
-Most commands provide a `-h` or `--help` flag to print a short help information: 
+Many commands provide a `-h` or `--help` flag to print brief help information. The supported option depends on the command; for GNU `find`, use:
 ```bash
-find -h
+find --help
 ```
 
 `man command` prints the documentation manual for command.
@@ -802,7 +798,7 @@ Version control, also known as source control, is the practice of tracking and m
 
 # How does `git` work?
 
-1. Create (or find) a repository with a git hosting tool (an online platform that hosts you project, like [GitHub](https://github.com/) or [Gitlab](https://gitlab.com/)).
+1. Create (or find) a repository with a Git hosting service (an online platform that hosts your project, such as [GitHub](https://github.com/) or [GitLab](https://gitlab.com/)).
 2. `git clone` (download) the repository.
 3. `git add` a file to your local repo.
 4. `git commit` (save) the changes, this is a local action, the remote repository (the one in the cloud) is still unchanged.
@@ -812,11 +808,11 @@ Version control, also known as source control, is the practice of tracking and m
 
 ---
 
-# How does `git` works? (Collaborative)
+# How does `git` work? (Collaborative)
 
 If you and your teammates work on different files the workflow is the same as before, you just have to remember to `pull` the changes that your colleagues made.
 
-If you have to work on the same files, the best practice is to create a new `branch`, which is a particular version of the code that branches form the main one. After you have finished working on your feature you `merge` the branch into the main.
+When collaborating, the usual practice is to create a new `branch`, which is a line of development that branches from the main one. After you have finished working on your feature, you `merge` the branch into the main branch.
 
 ![](images/01_git_branch.svg)
 
@@ -824,10 +820,10 @@ If you have to work on the same files, the best practice is to create a new `bra
 
 # Other useful `git` commands
 
-- `git diff` shows the differences between your code and the last commit.
+- `git diff` shows unstaged changes in the working tree relative to the staging area. To compare the working tree with the last commit, use `git diff HEAD`.
 - `git status` lists the status of all the files (e.g. which files have been changed, which are new, which are deleted and which have been added).
 - `git log` shows the history of commits.
-- `git checkout` switches to a specific commit or brach.
+- `git checkout` switches to a specific commit or branch.
 - `git stash` temporarily hides all the modified tracked files.
 
 ---
@@ -837,7 +833,7 @@ If you have to work on the same files, the best practice is to create a new `bra
 ![bg right:40% width:500px](images/01_rsa.png)
 
 1. Sign up for a [GitHub](https://github.com/) account.
-2. [Create a SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux).
+2. [Create an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux).
 3. [Add it to your account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 4. Configure your machine:
 ```
