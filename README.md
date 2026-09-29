@@ -53,7 +53,7 @@ To be defined.
 ## Links and resources
 
 - [Google Classroom](https://classroom.google.com/c/ODg2NTMwNjM2MDQ0?cjc=izhpyt6a). **Please join using your full name (no nicknames allowed)**.
-- [Live streaming (Teams)](https://teams.microsoft.com/meet/324167740720546?p=vWzf1LnnOl3o5E3tSs) (meeting ID: _324 167 740 720 546_, passcode: _6Ck7Rm3C_).
+- [Live streaming (Teams)](https://teams.microsoft.com/meet/33780224085702?p=fZaSNCAnbRpcCjqEPa) (meeting ID: _337 802 240 857 02_, passcode: _rZ3vv6mM_).
 - [Recordings](https://sissa-my.sharepoint.com/:f:/g/personal/pafrica_sissa_it/IgAEC61lXTp7Rr0rYPLrm6TbAdxyDiAUQ8CKFAMXnZwfKjo?e=0czbes) (passcode: _APCS2627_).
 
 ---
