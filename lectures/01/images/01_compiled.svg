@@ -1,5 +1,269 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" width="603" height="285" xmlns:xlink="http://www.w3.org/1999/xlink"><source><![CDATA[title: Compiled language
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="565.8667"
+   height="217"
+   version="1.1"
+   id="svg13"
+   sodipodi:docname="01_compiled.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview13"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.1245614"
+     inkscape:cx="277.4415"
+     inkscape:cy="152.5039"
+     inkscape:window-width="1536"
+     inkscape:window-height="891"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg13" />
+  <source><![CDATA[title: Compiled language
 
 Source file->Compiler : Compile
 Compiler-->Executable (Binary) : Produces
-Executable (Binary)->Output : Run]]></source><desc>Compiled language</desc><defs><marker viewBox="0 0 5 5" markerWidth="5" markerHeight="5" orient="auto" refX="5" refY="2.5" id="markerArrowBlock"><path d="M 0 0 L 5 2.5 L 0 5 z"></path></marker><marker viewBox="0 0 9.6 16" markerWidth="4" markerHeight="16" orient="auto" refX="9.6" refY="8" id="markerArrowOpen"><path d="M 9.6,8 1.92,16 0,13.7 5.76,8 0,2.286 1.92,0 9.6,8 z"></path></marker></defs><g class="title"><rect x="10" y="10" width="173.76666259765625" height="29.200000762939453" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="15" y="30.199999809265137" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="15">Compiled language</tspan></text></g><g class="actor"><rect x="10" y="49.20000076293945" width="125.96666717529297" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="20" y="74.40000057220459" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="20">Source file</tspan></text></g><g class="actor"><rect x="10" y="226.00000381469727" width="125.96666717529297" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="20" y="251.2000036239624" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="20">Source file</tspan></text></g><line x1="72.98333358764648" x2="72.98333358764648" y1="88.4000015258789" y2="226.00000381469727" style="stroke-width: 2px;" stroke="#000000" fill="none"></line><g class="actor"><rect x="155.96666717529297" y="49.20000076293945" width="97.06666564941406" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="165.96666717529297" y="74.40000057220459" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="165.96666717529297">Compiler</tspan></text></g><g class="actor"><rect x="155.96666717529297" y="226.00000381469727" width="97.06666564941406" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="165.96666717529297" y="251.2000036239624" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="165.96666717529297">Compiler</tspan></text></g><line x1="204.5" x2="204.5" y1="88.4000015258789" y2="226.00000381469727" style="stroke-width: 2px;" stroke="#000000" fill="none"></line><g class="actor"><rect x="273.03333282470703" y="49.20000076293945" width="203.03334045410156" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="283.03333282470703" y="74.40000057220459" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="283.03333282470703">Executable (Binary)</tspan></text></g><g class="actor"><rect x="273.03333282470703" y="226.00000381469727" width="203.03334045410156" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="283.03333282470703" y="251.2000036239624" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="283.03333282470703">Executable (Binary)</tspan></text></g><line x1="374.5500030517578" x2="374.5500030517578" y1="88.4000015258789" y2="226.00000381469727" style="stroke-width: 2px;" stroke="#000000" fill="none"></line><g class="actor"><rect x="496.0666732788086" y="49.20000076293945" width="77.79999923706055" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="506.0666732788086" y="74.40000057220459" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="506.0666732788086">Output</tspan></text></g><g class="actor"><rect x="496.0666732788086" y="226.00000381469727" width="77.79999923706055" height="39.20000076293945" style="stroke-width: 2px;" stroke="#000000" fill="#ffffff"></rect><text x="506.0666732788086" y="251.2000036239624" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="506.0666732788086">Output</tspan></text></g><line x1="534.9666728973389" x2="534.9666728973389" y1="88.4000015258789" y2="226.00000381469727" style="stroke-width: 2px;" stroke="#000000" fill="none"></line><g class="signal"><text x="105.02499961853027" y="119.00000095367432" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="105.02499961853027">Compile</tspan></text><line x1="72.98333358764648" x2="204.5" y1="127.60000228881836" y2="127.60000228881836" style="stroke-width: 2px; marker-end: url(&quot;#markerArrowBlock&quot;);" stroke="#000000" fill="none"></line></g><g class="signal"><text x="250.99166870117188" y="158.20000171661377" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="250.99166870117188">Produces</tspan></text><line x1="204.5" x2="374.5500030517578" y1="166.8000030517578" y2="166.8000030517578" style="stroke-width: 2px; stroke-dasharray: 6px, 2px; marker-end: url(&quot;#markerArrowBlock&quot;);" stroke="#000000" fill="none"></line></g><g class="signal"><text x="440.3083381652832" y="197.40000247955322" style="font-size: 16px; font-family: Andale Mono, monospace;"><tspan x="440.3083381652832">Run</tspan></text><line x1="374.5500030517578" x2="534.9666728973389" y1="206.00000381469727" y2="206.00000381469727" style="stroke-width: 2px; marker-end: url(&quot;#markerArrowBlock&quot;);" stroke="#000000" fill="none"></line></g></svg>
+Executable (Binary)->Output : Run]]></source>
+  <desc
+     id="desc1">Compiled language</desc>
+  <defs
+     id="defs2">
+    <marker
+       viewBox="0 0 5 5"
+       markerWidth="5"
+       markerHeight="5"
+       orient="auto"
+       refX="5"
+       refY="2.5"
+       id="markerArrowBlock">
+      <path
+         d="M 0,0 5,2.5 0,5 Z"
+         id="path1" />
+    </marker>
+    <marker
+       viewBox="0 0 9.6 16"
+       markerWidth="4"
+       markerHeight="16"
+       orient="auto"
+       refX="9.6000004"
+       refY="8"
+       id="markerArrowOpen">
+      <path
+         d="M 9.6,8 1.92,16 0,13.7 5.76,8 0,2.286 1.92,0 Z"
+         id="path2" />
+    </marker>
+  </defs>
+  <g
+     class="title"
+     id="g2"
+     transform="translate(-9,-9)">
+    <rect
+       x="10"
+       y="10"
+       width="173.76666"
+       height="29.200001"
+       style="stroke-width:2px"
+       stroke="#000000"
+       fill="#ffffff"
+       id="rect2" />
+    <text
+       x="15"
+       y="30.200001"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text2"><tspan
+         x="15"
+         id="tspan2">Compiled language</tspan></text>
+  </g>
+  <g
+     class="actor"
+     id="g3"
+     transform="translate(-9,-9)">
+    <rect
+       x="10"
+       y="49.200001"
+       width="125.96667"
+       height="39.200001"
+       style="stroke-width:2px"
+       stroke="#000000"
+       fill="#ffffff"
+       id="rect3" />
+    <text
+       x="20"
+       y="74.400002"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text3"><tspan
+         x="20"
+         id="tspan3">Source file</tspan></text>
+  </g>
+  <line
+     x1="63.983337"
+     x2="63.983337"
+     y1="79.400002"
+     y2="217"
+     style="stroke-width:2px"
+     stroke="#000000"
+     fill="none"
+     id="line4" />
+  <g
+     class="actor"
+     id="g5"
+     transform="translate(-9,-9)">
+    <rect
+       x="155.96667"
+       y="49.200001"
+       width="97.066666"
+       height="39.200001"
+       style="stroke-width:2px"
+       stroke="#000000"
+       fill="#ffffff"
+       id="rect5" />
+    <text
+       x="165.96667"
+       y="74.400002"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text5"><tspan
+         x="165.96667"
+         id="tspan5">Compiler</tspan></text>
+  </g>
+  <line
+     x1="195.5"
+     x2="195.5"
+     y1="79.400002"
+     y2="217"
+     style="stroke-width:2px"
+     stroke="#000000"
+     fill="none"
+     id="line6" />
+  <g
+     class="actor"
+     id="g7"
+     transform="translate(-9,-9)">
+    <rect
+       x="273.03333"
+       y="49.200001"
+       width="203.03334"
+       height="39.200001"
+       style="stroke-width:2px"
+       stroke="#000000"
+       fill="#ffffff"
+       id="rect7" />
+    <text
+       x="283.03333"
+       y="74.400002"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text7"><tspan
+         x="283.03333"
+         id="tspan7">Executable (Binary)</tspan></text>
+  </g>
+  <line
+     x1="365.54999"
+     x2="365.54999"
+     y1="79.400002"
+     y2="217"
+     style="stroke-width:2px"
+     stroke="#000000"
+     fill="none"
+     id="line8" />
+  <g
+     class="actor"
+     id="g9"
+     transform="translate(-9,-9)">
+    <rect
+       x="496.06668"
+       y="49.200001"
+       width="77.800003"
+       height="39.200001"
+       style="stroke-width:2px"
+       stroke="#000000"
+       fill="#ffffff"
+       id="rect9" />
+    <text
+       x="506.06668"
+       y="74.400002"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text9"><tspan
+         x="506.06668"
+         id="tspan9">Output</tspan></text>
+  </g>
+  <line
+     x1="525.96667"
+     x2="525.96667"
+     y1="79.400002"
+     y2="217"
+     style="stroke-width:2px"
+     stroke="#000000"
+     fill="none"
+     id="line10" />
+  <g
+     class="signal"
+     id="g11"
+     transform="translate(-9,-9)">
+    <text
+       x="105.025"
+       y="119"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text11"><tspan
+         x="105.025"
+         id="tspan11">Compile</tspan></text>
+    <line
+       x1="72.983337"
+       x2="204.5"
+       y1="127.60001"
+       y2="127.60001"
+       style="stroke-width:2px;marker-end:url(#markerArrowBlock)"
+       stroke="#000000"
+       fill="none"
+       id="line11" />
+  </g>
+  <g
+     class="signal"
+     id="g12"
+     transform="translate(-9,-9)">
+    <text
+       x="250.99167"
+       y="158.2"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text12"><tspan
+         x="250.99167"
+         id="tspan12">Produces</tspan></text>
+    <line
+       x1="204.5"
+       x2="374.54999"
+       y1="166.8"
+       y2="166.8"
+       style="stroke-width:2px;stroke-dasharray:6px, 2px;marker-end:url(#markerArrowBlock)"
+       stroke="#000000"
+       fill="none"
+       id="line12" />
+  </g>
+  <g
+     class="signal"
+     id="g13"
+     transform="translate(-9,-9)">
+    <text
+       x="440.30835"
+       y="197.40001"
+       style="font-size:16px;font-family:'Andale Mono', monospace"
+       id="text13"><tspan
+         x="440.30835"
+         id="tspan13">Run</tspan></text>
+    <line
+       x1="374.54999"
+       x2="534.96667"
+       y1="206"
+       y2="206"
+       style="stroke-width:2px;marker-end:url(#markerArrowBlock)"
+       stroke="#000000"
+       fill="none"
+       id="line13" />
+  </g>
+</svg>

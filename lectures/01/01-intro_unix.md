@@ -108,7 +108,7 @@ Maximum achievable grade: **30** + honors (granted in exceptional cases).
    - Programming is (mostly) learnt by doing, not by reading.
 
 3. **Interact**
-   - Engage in discussions on GitHub.
+   - Engage in discussions.
    - Seek help when needed.
    - **Share your knowledge with others**.
 
@@ -696,14 +696,20 @@ In this example, `greet` is a function that takes one argument and echoes a gree
 
 ---
 
-# Redirection, pipelines and filters
+# Redirection, pipelines and filters (1/2)
 
 We can add operators between commands in order to chain them together.
-- The pipe operator `|` forwards the output of one command to another. E.g., `grep my_username /etc/passwd` checks system information about "my_username".
+- The pipe operator `|` forwards the output of one command to another. E.g., `cat /etc/passwd | grep my_username` checks system information about "my_username".
 - The redirect operator `>` sends the standard output of one command to a file. E.g., `ls > files-in-this-folder.txt` saves a file with the list of files.
+- The error redirect operator `2>` sends the standard error of one command to a file. E.g., `ls > output.txt 2> errors.txt` saves a file with the list of files and a file with errors.
 - The append operator `>>` appends the output of one command to a file.
 - In Bash, the operator `&>` sends both standard output and standard error to a file.
-- The `&&` operator executes the second command only if the exit status of the first command is 0. It is used to chain commands together: e.g., `sudo apt update && sudo apt upgrade`.
+
+---
+
+# Redirection, pipelines and filters (2/2)
+
+- The `&&` operator executes the second command only if the exit status of the first command is 0. E.g., `sudo apt update && sudo apt upgrade`.
 - The `||` operator executes the second command only if the exit status of the first command is not 0.
 - The `;` operator separates commands and executes them sequentially regardless of their exit status.
 - `$?` is a variable containing the exit status of the last command.
