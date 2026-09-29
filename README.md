@@ -83,8 +83,8 @@ To be defined.
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 |  |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 |  |
-| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 |  |
+| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (?) |
+| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (?) |
 
 [lecture-01-md]: lectures/01/01-intro_unix.md
 [lecture-01-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.html

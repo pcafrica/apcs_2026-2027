@@ -41,8 +41,8 @@ _class: titlepage
 ---
 
 # Practical info
-- **Instructor**: Pasquale Claudio Africa <<pafrica@sissa.it>>
-- **Tutor**: Dr. Valentin Nkana <<vnkanang@sissa.it>>
+- **Instructor**: Pasquale Claudio Africa <pafrica@sissa.it>
+- **Tutor**: Dr. Valentin Nkana <vnkanang@sissa.it>
 
 # Course material
 - GitHub: timetable, lecture notes, exercise sessions, general information.
@@ -119,7 +119,7 @@ Maximum achievable grade: **30** + honors (granted in exceptional cases).
 
 Please **bring your own laptop** with a working UNIX/Linux environment, whether standalone, dual boot, or virtualized.
 
-For beginners: https://ubuntu.com/tutorials/install-ubuntu-desktop.
+For beginners: https://canonical-ubuntu-desktop-documentation.readthedocs-hosted.com/en/latest/tutorial/install-ubuntu-desktop/.
  
 You can write code using any **text editor** (such as Emacs, Vim, or Nano), or an Integrated Development Environment (**IDE**) (such as VSCode, Eclipse, or Code::Blocks).
 
@@ -196,7 +196,7 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
 
 5. **Licensing uncertainty**
    Models can generate code similar to existing open-source implementations while failing to identify the applicable license.
-   [LiCoEval, 2024](https://arxiv.org/abs/2408.02487)
+   [LiCoEval, 2025](https://arxiv.org/abs/2408.02487)
 
 6. **Faster output still requires review**
    Copilot users completed one programming task 55.8% faster, but developers remain responsible for reviewing and validating generated code.
@@ -208,7 +208,7 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
 
 7. **Risk of shallow learning**
    In a small interview study, 9 of 10 students expressed concern that over-reliance could lead to surface-level understanding and weaker problem-solving skills.
-   [Students’ Perspectives on AI Code Completion, 2024](https://arxiv.org/abs/2311.00177)
+   [Students' Perspectives on AI Code Completion, 2024](https://arxiv.org/abs/2311.00177)
 
 8. **Inconsistent coding style**
    Generated code can differ from human conventions in readability, conciseness, and robustness.
@@ -305,8 +305,8 @@ Another significant innovation in C++ was the introduction of templates. Templat
 # C++ in the modern era
 
 ## Standardization efforts
-The C++ language has continued to evolve through a series of standards, each introducing new features and improvements. Notable standards include C++98, C++11, C++14, C++17, C++20, C++23 (C++26 expected soon). These standards have added features like smart pointers, lambda expressions, range-based for loops, and modules, enhancing the language's expressiveness and safety.
-<br>
+The C++ language has continued to evolve through a series of standards, each introducing new features and improvements. Notable standards include C++98, C++11, C++14, C++17, C++20, C++23, C++26 (released few months ago). These standards have added features like smart pointers, lambda expressions, range-based for loops, and modules, enhancing the language's expressiveness and safety.
+
 ## Open source and the C++ community
 C++'s success can be attributed in part to the vibrant open-source community that has formed around it. Open-source libraries and frameworks, such as the Boost C++ Libraries, have extended C++'s functionality and encouraged collaborative development.
 
@@ -350,7 +350,7 @@ Guido named the language after his love for the British comedy group Monty Pytho
 
 ## Python 0.9.0
 Python's first public release, Python 0.9.0, occurred in February 1991. This release introduced essential features like exception handling, functions, and modules, which laid the foundation for the language's future growth.
-<br>
+
 ## The Python Software Foundation
 In 2001, the Python Software Foundation (PSF) was established as a non-profit organization to promote and support Python. The PSF plays a crucial role in managing Python's development, organizing conferences (e.g., PyCon), and providing grants and resources to the Python community.
 
@@ -808,7 +808,7 @@ _class: titlepage
 Version control, also known as source control, is the practice of tracking and managing changes to software code. Version control systems are software tools that help software teams manage changes to source code over time.
 
 `git` is a free and open-source version control system, originally created by Linus Torvalds in 2005. Unlike older centralized version control systems such as SVN and CVS, Git is distributed: every developer has the full history of their code repository locally. This makes the initial clone of the repository slower, but subsequent operations dramatically faster.
-<br>
+
 [A visual `git` cheat sheet](https://ndpsoftware.com/git-cheatsheet.html).
 
 ---
