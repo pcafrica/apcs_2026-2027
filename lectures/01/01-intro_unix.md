@@ -88,10 +88,11 @@ For live programming sessions please **bring your own laptop**.
 
 1. (Optional) **Project** (up to 5 points):
    - Throughout the course, you will be assigned a group project. Detailed instructions and deadlines will be uploaded.
+
 2. **Main exam** (up to 27 points):
    - Theoretical questions (paper-based) and programming exercises (computer-based).
 
-3. (Optional) **Oral discussion**, upon request (by either students or the instructor). It can increase or decrease your grade by up to 3 points.
+3. (Optional) **Oral exam**, upon request (by either students or the instructor). It can increase or decrease your grade by up to 3 points.
 
 Maximum achievable grade: **30** + honors (granted in exceptional cases).
 
