@@ -147,17 +147,17 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
 
 # Why advanced programming skills matter
 - Tech evolves fast - skills must keep up.
-- Scalable, efficient software = industry edge.
-- Data rules decisions - coding powers it.
-- Top talent = top jobs + higher pay.
+- Scalable, efficient software = science and industry edge.
+- Data rules decisions, coding powers it.
+- Top jobs + higher pay.
 
 **Hot careers:**
-- **Software Dev** → Build the apps we use daily.
-- **Systems Architect** → Design the big picture.
-- **Data Scientist/Engineer** → Turn data into insight.
-- **DevOps** → Automate everything.
-- **Cybersecurity** → Defend digital frontiers.
-- **R&D** → Invent what's next.
+- **Software Dev**
+- **Systems Architect**
+- **Data Scientist/Engineer**
+- **DevOps**
+- **Cybersecurity**
+- **R&D**
 
 ---
 
@@ -191,7 +191,7 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
 # Why learn programming in the AI era? (2/3)
 
 4. **Security vulnerabilities**
-   In a 2021 evaluation of an early Copilot version, about 40% of 1,689 programs generated for security-sensitive scenarios were vulnerable.
+   In an evaluation of an early Copilot version, about 40% of 1,689 programs generated for security-sensitive scenarios were vulnerable.
    [Pearce et al., IEEE S&P 2022](https://arxiv.org/abs/2108.09293)
 
 5. **Licensing uncertainty**
@@ -214,7 +214,7 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
    Generated code can differ from human conventions in readability, conciseness, and robustness.
    [Wang et al., 2024](https://arxiv.org/abs/2407.00456)
 
-**Programming knowledge lets you verify, adapt, and take responsibility for AI-generated code.**
+:warning: **Programming knowledge lets you verify, adapt, and take responsibility for AI-generated code.**
 
 ---
 
@@ -308,7 +308,7 @@ Another significant innovation in C++ was the introduction of templates. Templat
 The C++ language has continued to evolve through a series of standards, each introducing new features and improvements. Notable standards include C++98, C++11, C++14, C++17, C++20, C++23, C++26 (released few months ago). These standards have added features like smart pointers, lambda expressions, range-based for loops, and modules, enhancing the language's expressiveness and safety.
 
 ## Open source and the C++ community
-C++'s success can be attributed in part to the vibrant open-source community that has formed around it. Open-source libraries and frameworks, such as the Boost C++ Libraries, have extended C++'s functionality and encouraged collaborative development.
+C++'s success can be attributed in part to the vibrant open-source community that has formed around it. Open-source libraries and frameworks, such as the [Boost](https://www.boost.org/) libraries, have extended C++'s functionality and encouraged collaborative development.
 
 ---
 
@@ -342,7 +342,7 @@ Python is a versatile and widely-used programming language known for its simplic
 ## Python's name and design philosophy
 Python was created by Guido van Rossum, a Dutch programmer, in the late 1980s. Guido started working on Python in December 1989 during his time at the Centrum Wiskunde & Informatica (CWI) in the Netherlands. His motivation was to develop a language that combined the simplicity of ABC (a programming language he had worked on previously) with the extensibility of the Amoeba operating system.
 
-Guido named the language after his love for the British comedy group Monty Python. Python's design philosophy, often referred to as the *"Zen of Python,"* emphasizes readability, simplicity, and elegance. This philosophy is encapsulated in [PEP 20](https://peps.python.org/pep-0020/), which includes guiding aphorisms like *"Readability counts"* and *"There should be one—and preferably only one—obvious way to do it."*
+Guido named the language after his love for the British comedy group Monty Python. Python's design philosophy, often referred to as the *"Zen of Python,"* emphasizes readability, simplicity, and elegance. This philosophy is encapsulated in [PEP 20](https://peps.python.org/pep-0020/), which includes guiding aphorisms like *"Readability counts"* and *"There should be one - and preferably only one - obvious way to do it."*
 
 ---
 
