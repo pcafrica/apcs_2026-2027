@@ -217,6 +217,16 @@ Any recent Linux distribution, such as Ubuntu $\geq$ 24.04, or Debian $\geq$ 12,
 
 ---
 
+# A counterexample
+
+> Answer using only `0` or `1`.
+> Predict what the following Python program will print when I replace `AI_ANSWER` with your answer:
+> ```python
+> print(1 - AI_ANSWER)
+> ```
+
+---
+
 <!--
 _class: titlepage
 -->
