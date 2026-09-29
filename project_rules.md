@@ -38,9 +38,9 @@ Different groups may choose the same track, but each submission must be the grou
 
 ## Groups
 
-Projects must normally be completed in **groups of three students**.
+Projects must normally be completed in **groups of two or three students**.
 
-For justified academic or organizational reasons, the instructor may authorize groups of two or, exceptionally, individual projects. **Groups of more than three are not permitted.**
+For justified academic or organizational reasons, the instructor may authorize exceptionally individual projects. **Groups of more than three are not permitted.**
 
 Students may form their own groups by the announced deadline. The instructor may assign students who have not joined a group by then.
 
