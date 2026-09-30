@@ -38,7 +38,7 @@ Perform the following tasks in your command-line terminal.
 
 # Exercise 2: dataset exploration
 
-You can access an open dataset of logs collected from a high-performance computing cluster at the Los Alamos National Laboratories. The dataset is available on [this webpage](https://github.com/logpai/loghub/tree/master/HPC).
+You can access an open dataset of logs collected from a high-performance computing cluster at the Los Alamos National Laboratory. The dataset is available on [this webpage](https://github.com/logpai/loghub/tree/master/HPC).
 
 To download the dataset using `wget`, run the following command:
 ```bash
@@ -65,7 +65,7 @@ In this exercise, you'll create a shell script that automates the process of cre
 3. Copy all files and directories from the user-specified directory to the backup folder.
 4. Compress the backup folder into a single archive file.
 
-**Note**: You can use basic commands like `read`, `mkdir`, `cp`, `tar`, and `echo`.
+**Note**: You can use basic commands like `mkdir`, `cp`, `tar`, and `echo`.
 
 **Hint**: Generate a timestamp in the format *YYYYMMDD_hhmmss* with `date +%Y%m%d_%H%M%S`.
 
@@ -75,7 +75,7 @@ In this exercise, you'll create a shell script that automates the process of cre
 
 1. Create a new shell script file named `backup.sh`.
 2. Inside the script, use basic shell commands to implement the following steps:
-   1. Prompt the user to enter the directory they want to back up.
+   1. Receive the directory to back up as the first command-line argument.
    2. Create a timestamped backup folder (e.g., `backup_<timestamp>`) inside a specified backup directory (you can define this directory at the beginning of your script).
    3. Copy all files and directories from the user-specified directory to the backup folder.
    4. Compress the backup folder into a single archive file `backup_<timestamp>.tar.gz`.
@@ -85,7 +85,7 @@ In this exercise, you'll create a shell script that automates the process of cre
 
 ---
 
-# Exercise 4: hands on `git`. Collaborative file management (1/3)
+# Exercise 4: hands-on `git`. Collaborative file management (1/3)
 1. Form groups of 2-3 members.
 2. Designate one member to create a new repository (visit https://github.com/ and click the `+` button in the top right corner), and ensure everyone clones it.
 3. In a sequential manner, each group member should create a file with a distinct name and push it to the online repository while the remaining members pull the changes.
@@ -93,8 +93,8 @@ In this exercise, you'll create a shell script that automates the process of cre
 
 ---
 
-# Exercise 4: hands on `git`. Collaborative file management (2/3)
-Now, let's work on the same file, `main.cpp`. Each person should create a hello world `main.cpp` that includes a personalized greeting with your name. To prevent conflicts, follow these steps:
+# Exercise 4: hands-on `git`. Collaborative file management (2/3)
+Now, let's work on the same file, `main.cpp`. Each person should create a "Hello, world!" `main.cpp` that includes a personalized greeting with your name. To prevent conflicts, follow these steps:
 
 1. Create a unique branch using the command: `git checkout -b [new_branch]`.
 2. Develop your code and push your branch to the online repository.
@@ -108,7 +108,7 @@ git push origin main
 
 ---
 
-# Exercise 4: hands on `git`. Collaborative file management (3/3)
+# Exercise 4: hands-on `git`. Collaborative file management (3/3)
 
 ## How to deal with `git` conflicts
 The first person to complete this process will experience no issues. However, subsequent participants may encounter merge conflicts.
