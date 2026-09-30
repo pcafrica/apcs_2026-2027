@@ -710,7 +710,7 @@ In this example, `greet` is a function that takes one argument and echoes a gree
 # Redirection, pipelines and filters (1/2)
 
 We can add operators between commands in order to chain them together.
-- The pipe operator `|` forwards the output of one command to another. E.g., `cat /etc/passwd | grep my_username` checks system information about "my_username".
+- The pipe operator `|` forwards the output of one command to another. E.g., `cat /etc/passwd | grep "my_username"` checks system information about "my_username".
 - The redirect operator `>` sends the standard output of one command to a file. E.g., `ls > files-in-this-folder.txt` saves a file with the list of files.
 - The error redirect operator `2>` sends the standard error of one command to a file. E.g., `ls > output.txt 2> errors.txt` saves a file with the list of files and a file with errors.
 - The append operator `>>` appends the output of one command to a file.
