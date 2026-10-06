@@ -321,7 +321,7 @@ In reality, things are much more complex: see, for instance, [**Explicit type co
 _class: titlepage
 -->
 
-# Memory management: variables, pointers, references, arrays
+# Memory management: variables, pointers, arrays, references
 
 ---
 
@@ -829,11 +829,9 @@ z /= 2; // 1.
 
 ```cpp
 int a = 5;
-int b = ++a; // Pre-increment.
-// a is now 6, b is also 6.
+int b = ++a; // Pre-increment. a is now 6, b is also 6.
 
-int c = a++; // Post-increment.
-// a is now 7, but c is 6.
+int c = a++; // Post-increment. a is now 7, but c is 6.
 ```
 
 ---
