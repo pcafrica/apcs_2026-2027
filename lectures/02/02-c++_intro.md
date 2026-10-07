@@ -1064,7 +1064,7 @@ C++ code modules consist of:
 
 # Header files
 
-- Header files (`.h` or `.hpp`) contain declarations and prototypes.
+- Header files (`.h` or `.hpp`) contain **declarations**.
 - They define the interface to a module or class.
 - Header files are included in source files to access declarations.
 
@@ -1074,9 +1074,7 @@ int add(int a, int b); // Function prototype.
 ```
 
 ## Best practices
-- Use include guards or `#pragma once` to prevent multiple inclusions.
 - Include only necessary headers to reduce compilation time.
-- Keep header files concise and focused on declarations.
 - Use descriptive and unique names for header files.
 - Document complex or non-obvious declarations.
 
@@ -1084,7 +1082,7 @@ int add(int a, int b); // Function prototype.
 
 # Source files
 
-- Source files (`.cpp`) contain the definitions of functions and classes.
+- Source files (`.cpp`) contain the **definitions** of functions and classes.
 - They implement the functionality declared in header files.
 - Source files include header files for access to declarations.
 
@@ -1096,6 +1094,29 @@ int add(int a, int b) {
     return a + b;
 }
 ```
+
+---
+
+# The One Definition Rule (ODR)
+
+A declaration introduces a name and can usually appear more than once:
+
+```cpp
+double add(double a, double b); // Declaration. Can be repeated in different compilation units.
+```
+
+A function or variable **must** normally have **exactly one definition** in the entire program:
+
+```cpp
+double add(double a, double b) { // Definition.
+    return a + b;
+}
+```
+
+- Function **declarations** are usually placed in **header files**.
+- Function **definitions** are usually placed in **source files**.
+- Identical type definitions, such as a `struct` placed in a header, may appear in multiple translation (compilation) units.
+- Exceptions such as `inline` functions and templates will be discussed later.
 
 ---
 
@@ -1137,32 +1158,11 @@ Modern compilers also support:
 # Preventing header file inclusion issues
 
 To avoid issues with header file inclusions:
+- Use include guards or `#pragma once` to prevent multiple inclusions.
 - Include necessary headers in your source files.
 - Avoid circular dependencies (A includes B, and B includes A).
 - Use forward declarations when possible to minimize dependencies.
 - Follow a consistent naming convention for header guards.
-
----
-
-# Managing scope in C++
-
-- Scope determines the visibility and lifetime of variables and functions.
-- C++ uses blocks, functions, and namespaces to manage scope.
-- Variables declared inside a block have block scope.
-- Variables declared outside of any function or class have namespace/global scope.
-- Namespaces help organize code and avoid naming conflicts.
-
-```cpp
-int x = 10;
-
-{ // Manually define a scope.
-    int y = 20;
-    // ...
-} // Destroy all variables local to the scope.
-// Beware: dynamically allocated variables must be deleted manually.
-
-std::cout << y << std::endl; // Error: 'y' is undefined here.
-```
 
 ---
 
@@ -1249,7 +1249,7 @@ g++ module1.cpp module2.cpp main.cpp -I/path/to/include/dir -o my_program
 
 Please keep in mind that different compilers can yield different/undefined behaviors and trigger distinct warnings or errors or print them in a less/more human-readable format.
 
-For a demonstration, see this example on [Godbolt](https://godbolt.org/z/1M83E4sYE) comparing the output of GCC and Clang on the same code.
+For a demonstration, see this example on [Godbolt](https://godbolt.org/z/zn9d9vavK) comparing the output of GCC and Clang on the same code.
 
 ---
 
