@@ -45,7 +45,7 @@ _class: titlepage
 
 ## OOP in C++
 
-- C++ is not (only) a OOP language.
+- C++ is not (only) an OOP language.
 - C++ is a multi-paradigm programming language that supports procedural, object-oriented, and generic programming.
 - C++ allows developers to combine these paradigms effectively for various programming tasks.
 
@@ -142,11 +142,11 @@ delete my_car_ptr;
 
 # Members
 
-- Member variables, also known as *attributes* or instance variables, store data within a class. In the `Car` class, `manufacter`, `model`, and `year` are member variables that hold information about the car. These variables encapsulate the car's characteristics within the class.
+- Member variables, also known as *attributes* or instance variables, store data within a class. In the `Car` class, `manufacturer`, `model`, and `year` are member variables that hold information about the car. These variables encapsulate the car's characteristics within the class.
 
-- Member functions, or *methods*, define the behavior of a class. The `start_engine` method in the Car class initiates the car's engine. Methods encapsulate the actions or operations that can be performed on the object's data.
+- Member functions, or *methods*, define the behavior of a class. The `start_engine` method in the `Car` class initiates the car's engine. Methods encapsulate the actions or operations that can be performed on the object's data.
 
-## `Static` members
+## `static` members
 
 Static members in a class are shared among all instances of that class. They are declared using the `static` keyword and can be accessed using the class name rather than an object. Static members are useful for maintaining shared data or functionality across objects.
 
@@ -155,33 +155,33 @@ Static members in a class are shared among all instances of that class. They are
 # `static` members
 
 ```cpp
-class Circle {
+class Square {
 public:
-    static const double PI = 3.14159265359; // Static constant shared by all Circle objects.
-    double radius;
+    static const int N_SIDES = 4; // Static constant shared by all Square objects.
+    double side;
 
     double calculate_area() {
-        return PI * radius * radius;
+        return side * side;
     }
     
     static void print_shape_name() {
-        std::cout << "This is a circle." << std::endl;
+        std::cout << "This is a square." << std::endl;
     }
 };
 
-Circle circle;
-circle.radius = 5.0;
+Square square;
+square.side = 5.0;
 
-const double area = circle.calculate_area(); // Accessing a non-static member.
-const double pi_value = Circle::PI; // Accessing a static member.
-Circle::print_shape_name();
+const double area = square.calculate_area(); // Accessing a non-static member.
+const int n_sides = Square::N_SIDES; // Accessing a static member.
+Square::print_shape_name();
 ```
 
 ---
 
 # `const` members (1/2)
 
-When used in the context of classes, `const` can be applied to member variables, member functions, and even to the class itself.
+When used in the context of classes, `const` can be applied to member variables, member functions, and objects of the class.
 
 ```cpp
 class MyClass {
@@ -248,7 +248,7 @@ public:
 Constructors are special member functions that initialize objects when they are created. They have the same name as the class and can take arguments to set initial values for member variables.
 
 ## Types of constructor
-- **Default constructor**: It takes no arguments. If you don't provide any constructors for a class, C++ will generate a default constructor automatically using default values (e.g., zero for numbers, empty for strings).
+- **Default constructor**: It can be called with no arguments. If you don't provide any constructors for a class, C++ will implicitly declare a default constructor. Fundamental-type members are not necessarily initialized to zero; class-type members, such as strings, run their default constructors.
 - **Parameterized constructor**: It takes one or more parameters to initialize member variables based on the provided values. It creates objects with specific initial states.
 - **Copy constructor**: It creates a new object as a copy of an existing object of the same class. It takes a reference to an object of the same class as a parameter. It is invoked when objects are copied, passed by value, or initialized with other objects.
 
@@ -268,18 +268,18 @@ public:
     // MyClass() = default;
     
     std::string name;
-    unsigned int length;
+    unsigned int length{};
 };
 
-MyClass obj;    // Direct initialization.
-MyClass obj2{}; // Uniform initialization (since C++11; preferred).
+MyClass obj;    // Default initialization.
+MyClass obj2{}; // Value initialization (brace syntax, since C++11).
 
-MyClass obj3();  // Illegal: the compiler believes we are declaring a function.
+MyClass obj3(); // Declares a function, not an object (the most vexing parse).
 ```
 
 ---
 
-# Parametrized constructors
+# Parameterized constructors
 
 ```cpp
 class Student {
@@ -369,7 +369,7 @@ book3 = book1; // Copying using the copy assignment operator.
 # Default constructor and default initialization
 
 - If you don't provide any constructors for a class, C++ will automatically generate a default constructor. However, if you provide any custom constructors, the default constructor won't be generated unless you explicitly define it.
-- Default initialization of primitive types (e.g., `int`, `double`) sets them to zero, while non-primitive types (e.g., strings, vectors, ...) may have default constructors that initialize them to appropriate default values.
+- Default initialization leaves fundamental-type members (e.g., `int`, `double`) without a value unless they have a default member initializer or the constructor initializes them. Class-type members (e.g., strings, vectors, ...) run their default constructors. Brace initialization with `{}` can also zero-initialize members when the class has no user-provided default constructor.
 
 ---
 
@@ -379,7 +379,7 @@ book3 = book1; // Copying using the copy assignment operator.
    ```cpp
    MyClass obj1;   // Calls the default constructor.
    MyClass obj2{}; // Calls the default constructor.
-   Student student{"Alice", 20}; // Calls the parametrized constructor.
+   Student student{"Alice", 20}; // Calls the parameterized constructor.
     ```
 
 2. **Copy initialization**: When you initialize one object with another, the copy constructor is called.
@@ -391,15 +391,15 @@ book3 = book1; // Copying using the copy assignment operator.
 
 # When constructors are called (2/2)
 
-3. **Pass and return by value**: When you pass an object by value to a function or return an object by value from a function, the copy constructor is called.
+3. **Pass and return by value**: Passing an lvalue by value calls the copy constructor. Returning a local object by value may elide the copy (NRVO); otherwise it may use a move or a copy constructor.
    ```cpp
    void some_function(Student s) {
-       // Calls the copy constructor when s is passed.
+       // Copy-constructs s if the argument is an lvalue.
    }
 
    Student create_student() {
        Student s{"Bob", 22};
-       return s; // Calls the copy constructor when s is returned.
+       return s; // Copy may be elided; otherwise a move or copy may occur.
    }
    ```
 
@@ -435,6 +435,7 @@ public:
     }
 
     ~FileHandler() {
+        // Explicit close for illustration: std::ofstream also closes itself on destruction.
         if (file.is_open()) {
             file.close();
         }
@@ -451,7 +452,7 @@ public:
 
 ---
 
-# Constructors and destructor synthetically generated
+# Constructors and destructor implicitly generated
 
 ![w:650px](images/03_compiler_implicit.png)
 
@@ -467,9 +468,9 @@ _class: titlepage
 
 ---
 
-# The `inline` directive
+# The `inline` keyword
 
-In C++, the `inline` keyword can be applied to free functions (functions that are not members of any class) to suggest that the function should be inlined by the compiler. This means that the compiler replaces function calls with the actual function code at the call site, potentially leading to better performance, especially for small, frequently used functions.
+In C++, the `inline` keyword can be applied to free functions and member functions. It allows identical definitions of a function in multiple translation units, provided the definition is available in each translation unit that uses it. The compiler may replace a call with the function body as an optimization, whether or not the function is declared `inline`.
 
 ```cpp
 // Inline function declaration for a free function.
@@ -486,8 +487,8 @@ std::cout << "Result: " << result << std::endl;
 # Best practices (1/2)
 
 - **Function size**: Inlining is most effective for small functions. For larger functions, inlining can lead to code bloat and may not improve performance.
-- **Compiler's discretion**: The `inline` keyword is a *suggestion* to the compiler, and the compiler can choose whether or not to inline the function based on optimization settings and other factors.
-- **Header files**: When defining functions in header files, always mark them as `inline` (or use `constexpr` or templates) to avoid multiple definition errors during linking. Header guards (see Lecture 02) prevent multiple inclusions within a single translation unit, but they do not prevent multiple definitions across different source files.
+- **Compiler's discretion**: The compiler chooses whether to replace a call with the function body based on optimization settings and other factors, independently of the `inline` keyword.
+- **Header files**: A non-template function defined in a header must be `inline` to avoid multiple-definition errors across translation units (unless it has internal linkage). Functions defined inside a class and `constexpr` functions are implicitly `inline`. Header guards (see Lecture 02) prevent multiple inclusions within a single translation unit, but they do not prevent multiple definitions across different source files.
 - **Balancing readability**: While inlining can improve performance, it should be used judiciously. Overusing inline for functions that don't provide significant performance benefits can lead to less readable code due to poor code organization.
 
 ---
@@ -498,7 +499,7 @@ std::cout << "Result: " << result << std::endl;
 - **Potential performance improvement**: Inlining small functions can eliminate the function call overhead and improve runtime performance.
 - **Avoiding multiple definitions**: When the same inline function is defined in multiple translation units (source files), the One Definition Rule (ODR) allows the multiple definitions to be treated as equivalent, which avoids linker errors.
  
- In summary, you can use the `inline` keyword to suggest to the compiler that it should consider inlining the function for potential performance improvement. However, it's essential to balance performance considerations with code readability and maintainability.
+ In summary, `inline` primarily allows a function definition to appear in multiple translation units. The compiler makes its own decision about replacing calls with the function body.
  
 ---
 
@@ -532,7 +533,7 @@ public:
     int add(int a, int b);
 };
 
-int MyClass::add(int a, int b) // inline keyword is implicit here.
+inline int MyClass::add(int a, int b) // inline is explicit outside the class.
 {
     return a + b;
 }
@@ -544,7 +545,7 @@ int MyClass::add(int a, int b) // inline keyword is implicit here.
 
 ## Pros
 - Compact and concise code.
-- Compiler may choose to inline the function for performance.
+- Compiler can see the function body and may replace calls with it for performance.
 
 ## Cons
 - May lead to code bloat if used extensively with large functions.
@@ -591,7 +592,7 @@ int MyClass::add(int a, int b) {
 
 # Best practices
 
-1. Use in-class (`inline`) definitions for very short and simple functions (e.g., accessors, mutators) to potentially benefit from inlining.
+1. Use in-class (implicitly `inline`) definitions for very short and simple functions (e.g., accessors, mutators).
 2. Use out-of-class definitions for larger or more complex functions to keep the header files clean and to separate interface from implementation.
 3. Consider code readability and maintainability when making a choice.
 
@@ -716,7 +717,7 @@ public:
     }
 
 private:
-    double temperature;
+    double temperature{};
 };
 ```
 
@@ -757,8 +758,8 @@ public:
     }
 
 private:
-    double height;
     const Circle circle;
+    double height;
 };
 
 Circle circle{1.0};
@@ -790,13 +791,10 @@ Operator overloading can improve code readability and maintainability by allowin
 ```cpp
 class Complex {
 public:
-    // ...
+    Complex(double real, double imag) : real(real), imag(imag) {}
     
-    Complex operator+(const Complex& other) {
-        Complex result;
-        result.real = this->real + other.real;
-        result.imag = this->imag + other.imag;
-        return result;
+    Complex operator+(const Complex& other) const {
+        return Complex{real + other.real, imag + other.imag};
     }
 
 private:
@@ -855,7 +853,7 @@ std::ostream& operator<<(std::ostream& os, const MyClass& obj) {
     return os;
 }
 
-MyClass obj;
+MyClass obj{42};
 std::cout << obj << std::endl;
 ```
 
@@ -869,8 +867,10 @@ private:
     int x, y;
 
 public:
-    Point operator+(const Point& other) {
-        return Point(this->x + other.x, this->y + other.y);
+    Point(int x, int y) : x(x), y(y) {}
+
+    Point operator+(const Point& other) const {
+        return Point{this->x + other.x, this->y + other.y};
     }
 
     bool operator==(const Point& other) const {
@@ -883,11 +883,13 @@ public:
     }
 };
 
+Point p1{1, 2};
+Point p2{3, 4};
 Point p3 = p1 + p2;
 if (p1 == p2) {
-    cout << "p1 is equal to p2" << endl;
+    std::cout << "p1 is equal to p2" << std::endl;
 } else {
-    cout << "p1 is not equal to p2" << endl;
+    std::cout << "p1 is not equal to p2" << std::endl;
 }
 std::cout << p3 << std::endl;
 ```
@@ -898,7 +900,7 @@ std::cout << p3 << std::endl;
 
 1. **Operators that cannot be overloaded**: Some operators, like `::`, `.*`, and `? :`, cannot be overloaded.
 2. **Don't change the basic meaning of an operator**: Overloading should make sense in the context of your class. For example, overloading `+` for string concatenation is intuitive, but overloading it for subtraction is not.
-3. **Be mindful of operator precedence and associativity**: Overloaded operators should follow the same precedence and associativity rules as their built-in counterparts (such as in expressions like `2 * 3 + 1`).
+3. **Be mindful of operator precedence and associativity**: Overloading cannot change an operator's precedence or associativity (such as in expressions like `2 * 3 + 1`).
 4. **Avoid excessive overloading**: Overloading too many operators can make your code less readable and harder to maintain. Focus on overloading the operators that provide significant benefits.
 
 ---
