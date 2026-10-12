@@ -187,28 +187,28 @@ Honors may be granted in exceptional cases, provided the final grade exceeds 30.
 ## TODO checklist for the main exam
 
 ### Before the exam
-- [ ] **Install and test** a screen recording tool.
-- [ ] Verify that **audio and webcam are disabled**.
-- [ ] Ensure at least **1 GB of free disk space**.
-- [ ] Perform a **test recording of at least 5 minutes**.
-- [ ] **Know** where the recording file is saved.
+1. **Install and test** a screen recording tool.
+2. Verify that **audio and webcam are disabled**.
+3. Ensure at least **1 GB of free disk space**.
+4. Perform a **test recording of at least 5 minutes**.
+5. **Know** where the recording file is saved.
 
 ### At the start of the exam
-- [ ] Ensure your computer is **charged or plugged into a power socket**.
-- [ ] Ensure your **internet connection is stable**.
-- [ ] **Start the screen recording** as soon as the exam starts.
-- [ ] **Check** that the recording timer is running.
+1. Ensure your computer is **charged or plugged into a power socket**.
+2. Ensure your **internet connection is stable**.
+3. **Start the screen recording** as soon as the exam starts.
+4. **Check** that the recording timer is running.
 
 ### During the exam
-- [ ] **Keep track of time** and manage it effectively.
-- [ ] **Read** each question carefully before answering.
-- [ ] **Maintain backups of your work to prevent data loss.**
-- [ ] Keep the recording **continuous**; do not pause or stop it.
-- [ ] Immediately **report** any technical issue to the invigilator.
+1. **Keep track of time** and manage it effectively.
+2. **Read** each question carefully before answering.
+3. **Maintain backups of your work to prevent data loss.**
+4. Keep the recording **continuous**; do not pause or stop it.
+5. Immediately **report** any technical issue to the invigilator.
 
 ### At the end of the exam
-- [ ] **Double-check** all submissions before the final upload.
-- [ ] **Submit** the exam solution.
-- [ ] Stop the recording **only after submission**.
-- [ ] Store a **backup copy** of your recording to prevent loss.
-- [ ] **Keep the recording unchanged** until the evaluation process is completed.
+1. **Double-check** all submissions before the final upload.
+2. **Submit** the exam solution.
+3. Stop the recording **only after submission**.
+4. Store a **backup copy** of your recording to prevent loss.
+5. **Keep the recording unchanged** until the evaluation process is completed.
