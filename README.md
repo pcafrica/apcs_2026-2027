@@ -33,6 +33,14 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
+## :warning: Project: info
+
+- Project tracks will be assigned by **Wednesday 14 October 2026**.
+- Form your group by **Friday 23 October 2026**. Groups normally consist of **two students**; exceptions may be approved if justified.
+- Each group must choose **one representative** to send the instructor the **full name and institutional email address of every member**, along with the **chosen project**, by replying to the post on Google Classroom.
+
+---
+
 ## :calendar: Exam dates
 
 To be defined.
@@ -64,9 +72,9 @@ To be defined.
 | Wed 30 Sep 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-01-md]] [[HTML][exercise-01-html]] [[PDF][exercise-01-pdf]] |
 | Tue 06 Oct 2026 | 14:00 - 16:00 | 005 | Introduction to C++. [[Markdown][lecture-02-md]] [[HTML][lecture-02-html]] [[PDF][lecture-02-pdf]] [[Recording][lecture-02-rec]] |
 | Wed 07 Oct 2026 | 11:00 - 13:00 | 128 | Exercise session. [[Markdown][exercise-02-md]] [[HTML][exercise-02-html]] [[PDF][exercise-02-pdf]] [[Recording][exercise-02-rec]] |
-| Tue 13 Oct 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 14 Oct 2026 | 11:00 - 13:00 | 004 |  |
-| Tue 20 Oct 2026 | 14:00 - 16:00 | 005 |  |
+| Tue 13 Oct 2026 | 14:00 - 16:00 | 005 | Object oriented programming. Classes and access control in C++. Operators. [[Markdown][lecture-03-md]] [[HTML][lecture-03-html]] [[PDF][lecture-03-pdf]] [[Recording][lecture-03-rec]] |
+| Wed 14 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. |
+| Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
 | Wed 21 Oct 2026 | 11:00 - 13:00 | 004 |  |
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 28 Oct 2026 | 11:00 - 13:00 | 004 |  |
@@ -103,3 +111,13 @@ To be defined.
 [exercise-02-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/02/02-c++_intro.html
 [exercise-02-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/02/02-c++_intro.pdf
 [exercise-02-rec]: https://sissa-my.sharepoint.com/:v:/g/personal/pafrica_sissa_it/IQBFfhMfDkTGTpAwALZhpXJFAV8_77KzL6zHYV0CpRa3j48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=3lMwqB
+
+[lecture-03-md]: lectures/03/03-c++_classes.md
+[lecture-03-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/03/03-c++_classes.html
+[lecture-03-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/03/03-c++_classes.pdf
+[lecture-03-rec]: ...
+
+[exercise-03-md]: exercises/03/03-c++_classes.md
+[exercise-03-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/03/03-c++_classes.html
+[exercise-03-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/03/03-c++_classes.pdf
+[exercise-03-rec]: ...
