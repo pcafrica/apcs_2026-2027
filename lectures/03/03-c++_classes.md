@@ -473,10 +473,11 @@ public:
 
     double& operator[](std::size_t i) { return data[i]; }
 
-private:
     double* data;
     std::size_t size;
 };
+
+Vector v{3}; v[0] = 1.5; // Safe. 'new' and 'delete' now act in the background.
 ```
 
 **Question**: How to implement `Vector(const Vector&)` and `Vector& operator=(const Vector&)`?
@@ -673,13 +674,13 @@ C++ provides access specifiers to control the visibility and accessibility of cl
 ```cpp
 class MyClass {
 public:
-    int public_var;    // Public member variable.
+    int public_var;      // Public member variable.
     void public_func() { // Public member function.
         // ...
     }
 
 private:
-    int private_var;    // Private member variable.
+    int private_var;      // Private member variable.
     void private_func() { // Private member function.
         // ...
     }
@@ -856,7 +857,7 @@ You can overload operators as member functions or non-member functions.
 
 ---
 
-# `friend` functions
+# Overloading as a non-member `friend` function
 
 ```cpp
 class MyClass {
@@ -864,6 +865,7 @@ public:
     MyClass(int v) : value(v) {}
 
     // Declaring the '<<' operator as a friend function.
+    // Can't be a member because the left operand is not the class itself.
     friend std::ostream& operator<<(std::ostream& os, const MyClass& obj);
 
 private:
