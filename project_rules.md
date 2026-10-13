@@ -38,7 +38,7 @@ Different groups may choose the same track, but each submission must be the grou
 
 ## Groups
 
-Projects must normally be completed in **groups of two or three students**.
+Projects must normally be completed in **groups of two students**.
 
 For justified academic or organizational reasons, the instructor may authorize exceptionally individual projects. **Groups of more than three are not permitted.**
 
@@ -102,7 +102,7 @@ Late milestones or final submissions may be rejected or penalized. Extension req
 - Submit the exam through Google Classroom using valid personal information and email address.
 - Only **one student per group** should upload the final project submission on behalf of the entire group.
 - Each submission must list all members, their email addresses, and a concise description of individual contributions.
-- Submit the final project as a single `.tar.gz` or `.zip` archive named `Project_Surname1_Surname2_Surname3.{zip,tar.gz}`. The archive must contain the source code, tests, documentation, examples, and configuration files needed to reproduce the results.
+- Submit the final project as a single `.tar.gz` or `.zip` archive named `Project_Surname1_Surname2.{zip,tar.gz}`. The archive must contain the source code, tests, documentation, examples, and configuration files needed to reproduce the results.
 - Include a `README.md` containing a brief description of the code structure and instructions for configuring, building, and running the code.
 - Include an `AI_USAGE.md`, as detailed in the academic integrity section above.
 
