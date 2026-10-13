@@ -759,7 +759,7 @@ C++ compilers can often construct the returned object directly where it is neede
 
 ```cpp
 void print_value(const int x) {
-    // x = 42; // Error: Cannot modify 'x'.
+    x = 42; // Error: Cannot modify 'x'.
 }
 
 int get_copy() {

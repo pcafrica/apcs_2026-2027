@@ -61,21 +61,6 @@ Object-Oriented Programming (OOP) is a programming paradigm that emphasizes the 
 
 ---
 
-# RAII idiom (Resource Acquisition Is Initialization)
-
-## Holding a resource is a class invariant, tightly bound to the object's lifetime
-
-## RAII idiom:
-1. Encapsulate a resource within a class (constructor).
-2. Utilize the resource through a local instance of the class.
-3. Automatically release the resource when the object goes out of scope (destructor).
-
-## Implications
-1. C++ does not rely on a garbage collector.
-2. Resource management becomes the programmer's responsibility.
-
----
-
 # Advantages of OOP
 
 OOP offers numerous advantages, including:
@@ -142,9 +127,9 @@ delete my_car_ptr;
 
 # Members
 
-- Member variables, also known as *attributes* or instance variables, store data within a class. In the `Car` class, `manufacturer`, `model`, and `year` are member variables that hold information about the car. These variables encapsulate the car's characteristics within the class.
+- **Member variables**, also known as *attributes* or instance variables, store data within a class. In the `Car` class, `manufacturer`, `model`, and `year` are member variables that hold information about the car. These variables encapsulate the car's characteristics within the class.
 
-- Member functions, or *methods*, define the behavior of a class. The `start_engine` method in the `Car` class initiates the car's engine. Methods encapsulate the actions or operations that can be performed on the object's data.
+- **Member functions**, or *methods*, define the behavior of a class. The `start_engine` method in the `Car` class initiates the car's engine. Methods encapsulate the actions or operations that can be performed on the object's data.
 
 ## `static` members
 
@@ -245,7 +230,7 @@ public:
 
 # Constructors
 
-Constructors are special member functions that initialize objects when they are created. They have the same name as the class and can take arguments to set initial values for member variables.
+Constructors are special member functions that initialize objects when they are created. They have the same name as the class and can take arguments to initialize members.
 
 ## Types of constructor
 - **Default constructor**: It can be called with no arguments. If you don't provide any constructors for a class, C++ will implicitly declare a default constructor. Fundamental-type members are not necessarily initialized to zero; class-type members, such as strings, run their default constructors.
@@ -261,7 +246,8 @@ class MyClass {
 public:
     // Default constructor.
     MyClass() {
-        // Initialization code (if needed).
+        // Initialization code (if needed). E.g.,
+        name = "Alice";
     }
     
     // Or:
@@ -272,7 +258,7 @@ public:
 };
 
 MyClass obj;    // Default initialization.
-MyClass obj2{}; // Value initialization (brace syntax, since C++11).
+MyClass obj2{}; // Same, with uniform initialization syntax (since C++11).
 
 MyClass obj3(); // Declares a function, not an object (the most vexing parse).
 ```
@@ -358,10 +344,10 @@ public:
     std::string author;
 };
 
-Book book1{"The catcher in the rye", "J.D. Salinger"}; // Parametrized constructor.
-Book book2 = book1; // Copying using the copy constructor.
-Book book3{"Marcovaldo", "I. Calvino"}; // Parametrized constructor.
-book3 = book1; // Copying using the copy assignment operator.
+Book book1{"The catcher in the rye", "J.D. Salinger"}; // Parameterized constructor.
+Book book2 = book1;                                    // Copying using the copy constructor.
+Book book3{"Marcovaldo", "I. Calvino"};                // Parametrized constructor.
+book3 = book1;                                         // Copying using the copy assignment operator.
 ```
 
 ---
@@ -377,8 +363,8 @@ book3 = book1; // Copying using the copy assignment operator.
 
 1. **Object creation**: When you create an object of a class using its constructor, the constructor is called.
    ```cpp
-   MyClass obj1;   // Calls the default constructor.
-   MyClass obj2{}; // Calls the default constructor.
+   MyClass obj1;                 // Calls the default constructor.
+   MyClass obj2{};               // Calls the default constructor.
    Student student{"Alice", 20}; // Calls the parameterized constructor.
     ```
 
@@ -393,9 +379,7 @@ book3 = book1; // Copying using the copy assignment operator.
 
 3. **Pass and return by value**: Passing an lvalue by value calls the copy constructor. Returning a local object by value may elide the copy (NRVO); otherwise it may use a move or a copy constructor.
    ```cpp
-   void some_function(Student s) {
-       // Copy-constructs s if the argument is an lvalue.
-   }
+   void some_function(Student s) { /* 's' is copy constructed. */ }
 
    Student create_student() {
        Student s{"Bob", 22};
@@ -457,6 +441,45 @@ public:
 ![w:650px](images/03_compiler_implicit.png)
 
 [Source](https://howardhinnant.github.io/classdecl.html)
+
+---
+
+# RAII idiom (Resource Acquisition Is Initialization)
+
+## Holding a resource is a class invariant, tightly bound to the object's lifetime
+
+## RAII idiom:
+1. Encapsulate a resource within a class (constructor).
+2. Utilize the resource through a local instance of the class.
+3. Automatically release the resource when the object goes out of scope (destructor).
+
+## Implications
+1. C++ does not rely on a garbage collector.
+2. Resource management becomes the programmer's responsibility.
+
+---
+
+# RAII example: a container for a dynamic array
+
+```cpp
+class Vector {
+public:
+    Vector(std::size_t n)
+        : size{n}, data{new double[size]{}} {} // Constructor allocates the array.
+
+    ~Vector() {
+        delete[] data; // Destructor releases the array automatically.
+    }
+
+    double& operator[](std::size_t i) { return data[i]; }
+
+private:
+    double* data;
+    std::size_t size;
+};
+```
+
+**Question**: How to implement `Vector(const Vector&)` and `Vector& operator=(const Vector&)`?
 
 ---
 
