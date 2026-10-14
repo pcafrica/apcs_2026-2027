@@ -21,7 +21,7 @@ _class: titlepage
 
 # Exercise 1 (1/5)
 1. Create a class named `DataProcessor` with private data members for a data array and its size. The data array should be represented as a `double *data`.
-2. Implement a constructor that takes an array of floating-point numbers and its size as input and initializes the class data members. Reject a null pointer and an empty array with `std::invalid_argument`.
+2. Implement a constructor that takes an array of floating-point numbers and its size as input and initializes the class data members. Reject a null pointer and an empty array by printing an error message.
 3. Implement a copy constructor, a copy assignment operator and the destructor.
 4. Add a method `n_elements()` that returns the number of elements in the array.
 5. Test all these functionalities in the `main` function by creating proper instances of `DataProcessor` and displaying the results.
