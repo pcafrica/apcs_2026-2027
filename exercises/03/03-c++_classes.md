@@ -48,9 +48,9 @@ _class: titlepage
 
 # Exercise 1 (4/5)
 1. Overload the output stream operator `<<` as a `friend` function to allow printing the list of values in the stored data, separated by a comma.
-2. Overload the `[]` operator to allow indexing and accessing individual data elements. Provide const and non-const overloads for read and write access, and throw `std::out_of_range` for an invalid index.
+2. Overload the `[]` operator to allow indexing and accessing individual data elements. Provide const and non-const overloads for read and write access, and print an error for an invalid index.
    **:warning: The folder `examples` contains two examples showing how to safely implement read and write access operators.**
-3. Overload the `+` operator in the `DataProcessor` class to allow adding two `DataProcessor` objects. The result should be a new `DataProcessor` object containing the element-wise sum of the data arrays. Throw `std::invalid_argument` with an explanatory message if the operands have different sizes.
+3. Overload the `+` operator in the `DataProcessor` class to allow adding two `DataProcessor` objects. The result should be a new `DataProcessor` object containing the element-wise sum of the data arrays. Print an error if the operands have different sizes.
 4. Add tests to validate these new functionalities.
 
 ---
@@ -62,5 +62,5 @@ _class: titlepage
    ```cpp
    double compute_correlation(const DataProcessor &dp1, const DataProcessor &dp2);
    ```
-   that computes the Pearson correlation coefficient between two datasets with the same size. Throw `std::invalid_argument` if the sizes differ or either dataset is constant (the coefficient is then undefined).
+   that computes the Pearson correlation coefficient between two datasets with the same size. Print an error if the sizes differ or either dataset is constant (the coefficient is then undefined).
 4. Add tests with expected results to validate these functionalities, including deep copying, self-assignment, assignment across different sizes, invalid inputs, and instance counts before and after a nested scope. Ensure the tests also pass with `-DNDEBUG`.
