@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="585" viewBox="0 0 1000 585" role="img" aria-labelledby="title desc">
+  <title id="title">Finite-difference grid and five-point stencil</title>
+  <desc id="desc">A rectangular grid with boundary and interior nodes, a highlighted node indexed i comma j, its four neighbours, the spacings delta x and delta y, and the row-major index formula.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#334155"/>
+    </marker>
+    <marker id="dim-start" markerWidth="8" markerHeight="8" refX="1" refY="4" orient="auto">
+      <path d="M8,0 L0,4 L8,8" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+    </marker>
+    <marker id="dim-end" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+    </marker>
+    <style>
+      .title { font: 700 25px Inter, Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 15px Inter, Arial, sans-serif; fill: #475569; }
+      .label { font: 15px Inter, Arial, sans-serif; fill: #0f172a; }
+      .small { font: 13px Inter, Arial, sans-serif; fill: #475569; }
+      .formula { font: 16px "DejaVu Sans Mono", monospace; fill: #312e81; }
+      .grid { stroke: #cbd5e1; stroke-width: 1.5; }
+      .stencil { stroke: #10b981; stroke-width: 4; }
+    </style>
+  </defs>
+
+  <g transform="translate(0,-55)">
+  <g class="grid">
+    <line x1="150" y1="110" x2="150" y2="470"/><line x1="250" y1="110" x2="250" y2="470"/>
+    <line x1="350" y1="110" x2="350" y2="470"/><line x1="450" y1="110" x2="450" y2="470"/>
+    <line x1="550" y1="110" x2="550" y2="470"/><line x1="650" y1="110" x2="650" y2="470"/>
+    <line x1="750" y1="110" x2="750" y2="470"/>
+    <line x1="150" y1="110" x2="750" y2="110"/><line x1="150" y1="200" x2="750" y2="200"/>
+    <line x1="150" y1="290" x2="750" y2="290"/><line x1="150" y1="380" x2="750" y2="380"/>
+    <line x1="150" y1="470" x2="750" y2="470"/>
+  </g>
+
+  <g class="stencil">
+    <line x1="350" y1="290" x2="550" y2="290"/>
+    <line x1="450" y1="200" x2="450" y2="380"/>
+  </g>
+
+  <g fill="#2563eb" stroke="#ffffff" stroke-width="2">
+    <circle cx="150" cy="110" r="8"/><circle cx="250" cy="110" r="8"/><circle cx="350" cy="110" r="8"/><circle cx="450" cy="110" r="8"/><circle cx="550" cy="110" r="8"/><circle cx="650" cy="110" r="8"/><circle cx="750" cy="110" r="8"/>
+    <circle cx="150" cy="200" r="8"/><circle cx="750" cy="200" r="8"/>
+    <circle cx="150" cy="290" r="8"/><circle cx="750" cy="290" r="8"/>
+    <circle cx="150" cy="380" r="8"/><circle cx="750" cy="380" r="8"/>
+    <circle cx="150" cy="470" r="8"/><circle cx="250" cy="470" r="8"/><circle cx="350" cy="470" r="8"/><circle cx="450" cy="470" r="8"/><circle cx="550" cy="470" r="8"/><circle cx="650" cy="470" r="8"/><circle cx="750" cy="470" r="8"/>
+  </g>
+  <g fill="#94a3b8" stroke="#ffffff" stroke-width="2">
+    <circle cx="250" cy="200" r="7"/><circle cx="350" cy="200" r="7"/><circle cx="550" cy="200" r="7"/><circle cx="650" cy="200" r="7"/>
+    <circle cx="250" cy="290" r="7"/><circle cx="650" cy="290" r="7"/>
+    <circle cx="250" cy="380" r="7"/><circle cx="350" cy="380" r="7"/><circle cx="550" cy="380" r="7"/><circle cx="650" cy="380" r="7"/>
+  </g>
+  <g fill="#10b981" stroke="#ffffff" stroke-width="2">
+    <circle cx="350" cy="290" r="10"/><circle cx="550" cy="290" r="10"/>
+    <circle cx="450" cy="200" r="10"/><circle cx="450" cy="380" r="10"/>
+  </g>
+  <circle cx="450" cy="290" r="12" fill="#f97316" stroke="#ffffff" stroke-width="3"/>
+
+  <g class="label" text-anchor="middle">
+    <text x="470" y="275" text-anchor="start" font-weight="700">T(i,j)</text>
+    <text x="332" y="322" text-anchor="end">T(i−1,j)</text>
+    <text x="568" y="322" text-anchor="start">T(i+1,j)</text>
+    <text x="468" y="181" text-anchor="start">T(i,j+1)</text>
+    <text x="468" y="414" text-anchor="start">T(i,j−1)</text>
+  </g>
+
+  <line x1="120" y1="500" x2="790" y2="500" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="120" y1="500" x2="120" y2="85" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="800" y="506" class="label">x</text><text x="111" y="78" class="label">y</text>
+  <text x="145" y="523" class="small">(0,0)</text>
+  <text x="742" y="523" class="small">Lₓ</text><text x="96" y="115" class="small">Lᵧ</text>
+
+  <line x1="450" y1="535" x2="550" y2="535" stroke="#7c3aed" stroke-width="2" marker-start="url(#dim-start)" marker-end="url(#dim-end)"/>
+  <text x="500" y="559" text-anchor="middle" class="label" fill="#7c3aed">Δx</text>
+  <line x1="80" y1="290" x2="80" y2="200" stroke="#7c3aed" stroke-width="2" marker-start="url(#dim-start)" marker-end="url(#dim-end)"/>
+  <text x="48" y="250" class="label" fill="#7c3aed">Δy</text>
+
+  <rect x="65" y="580" width="870" height="42" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <circle cx="92" cy="601" r="7" fill="#2563eb"/><text x="108" y="606" class="small">boundary node</text>
+  <circle cx="245" cy="601" r="7" fill="#94a3b8"/><text x="261" y="606" class="small">interior node</text>
+  <circle cx="392" cy="601" r="8" fill="#10b981"/><text x="410" y="606" class="small">stencil neighbour</text>
+  <circle cx="573" cy="601" r="9" fill="#f97316"/><text x="592" y="606" class="small">current node</text>
+  <text x="720" y="607" class="formula">index(i,j) = j Nₓ + i</text>
+  </g>
+</svg>
