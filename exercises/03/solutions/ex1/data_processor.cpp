@@ -2,15 +2,21 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
+#include <iostream>
 #include <numeric>
-#include <stdexcept>
+
+void report_error(const char *message) {
+  std::cerr << "Error: " << message << '\n';
+  std::exit(EXIT_FAILURE);
+}
 
 unsigned int DataProcessor::n_instances = 0;
 
 DataProcessor::DataProcessor(const double *input_data, unsigned int input_size)
     : size(input_size), data(nullptr) {
   if (size == 0 || input_data == nullptr) {
-    throw std::invalid_argument("DataProcessor requires a non-empty array");
+    report_error("DataProcessor requires a non-empty array");
   }
   data = new double[size];
   std::copy_n(input_data, size, data);
@@ -41,7 +47,7 @@ DataProcessor::~DataProcessor() {
 
 DataProcessor DataProcessor::operator+(const DataProcessor &other) const {
   if (size != other.size) {
-    throw std::invalid_argument("Cannot add datasets of different sizes");
+    report_error("Cannot add datasets of different sizes");
   }
   DataProcessor result(*this);
   for (unsigned int i = 0; i < size; ++i) {
@@ -52,14 +58,14 @@ DataProcessor DataProcessor::operator+(const DataProcessor &other) const {
 
 double &DataProcessor::operator[](unsigned int index) {
   if (index >= size) {
-    throw std::out_of_range("DataProcessor index out of range");
+    report_error("DataProcessor index out of range");
   }
   return data[index];
 }
 
 const double &DataProcessor::operator[](unsigned int index) const {
   if (index >= size) {
-    throw std::out_of_range("DataProcessor index out of range");
+    report_error("DataProcessor index out of range");
   }
   return data[index];
 }
@@ -102,7 +108,7 @@ std::ostream &operator<<(std::ostream &os, const DataProcessor &dp) {
 
 double compute_correlation(const DataProcessor &dp1, const DataProcessor &dp2) {
   if (dp1.n_elements() != dp2.n_elements()) {
-    throw std::invalid_argument("Cannot correlate datasets of different sizes");
+    report_error("Cannot correlate datasets of different sizes");
   }
 
   const double mean1 = dp1.compute_mean();
@@ -119,7 +125,7 @@ double compute_correlation(const DataProcessor &dp1, const DataProcessor &dp2) {
     sum_diff2_squared += diff2 * diff2;
   }
   if (sum_diff1_squared == 0.0 || sum_diff2_squared == 0.0) {
-    throw std::invalid_argument("Correlation requires two non-constant datasets");
+    report_error("Correlation requires two non-constant datasets");
   }
   return cross_products /
          (std::sqrt(sum_diff1_squared) * std::sqrt(sum_diff2_squared));
