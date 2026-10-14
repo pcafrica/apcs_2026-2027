@@ -320,7 +320,7 @@ $$
 C_{r,c}=\sum_{s=0}^{k-1}A_{r,s}B_{s,c}.
 $$
 
-Here $r=0,\ldots,m-1$ and $c=0,\ldots,n-1$. The transpose satisfies $(A^T)_{c,r}=A_{r,c}$. Element-wise multiplication requires equal shapes and produces $C_{r,c}=A_{r,c}B_{r,c}$. Row sums of an $m\times n$ matrix produce an $m\times1$ column with $s_r=\sum_{c=0}^{n-1}A_{r,c}$. Bias addition requires an $m\times1$ bias and adds its entry $b_r$ to every element in row $r$.
+Here $r=0,\ldots,m-1$ and $c=0,\ldots,n-1$. The transpose satisfies $`(A^T)_{c,r}=A_{r,c}`$. Element-wise multiplication requires equal shapes and produces $C_{r,c}=A_{r,c}B_{r,c}$. Row sums of an $m\times n$ matrix produce an $m\times1$ column with $s_r=\sum_{c=0}^{n-1}A_{r,c}$. Bias addition requires an $m\times1$ bias and adds its entry $b_r$ to every element in row $r$.
 
 `Dataset`:
 
@@ -374,7 +374,7 @@ $$
 
 Here $L(\theta+\varepsilon)$ is a complete forward loss after changing only that weight to $\theta+\varepsilon$; define $L(\theta-\varepsilon)$ similarly. Restore the original weight after the check.
 
-Check exactly two scalar weights: $(W_1)_{0,0}$ and $(W_2)_{0,0}$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\lVert v\rVert _2=\sqrt{v_0^2+v_1^2}$. Require
+Check exactly two scalar weights: $`(W_1)_{0,0}`$ and $`(W_2)_{0,0}`$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\lVert v\rVert _2=\sqrt{v_0^2+v_1^2}$. Require
 
 $$
 \frac{\lVert g^{\mathrm{analytic}}-g^{\mathrm{FD}}\rVert _2}
@@ -506,7 +506,7 @@ Proceed in this order using `double` and only the standard library:
 2. implement the two dense forward operations and check the hand-computed result above;
 3. add ReLU, stable softmax, and cross-entropy. For logits $(1000,1001)^T$, require probabilities approximately $(0.2689414214,0.7310585786)^T$ and require their sum to agree with one within $10^{-12}$;
 4. implement complete backward propagation using the formulas in Section 2.4;
-5. check $(W_1)_{0,0}$ and $(W_2)_{0,0}$ with the centered finite-difference procedure in Section 2.7;
+5. check $`(W_1)_{0,0}`$ and $`(W_2)_{0,0}`$ with the centered finite-difference procedure in Section 2.7;
 6. train the `2–4–2` network with full-batch gradient descent and print the predicted class for all 12 observations.
 
 These steps form at most four focused handwritten test cases. A test case may check several related operations.
