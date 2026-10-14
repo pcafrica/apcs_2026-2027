@@ -117,7 +117,7 @@ To be defined.
 [lecture-03-md]: lectures/03/03-c++_classes.md
 [lecture-03-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/03/03-c++_classes.html
 [lecture-03-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/03/03-c++_classes.pdf
-[lecture-03-rec]: ...
+[lecture-03-rec]: https://sissa-my.sharepoint.com/:v:/g/personal/pafrica_sissa_it/IQC2IMp_uzvHS6MoOA1lSe97AbRTcjcPGTYs8FVHh-F-9Qw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=4NisAK
 
 [exercise-03-md]: exercises/03/03-c++_classes.md
 [exercise-03-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/03/03-c++_classes.html
