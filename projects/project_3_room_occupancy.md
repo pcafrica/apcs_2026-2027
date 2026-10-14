@@ -374,11 +374,11 @@ $$
 
 Here $L(\theta+\varepsilon)$ is a complete forward loss after changing only that weight to $\theta+\varepsilon$; define $L(\theta-\varepsilon)$ similarly. Restore the original weight after the check.
 
-Check exactly two scalar weights: $`(W_1)_{0,0}`$ and $`(W_2)_{0,0}`$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\lVert v\rVert _2=\sqrt{v_0^2+v_1^2}$. Require
+Check exactly two scalar weights: $`(W_1)_{0,0}`$ and $`(W_2)_{0,0}`$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\lVert v\rVert_2=\sqrt{v_0^2+v_1^2}$. Require
 
 $$
-\frac{\lVert g^{\mathrm{analytic}}-g^{\mathrm{FD}}\rVert _2}
-{\max(1,\lVert g^{\mathrm{analytic}}\rVert _2,\lVert g^{\mathrm{FD}}\rVert _2)}
+\frac{\lVert g^{\mathrm{analytic}}-g^{\mathrm{FD}}\rVert_2}
+{\max(1,\lVert g^{\mathrm{analytic}}\rVert_2,\lVert g^{\mathrm{FD}}\rVert_2)}
 <10^{-4}.
 $$
 

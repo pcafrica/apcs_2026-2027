@@ -227,10 +227,10 @@ $$
 Use a strictly positive tolerance and a maximum iteration count of at least one. If $d$ is at most the tolerance, the new grid is the converged solution. Otherwise swap the old and new grids and begin another sweep. If the iteration limit is reached first, return a non-converged result and report it clearly. This update is an accessible first stopping criterion, not an error bound on the exact temperature. Once the sparse system is assembled in Checkpoint 3, report the relative residual for each computed solution, including Jacobi when comparing solvers:
 
 $$
-\frac{\lVert \mathbf b-A\mathbf t\rVert \relax_2}{\lVert \mathbf b\rVert \relax_2}.
+\frac{\lVert \mathbf b-A\mathbf t\rVert_2}{\lVert \mathbf b\rVert_2}.
 $$
 
-For a vector $\mathbf v=(v_1,\ldots,v_N)$, the Euclidean norm used here is $\lVert \mathbf v\rVert \relax_2=\sqrt{\sum_{k=1}^{N}v_k^2}$. The residual $\mathbf r=\mathbf b-A\mathbf t$ measures how closely the computed temperature vector satisfies the assembled linear equations.
+For a vector $\mathbf v=(v_1,\ldots,v_N)$, the Euclidean norm used here is $\lVert \mathbf v\rVert_2=\sqrt{\sum_{k=1}^{N}v_k^2}$. The residual $\mathbf r=\mathbf b-A\mathbf t$ measures how closely the computed temperature vector satisfies the assembled linear equations.
 
 ### 2.4 Sparse matrices and validation
 
@@ -356,8 +356,8 @@ The final executable must report grid size, number of interior unknowns, matrix 
 
 $$
 d_{\mathrm{rel}}=
-\frac{\lVert \mathbf t_{\mathrm{C++}}-\mathbf t_{\mathrm{SciPy}}\rVert \relax_2}
-{\lVert \mathbf t_{\mathrm{SciPy}}\rVert \relax_2}.
+\frac{\lVert \mathbf t_{\mathrm{C++}}-\mathbf t_{\mathrm{SciPy}}\rVert_2}
+{\lVert \mathbf t_{\mathrm{SciPy}}\rVert_2}.
 $$
 
 Compare $d_{\mathrm{rel}}$, the maximum absolute difference in kelvin, and the two relative residuals in a small table; investigate $d_{\mathrm{rel}}>10^{-8}$. The absolute difference reveals discrepancies that a relative norm of temperatures near 298 K could make hard to see.
