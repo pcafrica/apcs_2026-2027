@@ -62,19 +62,19 @@ The final program must provide these interchangeable sources:
 
 1. Uniform heating:
 
-   $$
-   q_{\mathrm{uniform}}(x,y)=600\ \mathrm{W/m^2}.
-   $$
+$$
+q_{\mathrm{uniform}}(x,y)=600\ \mathrm{W/m^2}.
+$$
 
 2. A panel with a local hot spot:
 
-   $$
-   q_{\mathrm{hot}}(x,y)=
-   \begin{cases}
-   1200\ \mathrm{W/m^2}, & 0.60\le x\le1.00,\ 0.35\le y\le0.65,\\
-   600\ \mathrm{W/m^2}, & \text{otherwise}.
-   \end{cases}
-   $$
+$$
+q_{\mathrm{hot}}(x,y)=
+\begin{cases}
+1200\ \mathrm{W/m^2}, & 0.60\le x\le1.00,\ 0.35\le y\le0.65,\\
+600\ \mathrm{W/m^2}, & \text{otherwise}.
+\end{cases}
+$$
 
 For the hot-spot case, report maximum temperature and its position, mean temperature, and maximum temperature rise above ambient. Section 2.1 defines exactly which grid nodes enter these statistics.
 
@@ -83,7 +83,7 @@ For the hot-spot case, report maximum temperature and its position, mean tempera
 Use the manufactured temperature
 
 $$
-T_*(x,y)=T_{\mathrm{amb}}+20
+T_{\mathrm{ex}}(x,y)=T_{\mathrm{amb}}+20
 \sin\left(\frac{\pi x}{L_x}\right)
 \sin\left(\frac{\pi y}{L_y}\right).
 $$
@@ -91,7 +91,7 @@ $$
 It satisfies the boundary condition. Substitution into the equation gives the required source
 
 $$
-q_*(x,y)=
+q_{\mathrm{ex}}(x,y)=
 \left[
 K\left(\frac{\pi^2}{L_x^2}+\frac{\pi^2}{L_y^2}\right)+h
 \right]
@@ -123,14 +123,14 @@ $$
 \Delta y=\frac{L_y}{N_y-1}.
 $$
 
-Here $N_x\ge3$ is the number of grid nodes in the horizontal direction and $N_y\ge3$ is the number in the vertical direction. The integer $i$ selects an $x$-coordinate and $j$ selects a $y$-coordinate. Therefore $0\le i<N_x$ and $0\le j<N_y$.
+Here $N_x\ge3$ is the number of grid nodes in the horizontal direction and $N_y\ge3$ is the number in the vertical direction. The integer $i$ selects an $x$-coordinate and $j$ selects a $y$-coordinate. Therefore $0\le i\lt N_x$ and $0\le j\lt N_y$.
 
 The number $T_{i,j}$ approximates $T(x_i,y_j)$. Nodes with $i=0$, $i=N_x-1$, $j=0$, or $j=N_y-1$ are boundary nodes and have the known value $T_{\mathrm{amb}}$. All other nodes are interior unknowns. A $5\times4$ grid therefore contains 20 nodes but only $(5-2)(4-2)=6$ unknown temperatures.
 
 Store a full grid in a flat vector using
 
 $$
-\operatorname{index}(i,j)=jN_x+i.
+\mathrm{index}(i,j)=jN_x+i.
 $$
 
 Compute reported temperatures over all $N_xN_y$ grid nodes, including the prescribed boundary nodes:
@@ -184,13 +184,13 @@ and each neighbor that is also an interior node contributes
 $$
 A_{p,p(i-1,j)}=-\frac{K}{\Delta x^2}\quad\text{if }i>1,
 \qquad
-A_{p,p(i+1,j)}=-\frac{K}{\Delta x^2}\quad\text{if }i<N_x-2,
+A_{p,p(i+1,j)}=-\frac{K}{\Delta x^2}\quad\text{if }i\lt N_x-2,
 $$
 
 $$
 A_{p,p(i,j-1)}=-\frac{K}{\Delta y^2}\quad\text{if }j>1,
 \qquad
-A_{p,p(i,j+1)}=-\frac{K}{\Delta y^2}\quad\text{if }j<N_y-2.
+A_{p,p(i,j+1)}=-\frac{K}{\Delta y^2}\quad\text{if }j\lt N_y-2.
 $$
 
 Only write one of these entries when the indicated neighbor is interior. Before accounting for boundary neighbors, set
@@ -220,17 +220,17 @@ Use separate old and new vectors, so every right-hand-side value in one sweep co
 
 $$
 d=
-\max_{\substack{1\le i\le N_x-2\\1\le j\le N_y-2}}
+\max_{1\le i\le N_x-2, 1\le j\le N_y-2}
 |T_{i,j}^{\mathrm{new}}-T_{i,j}^{\mathrm{old}}|.
 $$
 
 Use a strictly positive tolerance and a maximum iteration count of at least one. If $d$ is at most the tolerance, the new grid is the converged solution. Otherwise swap the old and new grids and begin another sweep. If the iteration limit is reached first, return a non-converged result and report it clearly. This update is an accessible first stopping criterion, not an error bound on the exact temperature. Once the sparse system is assembled in Checkpoint 3, report the relative residual for each computed solution, including Jacobi when comparing solvers:
 
 $$
-\frac{\|\mathbf b-A\mathbf t\|_2}{\|\mathbf b\|_2}.
+\frac{\lVert \mathbf b-A\mathbf t\rVert \relax_2}{\lVert \mathbf b\rVert \relax_2}.
 $$
 
-For a vector $\mathbf v=(v_1,\ldots,v_N)$, the Euclidean norm used here is $\|\mathbf v\|_2=\sqrt{\sum_{k=1}^{N}v_k^2}$. The residual $\mathbf r=\mathbf b-A\mathbf t$ measures how closely the computed temperature vector satisfies the assembled linear equations.
+For a vector $\mathbf v=(v_1,\ldots,v_N)$, the Euclidean norm used here is $\lVert \mathbf v\rVert \relax_2=\sqrt{\sum_{k=1}^{N}v_k^2}$. The residual $\mathbf r=\mathbf b-A\mathbf t$ measures how closely the computed temperature vector satisfies the assembled linear equations.
 
 ### 2.4 Sparse matrices and validation
 
@@ -239,27 +239,20 @@ A matrix is **sparse** when most entries are zero. Each row of this problem has 
 With $N=(N_x-2)(N_y-2)$ interior nodes, the assembled matrix must contain
 
 $$
-\operatorname{nnz}
-=N+2\left[(N_x-3)(N_y-2)+(N_x-2)(N_y-3)\right]
+\mathrm{nnz}=N+2\left[(N_x-3)(N_y-2)+(N_x-2)(N_y-3)\right]
 $$
 
-stored nonzero entries. The first term counts diagonal entries; the two terms inside brackets count horizontal and vertical pairs of neighboring interior nodes, and the factor two counts both symmetric matrix positions. For the $33\times21$ comparison grid, $N=589$ and $\operatorname{nnz}=2845$.
+stored nonzero entries. The first term counts diagonal entries; the two terms inside brackets count horizontal and vertical pairs of neighboring interior nodes, and the factor two counts both symmetric matrix positions. For the $33\times21$ comparison grid, $N=589$ and $\mathrm{nnz}=2845$.
 
 For the manufactured problem, let $N=(N_x-2)(N_y-2)$ be the number of interior nodes and compute
 
 $$
-E_2=\sqrt{
-\frac1N
-\sum_{j=1}^{N_y-2}\sum_{i=1}^{N_x-2}
-(T_{i,j}-T_*(x_i,y_j))^2
-},
+E_2=\sqrt{\frac{1}{N}\sum_{j=1}^{N_y-2}\sum_{i=1}^{N_x-2}\bigl(T_{i,j}-T_{\mathrm{ex}}(x_i,y_j)\bigr)^2},
 \qquad
-E_\infty=
-\max_{\substack{1\le i\le N_x-2\\1\le j\le N_y-2}}
-|T_{i,j}-T_*(x_i,y_j)|.
+E_{\infty}=\max_{1\le i\le N_x-2,\ 1\le j\le N_y-2}\bigl|T_{i,j}-T_{\mathrm{ex}}(x_i,y_j)\bigr|.
 $$
 
-The two errors serve different purposes: $E_2$ measures the typical error over the interior nodes, while $E_\infty$ records the largest interior-node error. One prescribed validation grid is sufficient for the mandatory project; a multi-grid convergence study is optional.
+The two errors serve different purposes: $E_2$ measures the typical error over the interior nodes, while $E_{\infty}$ records the largest interior-node error. One prescribed validation grid is sufficient for the mandatory project; a multi-grid convergence study is optional.
 
 ### 2.5 Suggested C++ data structures
 
@@ -294,13 +287,13 @@ Proceed in this order:
 2. initialize every boundary node to $T_{\mathrm{amb}}$ and implement the uniform heat source;
 3. verify the $3\times3$ uniform-source problem, which has one interior unknown at $(x_1,y_1)=(0.8,0.5)$. Here $\Delta x=0.8$, $\Delta y=0.5$, and the exact discrete value is
 
-   $$
-   T_{1,1}=T_{\mathrm{amb}}+
-   \frac{600}{
-   2K(1/\Delta x^2+1/\Delta y^2)+h
-   }
-   \approx338.1333403\ \mathrm K.
-   $$
+$$
+T_{1,1}=T_{\mathrm{amb}}+
+\frac{600}{
+2K(1/\Delta x^2+1/\Delta y^2)+h
+}
+\approx338.1333403\ \mathrm K.
+$$
 
 4. implement Jacobi on a $9\times7$ grid using tolerance $10^{-10}$ and at most 100,000 sweeps; expose both values as command-line options;
 5. write a CSV whose exact header is `x,y,temperature`. Write rows with $j=0,\ldots,N_y-1$ as the outer loop and $i=0,\ldots,N_x-1$ as the inner loop, and use enough decimal digits to recover a `double` value: `std::setprecision(std::numeric_limits<double>::max_digits10)`;
@@ -318,7 +311,7 @@ Required Checkpoint 1 deliverables are the source files, one build command, the 
 - use RAII and standard containers for every resource; do not use owning raw pointers or manual `new`/`delete`;
 - prefer the Rule of Zero; if copy or move operations are defined, document why and test them;
 - use `std::unique_ptr` for exclusive polymorphic ownership and give every polymorphic base class a virtual destructor;
-- avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors;
+- avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors.
 
 Apply a requirement when its component is introduced: there is no polymorphic owner in Checkpoint 1. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
@@ -337,7 +330,7 @@ Refactor the working baseline without changing its numerical meaning. Proceed in
 5. Throw clear exceptions for invalid sizes, non-positive physical parameters, non-finite values, and invalid output paths. Represent failure to converge with the `SolverResult` convergence flag rather than returning an apparently valid solution.
 6. Add simple CMake targets for the library, command-line application, and handwritten tests.
 
-Templates generate type-specific code at compile time; dynamic polymorphism selects a heat-source implementation while the program is running. A template is justified by its two real uses, not by putting a type parameter on every class. Add the hot-spot and manufactured cases, then verify the manufactured solution on a $17\times11$ grid using the Jacobi settings specified above. Require $E_2<0.04\ \mathrm K$ and $E_\infty<0.06\ \mathrm K$. These thresholds check the implementation against the manufactured solution; they are not adjustable fitting targets.
+Templates generate type-specific code at compile time; dynamic polymorphism selects a heat-source implementation while the program is running. A template is justified by its two real uses, not by putting a type parameter on every class. Add the hot-spot and manufactured cases, then verify the manufactured solution on a $17\times11$ grid using the Jacobi settings specified above. Require $E_2<0.04\ \mathrm K$ and $E_{\infty}<0.06\ \mathrm K$. These thresholds check the implementation against the manufactured solution; they are not adjustable fitting targets.
 
 The command-line program must provide equivalent functionality to:
 
@@ -359,12 +352,12 @@ After third-party libraries and linking have been introduced in the course, proc
 4. Add a minimal pybind11 module exposing the source choice, grid dimensions, `solve`, the two-dimensional temperature values, and the relative residual. Return temperatures to Python as a NumPy array of shape `(ny, nx)` whose entry `[j, i]` is $T_{i,j}$.
 5. In one Python script, call the C++ binding for the manufactured problem on the $33\times21$ grid. Assemble the same discrete system with SciPy and solve it with `scipy.sparse.linalg.spsolve`.
 
-The final executable must report grid size, number of interior unknowns, matrix nonzeros, relative residual, maximum temperature, its coordinates, and mean temperature. For the manufactured case also report $E_2$ and $E_\infty$. If $\mathbf t_{\mathrm{C++}}$ and $\mathbf t_{\mathrm{SciPy}}$ contain the interior temperatures in the same order, define their relative solution difference as
+The final executable must report grid size, number of interior unknowns, matrix nonzeros, relative residual, maximum temperature, its coordinates, and mean temperature. For the manufactured case also report $E_2$ and $E_{\infty}$. If $\mathbf t_{\mathrm{C++}}$ and $\mathbf t_{\mathrm{SciPy}}$ contain the interior temperatures in the same order, define their relative solution difference as
 
 $$
 d_{\mathrm{rel}}=
-\frac{\|\mathbf t_{\mathrm{C++}}-\mathbf t_{\mathrm{SciPy}}\|_2}
-{\|\mathbf t_{\mathrm{SciPy}}\|_2}.
+\frac{\lVert \mathbf t_{\mathrm{C++}}-\mathbf t_{\mathrm{SciPy}}\rVert \relax_2}
+{\lVert \mathbf t_{\mathrm{SciPy}}\rVert \relax_2}.
 $$
 
 Compare $d_{\mathrm{rel}}$, the maximum absolute difference in kelvin, and the two relative residuals in a small table; investigate $d_{\mathrm{rel}}>10^{-8}$. The absolute difference reveals discrepancies that a relative norm of temperatures near 298 K could make hard to see.

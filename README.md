@@ -35,7 +35,7 @@ Unless otherwise specified, all content here is licensed under a
 
 ## :warning: Project: infos and deadlines
 
-- Project tracks will be assigned by **Wednesday 14 October 2026**.
+- Project tracks are available in the [projects](projects/) folder.
 - Form your group by **Friday 23 October 2026**. Groups normally consist of **two students**. Exceptions may be approved if properly justified.
 - Once your group is formed, choose **one representative** to reply to the Google Classroom post with the **full name and institutional email address of every member**, along with the **chosen project**.
 - If you have a project idea that differs from the assigned tracks, feel free to propose it to me and we can discuss it.

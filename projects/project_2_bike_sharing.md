@@ -46,20 +46,20 @@ timestamp,count,hour_sin,hour_cos,dow_sin,dow_cos,
 is_weekend,day_index,is_february,is_holiday
 ```
 
-For hour $h\in\{0,\ldots,23\}$, define
+For hour $h\in\lbrace 0,\ldots,23\rbrace$, define
 
 $$
-\text{hour\_sin}=\sin(2\pi h/24),
+\mathrm{hour}_{\sin}=\sin(2\pi h/24),
 \qquad
-\text{hour\_cos}=\cos(2\pi h/24).
+\mathrm{hour}_{\cos}=\cos(2\pi h/24).
 $$
 
-For weekday $d\in\{0,\ldots,6\}$, with Monday equal to zero, define
+For weekday $d\in\lbrace 0,\ldots,6\rbrace$, with Monday equal to zero, define
 
 $$
-\text{dow\_sin}=\sin(2\pi d/7),
+\mathrm{dow}_{\sin}=\sin(2\pi d/7),
 \qquad
-\text{dow\_cos}=\cos(2\pi d/7).
+\mathrm{dow}_{\cos}=\cos(2\pi d/7).
 $$
 
 Sine and cosine encode a cycle without making hour 23 appear far from hour 0. Both are required because either one alone maps different times to the same value.
@@ -77,13 +77,12 @@ $$
 \begin{bmatrix}
 x_{i1} & x_{i2} & x_{i3} & x_{i4} &
 x_{i5} & x_{i6} & x_{i7} & x_{i8}
-\end{bmatrix}^{T}
-=
+\end{bmatrix}^{T}=
 \begin{bmatrix}
-\text{hour\_sin} & \text{hour\_cos} &
-\text{dow\_sin} & \text{dow\_cos} &
-\text{is\_weekend} & \text{day\_index} &
-\text{is\_february} & \text{is\_holiday}
+\mathrm{hour}_{\sin} & \mathrm{hour}_{\cos} &
+\mathrm{dow}_{\sin} & \mathrm{dow}_{\cos} &
+\mathrm{is}_{\mathrm{weekend}} & \mathrm{day}_{\mathrm{index}} &
+\mathrm{is}_{\mathrm{february}} & \mathrm{is}_{\mathrm{holiday}}
 \end{bmatrix}^{T}.
 $$
 
@@ -127,7 +126,7 @@ $$
 Here `log` is the natural logarithm. If the regression model predicts $\widehat z_i$, where the hat denotes a predicted rather than observed value, convert it back to a predicted ride count with
 
 $$
-\widehat c_i=\max\{0,\exp(\widehat z_i)-1\}.
+\widehat c_i=\max\lbrace 0,\exp(\widehat z_i)-1\rbrace.
 $$
 
 Implement this conversion with `std::expm1` for accuracy near zero; reject a score whose converted count is not finite instead of silently reporting an infinite RMSE or MAE.
@@ -138,13 +137,13 @@ $$
 y_i=
 \begin{cases}
 1, & c_i\ge m,\\
-0, & c_i<m.
+0, & c_i\lt m.
 \end{cases}
 $$
 
 Thus $y_i=0$ means low demand and $y_i=1$ means high demand. Store $m$ with the fitted classifier. At prediction time, predict class 1 when the estimated probability is at least 0.5 and class 0 otherwise.
 
-The leftmost two boxes in the following figure explain the origin of the provided hourly CSV; students begin with that CSV and do not implement raw-trip aggregation. The two models share its features and chronological boundaries. Quantities fitted from data are computed from training rows only.*
+The leftmost two boxes in the following figure explain the origin of the provided hourly CSV; students begin with that CSV and do not implement raw-trip aggregation. The two models share its features and chronological boundaries. Quantities fitted from data are computed from training rows only.
 
 ![Chronological train-validation-test split and the regression and classification pipelines](assets/project_2_bike_pipeline.svg)
 
@@ -156,7 +155,7 @@ The leftmost two boxes in the following figure explain the origin of the provide
 
 Standardization changes the scale of a feature without changing the order of its values. It must be fitted on training data only.
 
-Let $n$ be the number of training observations: $n=240$ for the synthetic data in Checkpoint 1 and $n=1080$ for the provided CSV. For one of the five non-binary feature columns $j\in\{1,2,3,4,6\}$, compute its training mean
+Let $n$ be the number of training observations: $n=240$ for the synthetic data in Checkpoint 1 and $n=1080$ for the provided CSV. For one of the five non-binary feature columns $j\in\lbrace 1,2,3,4,6\rbrace$, compute its training mean
 
 $$
 \mu_j=\frac{1}{n}\sum_{i=1}^{n}x_{ij}
@@ -256,12 +255,12 @@ Gradient descent repeatedly moves each adjustable parameter in the direction tha
 3. Compute the training loss and the nine gradients: one for each of the eight weights and one for the intercept.
 4. Update all weights and then the intercept:
 
-   $$
-   w_j\leftarrow w_j-\eta\frac{\partial L}{\partial w_j}
-   \quad\text{for }j=1,\ldots,8,
-   \qquad
-   b\leftarrow b-\eta\frac{\partial L}{\partial b}.
-   $$
+$$
+w_j\leftarrow w_j-\eta\frac{\partial L}{\partial w_j}
+\quad\text{for }j=1,\ldots,8,
+\qquad
+b\leftarrow b-\eta\frac{\partial L}{\partial b}.
+$$
 
    Compute every gradient before changing any parameter; otherwise the update is not batch gradient descent.
 
@@ -294,9 +293,9 @@ Evaluation is performed separately on validation or test observations. Let $q$ b
 For the regression baseline, predict the mean training target $\overline z=(1/n)\sum_{i=1}^{n}z_i$ for every observation, then convert it back to a count. For the learned model and the baseline, define the count error on evaluation observation $i$ as $r_i=\widehat c_i-c_i$. Report
 
 $$
-\operatorname{RMSE}=\sqrt{\frac1q\sum_{i=1}^{q} r_i^2},
+\mathrm{RMSE}=\sqrt{\frac1q\sum_{i=1}^{q} r_i^2},
 \qquad
-\operatorname{MAE}=\frac1q\sum_{i=1}^{q}|r_i|.
+\mathrm{MAE}=\frac1q\sum_{i=1}^{q}|r_i|.
 $$
 
 RMSE is more sensitive to large errors than MAE because it squares each error.
@@ -324,22 +323,22 @@ $$
 $$
 
 $$
-\operatorname{precision}_1=\frac{TP}{TP+FP},
+\mathrm{precision}_1=\frac{TP}{TP+FP},
 \qquad
-\operatorname{recall}_1=\frac{TP}{TP+FN},
+\mathrm{recall}_1=\frac{TP}{TP+FN},
 $$
 
 $$
 F_1=
-\frac{2\,\operatorname{precision}_1\,\operatorname{recall}_1}
-{\operatorname{precision}_1+\operatorname{recall}_1}.
+\frac{2\thinspace \mathrm{precision}_1\thinspace \mathrm{recall}_1}
+{\mathrm{precision}_1+\mathrm{recall}_1}.
 $$
 
-Define $\operatorname{recall}_0=TN/(TN+FP)$ and
+Define $\mathrm{recall}_0=TN/(TN+FP)$ and
 
 $$
 \text{balanced accuracy}=
-\frac{\operatorname{recall}_0+\operatorname{recall}_1}{2}.
+\frac{\mathrm{recall}_0+\mathrm{recall}_1}{2}.
 $$
 
 Return zero for any metric whose denominator is zero and document this convention. If a learned model does not improve over its baseline, state this plainly in the README.
@@ -358,23 +357,23 @@ Generate 14 synthetic days directly in C++. Treat day 0 as Monday. For day $d=0,
 
 $$
 s(h,d)=4.5
-+0.35\,\text{hour\_sin}-0.25\,\text{hour\_cos}
-+0.15\,\text{dow\_sin}+0.20\,\text{dow\_cos}
--0.30\,\text{is\_weekend}+0.01d+0.10\,\text{is\_holiday},
++0.35\thinspace \mathrm{hour}_{\sin}-0.25\thinspace \mathrm{hour}_{\cos}
++0.15\thinspace \mathrm{dow}_{\sin}+0.20\thinspace \mathrm{dow}_{\cos}
+-0.30\thinspace \mathrm{is}_{\mathrm{weekend}}+0.01d+0.10\thinspace \mathrm{is}_{\mathrm{holiday}},
 $$
 
 $$
-c(h,d)=\max\{0,\operatorname{round}(\exp(s(h,d))-1)\}.
+c(h,d)=\max\lbrace 0,\mathrm{round}(\exp(s(h,d))-1)\rbrace.
 $$
 
 For each synthetic observation, set
 
 $$
-\text{day\_index}=d,\qquad
+\mathrm{day}_{\mathrm{index}}=d,\qquad
 u=d\bmod7,
 $$
 
-and use $h$ in the hour sine/cosine formulas and $u$ in the weekday sine/cosine formulas from Section 1.3. Set `is_weekend = 1` exactly when $u\in\{5,6\}$, `is_holiday = 1` only when $d=0$, and `is_february = 0` for every row. Use days 0–9 for training, 10–11 for validation, and 12–13 for testing.
+and use $h$ in the hour sine/cosine formulas and $u$ in the weekday sine/cosine formulas from Section 1.3. Set `is_weekend = 1` exactly when $u\in\lbrace 5,6\rbrace$, `is_holiday = 1` only when $d=0$, and `is_february = 0` for every row. Use days 0–9 for training, 10–11 for validation, and 12–13 for testing.
 
 This produces $14\times24=336$ observations. The training split contains $10\times24=240$ observations and the validation and test splits contain $2\times24=48$ observations each. Every observation still has the same eight features in the order defined in Section 1.3.
 
@@ -414,7 +413,7 @@ The synthetic experiment checks the implementation; it is not evidence about rea
 - use RAII and standard containers for every resource; do not use owning raw pointers or manual `new`/`delete`;
 - prefer the Rule of Zero; if copy or move operations are defined, document why and test them;
 - use `std::unique_ptr` for exclusive polymorphic ownership and give every polymorphic base class a virtual destructor;
-- avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors;
+- avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors.
 
 Apply a requirement when its component is introduced: the real CSV loader and polymorphic owner first appear in Checkpoint 2. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
@@ -500,7 +499,7 @@ Record dependency versions, licenses, the Citi Bike source URL, and the data-use
 
 Attempt at most one extension after all mandatory requirements work correctly:
 
-- **L2-regularized models.** Add $\lambda\|\mathbf w\|_2^2/2=(\lambda/2)\sum_{j=1}^{8}w_j^2$ to both training losses, without regularizing the intercept $b$. Select $\lambda$ from $\{0,10^{-4},10^{-3},10^{-2},10^{-1}\}$ using validation data only, then compare test metrics and the weight norm $\|\mathbf w\|_2=\sqrt{\sum_{j=1}^{8}w_j^2}$ with the mandatory models. The regularized weight gradient is the mandatory gradient plus $\lambda w_j$; the intercept gradient is unchanged. See scikit-learn's introduction to [ridge regression and classification](https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification).
+- **L2-regularized models.** Add $\lambda\lVert \mathbf w\rVert _2^2/2=(\lambda/2)\sum_{j=1}^{8}w_j^2$ to both training losses, without regularizing the intercept $b$. Select $\lambda$ from $\lbrace 0,10^{-4},10^{-3},10^{-2},10^{-1}\rbrace$ using validation data only, then compare test metrics and the weight norm $\lVert \mathbf w\rVert _2=\sqrt{\sum_{j=1}^{8}w_j^2}$ with the mandatory models. The regularized weight gradient is the mandatory gradient plus $\lambda w_j$; the intercept gradient is unchanged. See scikit-learn's introduction to [ridge regression and classification](https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification).
 - **Testing and profiling.** Move the four tests to [Catch2](https://catch2-temp.readthedocs.io/en/latest/) or [GoogleTest](https://google.github.io/googletest/primer.html), then profile or benchmark `fit` with [Google Benchmark](https://github.com/google/benchmark/blob/main/docs/user_guide.md). Make one justified optimization and verify unchanged predictions.
 - **Alternative library or newer C++ facility.** Either add a dense backend with [Eigen](https://libeigen.gitlab.io/eigen/docs-5.0/GettingStarted.html), or use [`std::span`](https://en.cppreference.com/w/cpp/container/span) to provide sized non-owning views of observations without copying them, validating each view's size before numerical access. Explain the concrete design or performance benefit and require predictions to agree with the mandatory implementation within $10^{-10}$. A different library or newer-standard facility may be substituted with prior instructor approval; link its official documentation and repeat the same correctness comparison.
 

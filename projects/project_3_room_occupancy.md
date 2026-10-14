@@ -62,7 +62,7 @@ In Checkpoint 3, students read the original CSV in C++ using the standard librar
 2. require non-empty `Date` and `Time` values;
 3. parse all 16 sensor values as finite numbers;
 4. require both PIR values to be 0 or 1;
-5. parse the original target as an integer in $\{0,1,2,3\}$ and create the binary label;
+5. parse the original target as an integer in $\lbrace 0,1,2,3\rbrace$ and create the binary label;
 6. stop at the first invalid row and report its row number, column, and reason;
 7. print the total and the two binary-label counts; the total must be 10,129.
 
@@ -133,7 +133,7 @@ $$
 Composing only linear layers would still produce a linear function. A nonlinear **activation function** between layers lets the network represent nonlinear decision boundaries. This project uses
 
 $$
-\operatorname{ReLU}(a)=\max(0,a).
+\mathrm{ReLU}(a)=\max(0,a).
 $$
 
 ### 2.2 Mandatory architecture and representation
@@ -170,7 +170,7 @@ $$
 (Z_1)_{r,i}=\sum_{j=0}^{15}(W_1)_{r,j}X_{j,i}+(b_1)_r.
 $$
 
-Here $r=0,\ldots,7$ selects one hidden unit. The same bias is added to every observation. A **one-hot target** for class $c\in\{0,1\}$ is a two-element column whose entry $c$ is 1 and whose other entry is 0.
+Here $r=0,\ldots,7$ selects one hidden unit. The same bias is added to every observation. A **one-hot target** for class $c\in\lbrace 0,1\rbrace$ is a two-element column whose entry $c$ is 1 and whose other entry is 0.
 
 The following figure displays the network and the notation used in this project. The upper part shows the matrix operations for a batch of $B$ observations; the lower part shows the equivalent layers for one observation.
 
@@ -183,7 +183,7 @@ Forward propagation evaluates the network from input to prediction. Let $\mathbf
 $$
 Z_1=W_1X+b_1\mathbf1^T,
 \qquad
-H=\operatorname{ReLU}(Z_1),
+H=\mathrm{ReLU}(Z_1),
 $$
 
 $$
@@ -193,7 +193,7 @@ $$
 For observation $i$, turn logits into probabilities with stable softmax:
 
 $$
-m_i=\max_{c\in\{0,1\}}(Z_2)_{c,i},
+m_i=\max_{c\in\lbrace 0,1\rbrace }(Z_2)_{c,i},
 $$
 
 $$
@@ -255,10 +255,10 @@ $$
 $G_H$ has shape $8\times B$ and describes how the loss changes with the hidden activations. The ReLU derivative is 1 for a positive input and 0 for a negative input; use 0 at exactly zero. Therefore
 
 $$
-G_1=G_H\odot I_{Z_1>0},
+G_1=G_H\odot I_{Z_1 \gt 0},
 $$
 
-where $\odot$ is element-wise multiplication and $I_{Z_1>0}$ is an $8\times B$ matrix whose entry is 1 where the corresponding entry of $Z_1$ is positive and 0 otherwise. The result $G_1$ also has shape $8\times B$. Finally,
+where $\odot$ is element-wise multiplication and $I_{Z_1 \gt 0}$ is an $8\times B$ matrix whose entry is 1 where the corresponding entry of $Z_1$ is positive and 0 otherwise. The result $G_1$ also has shape $8\times B$. Finally,
 
 $$
 \frac{\partial L}{\partial W_1}=G_1X^T,
@@ -287,9 +287,9 @@ Use full-batch gradient descent, so $B=n_{\mathrm{train}}$ and every training ob
 3. run backpropagation;
 4. for every scalar element $\theta$ of $W_1,b_1,W_2,b_2$, apply
 
-   $$
-   \theta\leftarrow\theta-\eta\frac{\partial L}{\partial\theta};
-   $$
+$$
+\theta\leftarrow\theta-\eta\frac{\partial L}{\partial\theta};
+$$
 
    use the parameter values from the start of the update until every new value has been computed;
 
@@ -325,7 +325,7 @@ Here $r=0,\ldots,m-1$ and $c=0,\ldots,n-1$. The transpose satisfies $(A^T)_{c,r}
 `Dataset`:
 
 - `Matrix` of `double` features with shape `number_of_features × number_of_observations`;
-- `std::vector<std::size_t> labels`, each in $\{0,1\}$;
+- `std::vector<std::size_t> labels`, each in $\lbrace 0,1\rbrace$;
 - original row numbers, dates, and times stored as metadata;
 - separate objects for training, validation, and test splits.
 
@@ -374,11 +374,11 @@ $$
 
 Here $L(\theta+\varepsilon)$ is a complete forward loss after changing only that weight to $\theta+\varepsilon$; define $L(\theta-\varepsilon)$ similarly. Restore the original weight after the check.
 
-Check exactly two scalar weights: $(W_1)_{0,0}$ and $(W_2)_{0,0}$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\|v\|_2=\sqrt{v_0^2+v_1^2}$. Require
+Check exactly two scalar weights: $(W_1)_{0,0}$ and $(W_2)_{0,0}$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\lVert v\rVert _2=\sqrt{v_0^2+v_1^2}$. Require
 
 $$
-\frac{\|g^{\mathrm{analytic}}-g^{\mathrm{FD}}\|_2}
-{\max(1,\|g^{\mathrm{analytic}}\|_2,\|g^{\mathrm{FD}}\|_2)}
+\frac{\lVert g^{\mathrm{analytic}}-g^{\mathrm{FD}}\rVert _2}
+{\max(1,\lVert g^{\mathrm{analytic}}\rVert _2,\lVert g^{\mathrm{FD}}\rVert _2)}
 <10^{-4}.
 $$
 
@@ -475,17 +475,29 @@ W=
 \end{bmatrix},
 \qquad
 b=
-\begin{bmatrix}0.5\\1\\-1\\0\end{bmatrix},
+\begin{bmatrix}
+0.5\\
+1\\
+-1\\
+0\end{bmatrix},
 \qquad
 x=
-\begin{bmatrix}2\\-1\end{bmatrix}.
+\begin{bmatrix}
+2\\
+-1
+\end{bmatrix}.
 $$
 
 The implementation must produce
 
 $$
 Wx+b=
-\begin{bmatrix}0.5\\-1.5\\1\\5\end{bmatrix}.
+\begin{bmatrix}
+0.5\\
+-1.5\\
+1\\
+5
+\end{bmatrix}.
 $$
 
 Proceed in this order using `double` and only the standard library:
@@ -509,7 +521,7 @@ Print initial and final loss and the 12 predicted classes. Training must reduce 
 - use RAII and standard containers for every resource; do not use owning raw pointers or manual `new`/`delete`;
 - prefer the Rule of Zero; if copy or move operations are defined, document why and test them;
 - use `std::unique_ptr` for exclusive polymorphic ownership and give `Layer` a virtual destructor;
-- avoid memory leaks, dangling references, out-of-bounds access, invalid iterator use, and use-after-move errors;
+- avoid memory leaks, dangling references, out-of-bounds access, invalid iterator use, and use-after-move errors.
 
 Apply a requirement when its component is introduced: CSV parsing and polymorphic layer ownership begin after Checkpoint 1. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
