@@ -43,7 +43,7 @@ The 16 model features are:
 | Air quality | `S5_CO2`, `S5_CO2_Slope` | CO₂ concentration and its recent slope  |
 | Motion      | `S6_PIR`, `S7_PIR`       | passive-infrared motion indicators      |
 
-Number observations with \(i=0,\ldots,N-1\), where \(N\) is the number of loaded CSV rows. Number the 16 features with \(j=0,\ldots,15\) in the exact order shown in the CSV schema: four temperatures, four light values, four sound values, two CO₂ values, and two PIR values. The symbol \(x_{j,i}\) denotes feature \(j\) of observation \(i\). Thus every observation supplies a 16-element feature vector.
+Number observations with $i=0,\ldots,N-1$, where $N$ is the number of loaded CSV rows. Number the 16 features with $j=0,\ldots,15$ in the exact order shown in the CSV schema: four temperatures, four light values, four sound values, two CO₂ values, and two PIR values. The symbol $x_{j,i}$ denotes feature $j$ of observation $i$. Thus every observation supplies a 16-element feature vector.
 
 `Date` and `Time` are metadata and must not be passed to the mandatory model. `Room_Occupancy_Count` is the original target and must be converted to the following binary label:
 
@@ -62,7 +62,7 @@ In Checkpoint 3, students read the original CSV in C++ using the standard librar
 2. require non-empty `Date` and `Time` values;
 3. parse all 16 sensor values as finite numbers;
 4. require both PIR values to be 0 or 1;
-5. parse the original target as an integer in \(\{0,1,2,3\}\) and create the binary label;
+5. parse the original target as an integer in $\{0,1,2,3\}$ and create the binary label;
 6. stop at the first invalid row and report its row number, column, and reason;
 7. print the total and the two binary-label counts; the total must be 10,129.
 
@@ -74,37 +74,37 @@ In Checkpoint 3, students implement a reproducible split stratified by the binar
 
 1. collect the original row indices separately for each class;
 2. create one `std::mt19937 rng(42)`, shuffle the class-0 index vector first, and then shuffle the class-1 index vector using the same engine;
-3. for a class containing \(n_c\) rows, assign the first \(\lfloor0.70n_c\rfloor\) to training and the next \(\lfloor0.15n_c\rfloor\) to validation;
+3. for a class containing $n_c$ rows, assign the first $\lfloor0.70n_c\rfloor$ to training and the next $\lfloor0.15n_c\rfloor$ to validation;
 4. assign all remaining rows of that class to test;
 5. concatenate the two class-specific parts for each split.
 
 Do not move observations between splits after inspecting model results. Record the two binary-label counts in every split.
 
-The floor notation \(\lfloor v\rfloor\) means round \(v\) down to the nearest integer. For each class, the test count is therefore \(n_c-\lfloor0.70n_c\rfloor-\lfloor0.15n_c\rfloor\).
+The floor notation $\lfloor v\rfloor$ means round $v$ down to the nearest integer. For each class, the test count is therefore $n_c-\lfloor0.70n_c\rfloor-\lfloor0.15n_c\rfloor$.
 
 ### 1.5 Standardization
 
-Standardization changes a numerical feature's scale. Let \(n_{\mathrm{train}}\) be the number of observations assigned to the training split. For every non-binary feature \(j=0,\ldots,13\), compute only from training observations
+Standardization changes a numerical feature's scale. Let $n_{\mathrm{train}}$ be the number of observations assigned to the training split. For every non-binary feature $j=0,\ldots,13$, compute only from training observations
 
-\[
+$$
 \mu_j=\frac{1}{n_{\mathrm{train}}}
 \sum_{i\in\mathrm{training}}x_{j,i},
-\]
+$$
 
-\[
+$$
 s_j=\sqrt{
 \frac{1}{n_{\mathrm{train}}}
 \sum_{i\in\mathrm{training}}(x_{j,i}-\mu_j)^2
 }.
-\]
+$$
 
-Use denominator \(n_{\mathrm{train}}\), not \(n_{\mathrm{train}}-1\). Then transform that feature in every split using the same training statistics:
+Use denominator $n_{\mathrm{train}}$, not $n_{\mathrm{train}}-1$. Then transform that feature in every split using the same training statistics:
 
-\[
+$$
 x'_{j,i}=\frac{x_{j,i}-\mu_j}{s_j}.
-\]
+$$
 
-The transformed value is \(x'_{j,i}\). Leave the two binary PIR features \(j=14,15\) unchanged. If \(s_j=0\), transform the entire feature to zero and report it. Computing \(\mu_j\) or \(s_j\) from validation or test rows is **data leakage**.
+The transformed value is $x'_{j,i}$. Leave the two binary PIR features $j=14,15$ unchanged. If $s_j=0$, transform the entire feature to zero and report it. Computing $\mu_j$ or $s_j$ from validation or test rows is **data leakage**.
 
 The random stratified split is convenient for this course project, but adjacent observations are temporally related. State in the README that this can make the measured accuracy optimistic and that four controlled days do not represent every building or occupancy pattern.
 
@@ -116,33 +116,33 @@ The random stratified split is convenient for this course project, but adjacent 
 
 A **neural network** is a parameterized function built by composing simple layers. It receives a feature vector and produces scores. During training, the program compares the scores with known labels, computes how the error changes with every parameter, and adjusts the parameters to reduce future error.
 
-A single artificial neuron with \(d\) input values \(x_0,\ldots,x_{d-1}\) computes
+A single artificial neuron with $d$ input values $x_0,\ldots,x_{d-1}$ computes
 
-\[
+$$
 z=\sum_{j=0}^{d-1}w_jx_j+b,
-\]
+$$
 
-where \(d\) is the number of inputs, the \(w_j\) values are adjustable **weights**, and \(b\) is an adjustable **bias**. In this project, a neuron in the first dense layer has \(d=16\) inputs and a neuron in the second dense layer has \(d=8\).
+where $d$ is the number of inputs, the $w_j$ values are adjustable **weights**, and $b$ is an adjustable **bias**. In this project, a neuron in the first dense layer has $d=16$ inputs and a neuron in the second dense layer has $d=8$.
 
-A dense layer contains several neurons. Collecting their weights in a matrix \(W\), their biases in a vector \(\mathbf b\), and one input vector in \(\mathbf x\), the layer is
+A dense layer contains several neurons. Collecting their weights in a matrix $W$, their biases in a vector $\mathbf b$, and one input vector in $\mathbf x$, the layer is
 
-\[
+$$
 \mathbf z=W\mathbf x+\mathbf b.
-\]
+$$
 
 Composing only linear layers would still produce a linear function. A nonlinear **activation function** between layers lets the network represent nonlinear decision boundaries. This project uses
 
-\[
+$$
 \operatorname{ReLU}(a)=\max(0,a).
-\]
+$$
 
 ### 2.2 Mandatory architecture and representation
 
 Use the network
 
-\[
+$$
 16\longrightarrow8\longrightarrow2.
-\]
+$$
 
 It consists of:
 
@@ -152,150 +152,150 @@ It consists of:
 
 The two output scores are called **logits**. They are not probabilities and may have any real value.
 
-A **batch** is the collection of observations processed in one forward and backward pass. Let \(B\ge1\) be its number of observations and number them with \(i=0,\ldots,B-1\). Store observations as columns:
+A **batch** is the collection of observations processed in one forward and backward pass. Let $B\ge1$ be its number of observations and number them with $i=0,\ldots,B-1$. Store observations as columns:
 
 | Quantity    | Shape          | Meaning                                    |
 |-------------|----------------|--------------------------------------------|
-| \(X\)       | \(16\times B\) | standardized input features                |
-| \(W_1\)     | \(8\times16\)  | first-layer weights                        |
-| \(b_1\)     | \(8\times1\)   | first-layer biases                         |
-| \(Z_1,H\)   | \(8\times B\)  | hidden pre-activations and activations     |
-| \(W_2\)     | \(2\times8\)   | output-layer weights                       |
-| \(b_2\)     | \(2\times1\)   | output-layer biases                        |
-| \(Z_2,P,Y\) | \(2\times B\)  | logits, probabilities, and one-hot targets |
+| $X$       | $16\times B$ | standardized input features                |
+| $W_1$     | $8\times16$  | first-layer weights                        |
+| $b_1$     | $8\times1$   | first-layer biases                         |
+| $Z_1,H$   | $8\times B$  | hidden pre-activations and activations     |
+| $W_2$     | $2\times8$   | output-layer weights                       |
+| $b_2$     | $2\times1$   | output-layer biases                        |
+| $Z_2,P,Y$ | $2\times B$  | logits, probabilities, and one-hot targets |
 
 For example,
 
-\[
+$$
 (Z_1)_{r,i}=\sum_{j=0}^{15}(W_1)_{r,j}X_{j,i}+(b_1)_r.
-\]
+$$
 
-Here \(r=0,\ldots,7\) selects one hidden unit. The same bias is added to every observation. A **one-hot target** for class \(c\in\{0,1\}\) is a two-element column whose entry \(c\) is 1 and whose other entry is 0.
+Here $r=0,\ldots,7$ selects one hidden unit. The same bias is added to every observation. A **one-hot target** for class $c\in\{0,1\}$ is a two-element column whose entry $c$ is 1 and whose other entry is 0.
 
-The following figure displays the network and the notation used in this project. The upper part shows the matrix operations for a batch of \(B\) observations; the lower part shows the equivalent layers for one observation.
+The following figure displays the network and the notation used in this project. The upper part shows the matrix operations for a batch of $B$ observations; the lower part shows the equivalent layers for one observation.
 
 ![Computational graph and node representation of the 16–8–2 neural network](assets/project_3_network.svg)
 
 ### 2.3 Forward propagation
 
-Forward propagation evaluates the network from input to prediction. Let \(\mathbf1\) be a \(B\)-element column vector filled with ones. The products \(b_1\mathbf1^T\) and \(b_2\mathbf1^T\) copy each bias column across all \(B\) observations:
+Forward propagation evaluates the network from input to prediction. Let $\mathbf1$ be a $B$-element column vector filled with ones. The products $b_1\mathbf1^T$ and $b_2\mathbf1^T$ copy each bias column across all $B$ observations:
 
-\[
+$$
 Z_1=W_1X+b_1\mathbf1^T,
 \qquad
 H=\operatorname{ReLU}(Z_1),
-\]
+$$
 
-\[
+$$
 Z_2=W_2H+b_2\mathbf1^T.
-\]
+$$
 
-For observation \(i\), turn logits into probabilities with stable softmax:
+For observation $i$, turn logits into probabilities with stable softmax:
 
-\[
+$$
 m_i=\max_{c\in\{0,1\}}(Z_2)_{c,i},
-\]
+$$
 
-\[
+$$
 P_{c,i}=
 \frac{\exp((Z_2)_{c,i}-m_i)}
 {\sum_{k=0}^{1}\exp((Z_2)_{k,i}-m_i)}.
-\]
+$$
 
 Subtracting the largest logit prevents overflow without changing the probabilities. Predict the class having the largest logit; if the two logits are exactly equal, predict class 0.
 
-For correct class \(y_i\), compute cross-entropy directly from logits:
+For correct class $y_i$, compute cross-entropy directly from logits:
 
-\[
+$$
 \ell_i=-(Z_2)_{y_i,i}+m_i+
 \log\left(\sum_{c=0}^{1}\exp((Z_2)_{c,i}-m_i)\right).
-\]
+$$
 
-The batch loss \(L\) is the arithmetic mean of the \(B\) individual losses:
+The batch loss $L$ is the arithmetic mean of the $B$ individual losses:
 
-\[
+$$
 L=\frac{1}{B}\sum_{i=0}^{B-1}\ell_i.
-\]
+$$
 
 ### 2.4 Backpropagation
 
 **Backpropagation** applies the chain rule from the loss toward the input. A derivative describes how a small increase in one parameter would change the loss.
 
-The network has four trainable arrays: \(W_1\), \(b_1\), \(W_2\), and \(b_2\). Backpropagation must therefore compute four parameter-gradient arrays with the same respective shapes:
+The network has four trainable arrays: $W_1$, $b_1$, $W_2$, and $b_2$. Backpropagation must therefore compute four parameter-gradient arrays with the same respective shapes:
 
 | Parameter | Gradient                    | Shape         |
 |-----------|-----------------------------|---------------|
-| \(W_1\)   | \(\partial L/\partial W_1\) | \(8\times16\) |
-| \(b_1\)   | \(\partial L/\partial b_1\) | \(8\times1\)  |
-| \(W_2\)   | \(\partial L/\partial W_2\) | \(2\times8\)  |
-| \(b_2\)   | \(\partial L/\partial b_2\) | \(2\times1\)  |
+| $W_1$   | $\partial L/\partial W_1$ | $8\times16$ |
+| $b_1$   | $\partial L/\partial b_1$ | $8\times1$  |
+| $W_2$   | $\partial L/\partial W_2$ | $2\times8$  |
+| $b_2$   | $\partial L/\partial b_2$ | $2\times1$  |
 
 For softmax combined with cross-entropy,
 
-\[
+$$
 G_2=\frac{\partial L}{\partial Z_2}=\frac{P-Y}{B}.
-\]
+$$
 
-Division by \(B\) applies to every element of \(P-Y\). The matrix \(G_2\) has shape \(2\times B\): it is the gradient that arrives at the output logits, not one of the four trainable parameter gradients.
+Division by $B$ applies to every element of $P-Y$. The matrix $G_2$ has shape $2\times B$: it is the gradient that arrives at the output logits, not one of the four trainable parameter gradients.
 
 The output-layer gradients are
 
-\[
+$$
 \frac{\partial L}{\partial W_2}=G_2H^T,
 \qquad
 \frac{\partial L}{\partial b_2}=G_2\mathbf1.
-\]
+$$
 
 Propagate to the hidden values:
 
-\[
+$$
 G_H=W_2^TG_2.
-\]
+$$
 
-\(G_H\) has shape \(8\times B\) and describes how the loss changes with the hidden activations. The ReLU derivative is 1 for a positive input and 0 for a negative input; use 0 at exactly zero. Therefore
+$G_H$ has shape $8\times B$ and describes how the loss changes with the hidden activations. The ReLU derivative is 1 for a positive input and 0 for a negative input; use 0 at exactly zero. Therefore
 
-\[
+$$
 G_1=G_H\odot I_{Z_1>0},
-\]
+$$
 
-where \(\odot\) is element-wise multiplication and \(I_{Z_1>0}\) is an \(8\times B\) matrix whose entry is 1 where the corresponding entry of \(Z_1\) is positive and 0 otherwise. The result \(G_1\) also has shape \(8\times B\). Finally,
+where $\odot$ is element-wise multiplication and $I_{Z_1>0}$ is an $8\times B$ matrix whose entry is 1 where the corresponding entry of $Z_1$ is positive and 0 otherwise. The result $G_1$ also has shape $8\times B$. Finally,
 
-\[
+$$
 \frac{\partial L}{\partial W_1}=G_1X^T,
 \qquad
 \frac{\partial L}{\partial b_1}=G_1\mathbf1.
-\]
+$$
 
-Multiplication by \(\mathbf1\) sums the columns, producing one bias gradient per neuron. Do not divide any parameter gradient by \(B\) again because \(G_2\) already contains that factor. Compute all four parameter gradients before modifying any parameter.
+Multiplication by $\mathbf1$ sums the columns, producing one bias gradient per neuron. Do not divide any parameter gradient by $B$ again because $G_2$ already contains that factor. Compute all four parameter gradients before modifying any parameter.
 
 ### 2.5 Initialization and training
 
-For a dense layer, let \(n_{\mathrm{in}}\) be its number of input values and \(n_{\mathrm{out}}\) its number of output neurons. Initialize each weight independently from
+For a dense layer, let $n_{\mathrm{in}}$ be its number of input values and $n_{\mathrm{out}}$ its number of output neurons. Initialize each weight independently from
 
-\[
+$$
 \mathcal U(-a,a),
 \qquad
 a=\sqrt{\frac6{n_{\mathrm{in}}+n_{\mathrm{out}}}}.
-\]
+$$
 
-Here \(\mathcal U(-a,a)\) is the uniform distribution on the interval \([-a,a]\): every value in that interval is equally likely. Create a new `std::mt19937` engine with seed 42 for network initialization; do not reuse the engine whose state was changed by the data split. Draw \(W_1\) in row-major order followed by \(W_2\) in row-major order using `std::uniform_real_distribution`. Initialize all biases to zero.
+Here $\mathcal U(-a,a)$ is the uniform distribution on the interval $[-a,a]$: every value in that interval is equally likely. Create a new `std::mt19937` engine with seed 42 for network initialization; do not reuse the engine whose state was changed by the data split. Draw $W_1$ in row-major order followed by $W_2$ in row-major order using `std::uniform_real_distribution`. Initialize all biases to zero.
 
-Use full-batch gradient descent, so \(B=n_{\mathrm{train}}\) and every training observation participates in every update. One **epoch** is one complete forward, backward, and update pass over this training batch:
+Use full-batch gradient descent, so $B=n_{\mathrm{train}}$ and every training observation participates in every update. One **epoch** is one complete forward, backward, and update pass over this training batch:
 
 1. run forward propagation on all training observations;
 2. compute mean cross-entropy;
 3. run backpropagation;
-4. for every scalar element \(\theta\) of \(W_1,b_1,W_2,b_2\), apply
+4. for every scalar element $\theta$ of $W_1,b_1,W_2,b_2$, apply
 
-   \[
+   $$
    \theta\leftarrow\theta-\eta\frac{\partial L}{\partial\theta};
-   \]
+   $$
 
    use the parameter values from the start of the update until every new value has been computed;
 
 5. compute validation loss and accuracy with the new parameters, without running backpropagation or updating them.
 
-Use learning rate \(\eta=0.05\) and exactly 500 epochs. Both values must be command-line options, but no hyperparameter search or early stopping is required. The validation set is used only to monitor and report this fixed training procedure; do not change the test set or repeatedly tune settings after seeing test results.
+Use learning rate $\eta=0.05$ and exactly 500 epochs. Both values must be command-line options, but no hyperparameter search or early stopping is required. The validation set is used only to monitor and report this fixed training procedure; do not change the test set or repeatedly tune settings after seeing test results.
 
 ### 2.6 Required C++ data structures
 
@@ -303,7 +303,7 @@ Implement the network structures below, adapting the C++ vector or matrix exampl
 
 The mandatory numerical experiments use `double`. A template can also vary a non-numerical type. No conversion of every network class to `<Scalar>` is required: choose one useful generic component in Checkpoint 2 and exercise it with two real types, as specified there.
 
-A matrix with `rows_` rows and `cols_` columns uses a row-major `std::vector<double> data_` of length `rows_ * cols_` for numerical operations. With zero-based row `r` and column `c`, element \((r,c)\) is stored at `data_[r * cols_ + c]`. Check the available course matrix first; implement any missing operations in this order:
+A matrix with `rows_` rows and `cols_` columns uses a row-major `std::vector<double> data_` of length `rows_ * cols_` for numerical operations. With zero-based row `r` and column `c`, element $(r,c)$ is stored at `data_[r * cols_ + c]`. Check the available course matrix first; implement any missing operations in this order:
 
 1. construct a matrix filled with zero or a supplied value and reject zero dimensions;
 2. provide `rows()`, `cols()`, and const and non-const `operator()(r,c)` using `r * cols_ + c`; reject `r >= rows_` or `c >= cols_`;
@@ -314,18 +314,18 @@ A matrix with `rows_` rows and `cols_` columns uses a row-major `std::vector<dou
 
 These are the only mandatory matrix operations. When a tested course implementation already provides one, reuse and acknowledge it rather than rewriting it. Do not implement determinants, inverses, iterators, expression templates, or a generic linear-algebra framework.
 
-For clarity, if \(A\) has shape \(m\times k\) and \(B\) has shape \(k\times n\), their product \(C=AB\) has shape \(m\times n\) and
+For clarity, if $A$ has shape $m\times k$ and $B$ has shape $k\times n$, their product $C=AB$ has shape $m\times n$ and
 
-\[
+$$
 C_{r,c}=\sum_{s=0}^{k-1}A_{r,s}B_{s,c}.
-\]
+$$
 
-Here \(r=0,\ldots,m-1\) and \(c=0,\ldots,n-1\). The transpose satisfies \((A^T)_{c,r}=A_{r,c}\). Element-wise multiplication requires equal shapes and produces \(C_{r,c}=A_{r,c}B_{r,c}\). Row sums of an \(m\times n\) matrix produce an \(m\times1\) column with \(s_r=\sum_{c=0}^{n-1}A_{r,c}\). Bias addition requires an \(m\times1\) bias and adds its entry \(b_r\) to every element in row \(r\).
+Here $r=0,\ldots,m-1$ and $c=0,\ldots,n-1$. The transpose satisfies $(A^T)_{c,r}=A_{r,c}$. Element-wise multiplication requires equal shapes and produces $C_{r,c}=A_{r,c}B_{r,c}$. Row sums of an $m\times n$ matrix produce an $m\times1$ column with $s_r=\sum_{c=0}^{n-1}A_{r,c}$. Bias addition requires an $m\times1$ bias and adds its entry $b_r$ to every element in row $r$.
 
 `Dataset`:
 
 - `Matrix` of `double` features with shape `number_of_features × number_of_observations`;
-- `std::vector<std::size_t> labels`, each in \(\{0,1\}\);
+- `std::vector<std::size_t> labels`, each in $\{0,1\}$;
 - original row numbers, dates, and times stored as metadata;
 - separate objects for training, validation, and test splits.
 
@@ -364,23 +364,23 @@ Checkpoint 1 should use plain functions or small concrete structs. Introduce the
 
 ### 2.7 Numerical gradient checking
 
-Gradient checking tests backpropagation without replacing it during training. Select one scalar weight \(\theta\), save its original value, and keep the input batch and every other parameter fixed. Compare the analytical gradient computed by backpropagation with the centered finite-difference approximation
+Gradient checking tests backpropagation without replacing it during training. Select one scalar weight $\theta$, save its original value, and keep the input batch and every other parameter fixed. Compare the analytical gradient computed by backpropagation with the centered finite-difference approximation
 
-\[
+$$
 g^{\mathrm{FD}}=
 \frac{L(\theta+\varepsilon)-L(\theta-\varepsilon)}{2\varepsilon},
 \qquad \varepsilon=10^{-6}.
-\]
+$$
 
-Here \(L(\theta+\varepsilon)\) is a complete forward loss after changing only that weight to \(\theta+\varepsilon\); define \(L(\theta-\varepsilon)\) similarly. Restore the original weight after the check.
+Here $L(\theta+\varepsilon)$ is a complete forward loss after changing only that weight to $\theta+\varepsilon$; define $L(\theta-\varepsilon)$ similarly. Restore the original weight after the check.
 
-Check exactly two scalar weights: \((W_1)_{0,0}\) and \((W_2)_{0,0}\). For this test only, use the 12 toy observations of Checkpoint 1 with every entry of \(W_1\) equal to 0.1, every entry of \(b_1\) equal to 0.25, the first row of \(W_2\) equal to \((0.5,0,0,0)\), its second row equal to \((-0.5,0,0,0)\), and \(b_2=(0,0)^T\). Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in \(g^{\mathrm{analytic}}\) and their two finite-difference values in \(g^{\mathrm{FD}}\). For a two-element vector \(v=(v_0,v_1)\), define \(\|v\|_2=\sqrt{v_0^2+v_1^2}\). Require
+Check exactly two scalar weights: $(W_1)_{0,0}$ and $(W_2)_{0,0}$. For this test only, use the 12 toy observations of Checkpoint 1 with every entry of $W_1$ equal to 0.1, every entry of $b_1$ equal to 0.25, the first row of $W_2$ equal to $(0.5,0,0,0)$, its second row equal to $(-0.5,0,0,0)$, and $b_2=(0,0)^T$. Both checked analytical gradients are nonzero; use seeded initialization for the training experiment, not for this test. Collect their two analytical values in $g^{\mathrm{analytic}}$ and their two finite-difference values in $g^{\mathrm{FD}}$. For a two-element vector $v=(v_0,v_1)$, define $\|v\|_2=\sqrt{v_0^2+v_1^2}$. Require
 
-\[
+$$
 \frac{\|g^{\mathrm{analytic}}-g^{\mathrm{FD}}\|_2}
 {\max(1,\|g^{\mathrm{analytic}}\|_2,\|g^{\mathrm{FD}}\|_2)}
 <10^{-4}.
-\]
+$$
 
 Use test inputs whose ReLU pre-activations are not exactly zero. Finite differences are slow and belong in tests; backpropagation is used for training.
 
@@ -388,7 +388,7 @@ Use test inputs whose ReLU pre-activations are not exactly zero. Finite differen
 
 The baseline always predicts the most frequent training class; if the two training class counts are equal, define the baseline to predict class 1.
 
-For a validation or test split containing \(q\) observations, count:
+For a validation or test split containing $q$ observations, count:
 
 - **TP**: true label 1 and predicted label 1;
 - **TN**: true label 0 and predicted label 0;
@@ -397,35 +397,35 @@ For a validation or test split containing \(q\) observations, count:
 
 The confusion matrix has true classes as rows and predicted classes as columns:
 
-\[
+$$
 \begin{bmatrix}
 TN & FP\\
 FN & TP
 \end{bmatrix}.
-\]
+$$
 
 Define
 
-\[
+$$
 \text{accuracy}=\frac{TP+TN}{q},
-\]
+$$
 
-\[
+$$
 \text{recall}_0=\frac{TN}{TN+FP},
 \qquad
 \text{recall}_1=\frac{TP}{TP+FN},
-\]
+$$
 
-\[
+$$
 \text{balanced accuracy}=
 \frac{\text{recall}_0+\text{recall}_1}{2}.
-\]
+$$
 
 Both classes are present in every split by construction, so the two recall denominators are nonzero. Report on validation and test data:
 
 - mean cross-entropy;
 - accuracy and balanced accuracy as defined above;
-- the \(2\times2\) confusion matrix;
+- the $2\times2$ confusion matrix;
 - rows and split counts per class;
 - the initial and final training and validation losses in a compact table.
 
@@ -443,9 +443,9 @@ c++ -O2 -Wall -Wextra -pedantic src/*.cpp -Iinclude -o toy_nn
 
 Use a `2–4–2` network and the same dense, ReLU, softmax, loss, backpropagation, initialization, and full-batch update formulas given above, with dimensions changed accordingly.
 
-Generate two small deterministic clusters. For \(i=0,\ldots,5\), define
+Generate two small deterministic clusters. For $i=0,\ldots,5$, define
 
-\[
+$$
 \mathbf x^{(0,i)}=
 \begin{pmatrix}
 0.10+0.02i\\
@@ -457,15 +457,15 @@ Generate two small deterministic clusters. For \(i=0,\ldots,5\), define
 0.90-0.01i\\
 0.10+0.02i
 \end{pmatrix}.
-\]
+$$
 
-Store the observations in this exact order: \(\mathbf x^{(0,0)},\ldots,\mathbf x^{(0,5)}\), followed by \(\mathbf x^{(1,0)},\ldots,\mathbf x^{(1,5)}\). Use all 12 observations for this implementation check. Class 0 represents `empty` and class 1 represents `occupied`. Validation and test splits are introduced only for the real dataset in Checkpoint 3.
+Store the observations in this exact order: $\mathbf x^{(0,0)},\ldots,\mathbf x^{(0,5)}$, followed by $\mathbf x^{(1,0)},\ldots,\mathbf x^{(1,5)}$. Use all 12 observations for this implementation check. Class 0 represents `empty` and class 1 represents `occupied`. Validation and test splits are introduced only for the real dataset in Checkpoint 3.
 
-For this toy network, a full-batch input \(X\) has shape \(2\times12\); \(W_1,b_1,W_2,b_2\) have shapes \(4\times2\), \(4\times1\), \(2\times4\), and \(2\times1\), respectively.
+For this toy network, a full-batch input $X$ has shape $2\times12$; $W_1,b_1,W_2,b_2$ have shapes $4\times2$, $4\times1$, $2\times4$, and $2\times1$, respectively.
 
 Use the following separate one-column case as the required hand-computed dense test:
 
-\[
+$$
 W=
 \begin{bmatrix}
 1&2\\
@@ -479,22 +479,22 @@ b=
 \qquad
 x=
 \begin{bmatrix}2\\-1\end{bmatrix}.
-\]
+$$
 
 The implementation must produce
 
-\[
+$$
 Wx+b=
 \begin{bmatrix}0.5\\-1.5\\1\\5\end{bmatrix}.
-\]
+$$
 
 Proceed in this order using `double` and only the standard library:
 
 1. adapt a standard-library C++ matrix example from the course, or implement only missing operations from Section 2.6; test indexing, matrix multiplication, and dimension errors. This is still a Checkpoint 1 standard-library implementation, with no third-party dependency;
 2. implement the two dense forward operations and check the hand-computed result above;
-3. add ReLU, stable softmax, and cross-entropy. For logits \((1000,1001)^T\), require probabilities approximately \((0.2689414214,0.7310585786)^T\) and require their sum to agree with one within \(10^{-12}\);
+3. add ReLU, stable softmax, and cross-entropy. For logits $(1000,1001)^T$, require probabilities approximately $(0.2689414214,0.7310585786)^T$ and require their sum to agree with one within $10^{-12}$;
 4. implement complete backward propagation using the formulas in Section 2.4;
-5. check \((W_1)_{0,0}\) and \((W_2)_{0,0}\) with the centered finite-difference procedure in Section 2.7;
+5. check $(W_1)_{0,0}$ and $(W_2)_{0,0}$ with the centered finite-difference procedure in Section 2.7;
 6. train the `2–4–2` network with full-batch gradient descent and print the predicted class for all 12 observations.
 
 These steps form at most four focused handwritten test cases. A test case may check several related operations.
@@ -532,12 +532,12 @@ The assessed experiments use `double`; an additional `float` training experiment
 
 Rerun the Checkpoint 1 toy experiment through the new interface and require the same predictions when using the same parameters. Then construct a `16–8–2` network and one artificial batch with
 
-\[
+$$
 X_{j,0}=0.1(j+1),\qquad
 X_{j,1}=-0.05(j+1),\qquad j=0,\ldots,15,
-\]
+$$
 
-and labels \(y_0=0,y_1=1\). Verify the dimensions of one forward and backward pass: logits and probabilities are \(2\times2\), the four parameter gradients have the shapes listed in Section 2.4, and every value is finite. Do not train on this artificial batch.
+and labels $y_0=0,y_1=1$. Verify the dimensions of one forward and backward pass: logits and probabilities are $2\times2$, the four parameter gradients have the shapes listed in Section 2.4, and every value is finite. Do not train on this artificial batch.
 
 No numerical or neural-network dependency is permitted in Checkpoint 2.
 
@@ -570,17 +570,17 @@ The pybind11 module exposes `Standardizer` and the fixed network. At the Python 
 - `predict_logits(X)` and `predict_proba(X)` return shape `(N, 2)`;
 - `predict(X)` returns integer labels with shape `(N,)`;
 - `predict_proba(X)` stores the class-0 probability in column 0 and the class-1 probability in column 1;
-- read-only parameter copies retain the mathematical shapes \(8\times16\), \(8\), \(2\times8\), and \(2\).
+- read-only parameter copies retain the mathematical shapes $8\times16$, $8$, $2\times8$, and $2$.
 
-Validate dimensions, labels, and finite input values at the boundary. The C++ implementation may transpose or copy `X` internally to obtain its \(16\times N\) column-observation layout. The architecture remains fixed; a general Python network builder is not required.
+Validate dimensions, labels, and finite input values at the boundary. The C++ implementation may transpose or copy `X` internally to obtain its $16\times N$ column-observation layout. The architecture remains fixed; a general Python network builder is not required.
 
 For the PyTorch comparison:
 
 1. fit the bound C++ standardizer on raw training features, transform all splits with it, and train the C++ network by calling `fit` through the binding;
 2. construct `torch.nn.Linear(16, 8)`, `torch.nn.ReLU()`, and `torch.nn.Linear(8, 2)` using `float64`;
-3. copy \(W_1,b_1,W_2,b_2\) directly into the corresponding PyTorch weight and bias arrays; PyTorch dense weights use the same `outputs × inputs` orientation;
+3. copy $W_1,b_1,W_2,b_2$ directly into the corresponding PyTorch weight and bias arrays; PyTorch dense weights use the same `outputs × inputs` orientation;
 4. place the first eight test observations in an `(8, 16)` NumPy array and evaluate exactly those rows with both implementations;
-5. compute PyTorch probabilities with `torch.softmax(logits, dim=1)` and compare the two `(8, 2)` logit arrays and the two `(8, 2)` probability arrays. For arrays \(A\) and \(B\), use \(d_{\max}=\max_{r,c}|A_{r,c}-B_{r,c}|\); require \(d_{\max}<10^{-8}\) separately for logits and probabilities.
+5. compute PyTorch probabilities with `torch.softmax(logits, dim=1)` and compare the two `(8, 2)` logit arrays and the two `(8, 2)` probability arrays. For arrays $A$ and $B$, use $d_{\max}=\max_{r,c}|A_{r,c}-B_{r,c}|$; require $d_{\max}<10^{-8}$ separately for logits and probabilities.
 
 PyTorch training is not mandatory. The comparison must call the C++ implementation through pybind11. Record dependency versions, licenses, the UCI citation, and the dataset limitation in the README; no separate technical report is required.
 
@@ -590,9 +590,9 @@ PyTorch training is not mandatory. The comparison must call the C++ implementati
 
 Attempt at most one extension after all mandatory requirements work correctly:
 
-- **Four-class occupancy estimation.** Restore the original target \(0,1,2,3\), change the output layer to four logits, use a `16–8–4` architecture, and report a \(4\times4\) confusion matrix, accuracy, and balanced accuracy. For this extension, balanced accuracy is the arithmetic mean of the four class recalls. Compare the result with binary detection and discuss which occupancy counts are confused. Scikit-learn's [multiclass classification guide](https://scikit-learn.org/stable/modules/multiclass.html) introduces the terminology and evaluation setting.
+- **Four-class occupancy estimation.** Restore the original target $0,1,2,3$, change the output layer to four logits, use a `16–8–4` architecture, and report a $4\times4$ confusion matrix, accuracy, and balanced accuracy. For this extension, balanced accuracy is the arithmetic mean of the four class recalls. Compare the result with binary detection and discuss which occupancy counts are confused. Scikit-learn's [multiclass classification guide](https://scikit-learn.org/stable/modules/multiclass.html) introduces the terminology and evaluation setting.
 - **Testing and profiling.** Move the four tests to [Catch2](https://catch2-temp.readthedocs.io/en/latest/) or [GoogleTest](https://google.github.io/googletest/primer.html), then profile or benchmark matrix multiplication with [Google Benchmark](https://github.com/google/benchmark/blob/main/docs/user_guide.md). Make one justified optimization and rerun the gradient checks.
-- **Alternative library or newer C++ facility.** Either add an [Eigen](https://libeigen.gitlab.io/eigen/docs-5.0/GettingStarted.html) backend while preserving the chosen layer interface, or use [`std::span`](https://en.cppreference.com/w/cpp/container/span) for non-owning views of contiguous parameter or matrix buffers. Explain the concrete benefit. For Eigen, load identical parameters into both backends; for `std::span`, save reference logits before the refactor. In either case, require the compared logits to agree within \(10^{-10}\). A different library or newer-standard facility may be substituted with prior instructor approval; link its official documentation and repeat an equivalent correctness comparison.
+- **Alternative library or newer C++ facility.** Either add an [Eigen](https://libeigen.gitlab.io/eigen/docs-5.0/GettingStarted.html) backend while preserving the chosen layer interface, or use [`std::span`](https://en.cppreference.com/w/cpp/container/span) for non-owning views of contiguous parameter or matrix buffers. Explain the concrete benefit. For Eigen, load identical parameters into both backends; for `std::span`, save reference logits before the refactor. In either case, require the compared logits to agree within $10^{-10}$. A different library or newer-standard facility may be substituted with prior instructor approval; link its official documentation and repeat an equivalent correctness comparison.
 
 ---
 
