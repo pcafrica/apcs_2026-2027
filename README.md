@@ -122,7 +122,7 @@ To be defined.
 [exercise-03-md]: exercises/03/03-c++_classes.md
 [exercise-03-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/03/03-c++_classes.html
 [exercise-03-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/03/03-c++_classes.pdf
-[exercise-03-rec]: ...
+[exercise-03-rec]: https://sissa-my.sharepoint.com/:v:/g/personal/pafrica_sissa_it/IQBfySeyaQrwRZfP1CgeUXWoAUp0tq2b9xCJkFZw1IJPDro?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=rDKN1z
 
 [lecture-04-md]: lectures/04/04-c++_inheritance_polymorphism.md
 [lecture-04-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/04/04-c++_inheritance_polymorphism.html
