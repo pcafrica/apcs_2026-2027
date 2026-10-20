@@ -76,8 +76,8 @@ To be defined.
 | Wed 07 Oct 2026 | 11:00 - 13:00 | 128 | Exercise session. [[Markdown][exercise-02-md]] [[HTML][exercise-02-html]] [[PDF][exercise-02-pdf]] [[Recording][exercise-02-rec]] |
 | Tue 13 Oct 2026 | 14:00 - 16:00 | 005 | Object oriented programming. Classes and access control in C++. Operators. [[Markdown][lecture-03-md]] [[HTML][lecture-03-html]] [[PDF][lecture-03-pdf]] [[Recording][lecture-03-rec]] |
 | Wed 14 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
-| Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[HTML][lecture-03-html]] [[PDF][lecture-03-pdf]] [[Recording][lecture-03-rec]] |
-| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
+| Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[Markdown][lecture-04-md]] [[HTML][lecture-04-html]] [[PDF][lecture-04-pdf]] [[Recording][lecture-04-rec]] |
+| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] [[Recording][exercise-04-rec]] |
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 28 Oct 2026 | 11:00 - 13:00 | 004 |  |
 | Wed 04 Nov 2026 | 11:00 - 13:00 | 005 |  |
