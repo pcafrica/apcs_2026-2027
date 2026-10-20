@@ -11,7 +11,7 @@ _class: titlepage
 ## Inheritance and polymorphism in C++.
 <br>
 
-#### Advanced Programming for Computational Science - SISSA, UniTS, 2026-2027
+#### Advanced Programming for Computational Science<br>SISSA, UniTS, 2026-2027
 
 ###### Valentin Nkana Ngan
 
