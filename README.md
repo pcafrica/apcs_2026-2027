@@ -77,7 +77,7 @@ To be defined.
 | Tue 13 Oct 2026 | 14:00 - 16:00 | 005 | Object oriented programming. Classes and access control in C++. Operators. [[Markdown][lecture-03-md]] [[HTML][lecture-03-html]] [[PDF][lecture-03-pdf]] [[Recording][lecture-03-rec]] |
 | Wed 14 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
 | Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[Markdown][lecture-04-md]] [[HTML][lecture-04-html]] [[PDF][lecture-04-pdf]] [[Recording][lecture-04-rec]] |
-| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] [[Recording][exercise-04-rec]] |
+| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] |
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 28 Oct 2026 | 11:00 - 13:00 | 004 |  |
 | Wed 04 Nov 2026 | 11:00 - 13:00 | 005 |  |
@@ -127,9 +127,8 @@ To be defined.
 [lecture-04-md]: lectures/04/04-c++_inheritance_polymorphism.md
 [lecture-04-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/04/04-c++_inheritance_polymorphism.html
 [lecture-04-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/04/04-c++_inheritance_polymorphism.pdf
-[lecture-04-rec]: ...
+[lecture-04-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261020_142544-Meeting%20Recording.mp4&share=cQpci950CGE6TInEPSfzdt-5EgUCXDjZd9ctn1PD8xZDcTAlnQ&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
 [exercise-04-md]: exercises/04/04-c++_inheritance_polymorphism.md
 [exercise-04-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/04/04-c++_inheritance_polymorphism.html
 [exercise-04-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/04/04-c++_inheritance_polymorphism.pdf
-[exercise-04-rec]: ...
