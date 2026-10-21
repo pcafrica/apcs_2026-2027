@@ -666,7 +666,7 @@ delete shape;
 ```
 
 For this deletion to be valid, `Shape` must have a **virtual destructor**.
-Then destruction runs `~Square`, the `Polygon` destructor, and `~Shape`.
+Then destruction runs `~Square`, `~Polygon`, and `~Shape`.
 
 Without a virtual base destructor, deletion has **undefined behavior**, even if the derived class adds no fields.
 

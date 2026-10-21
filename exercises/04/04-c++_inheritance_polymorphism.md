@@ -19,6 +19,38 @@ _class: titlepage
 
 ---
 
+# Practical rules: inheritance and class design
+
+- Use **public inheritance** for an **is-a** relationship: derived objects must respect the base interface and its promises.
+- Use **composition** for owned parts; use **aggregation** for borrowed parts.
+- Keep data members **private**; expose only the operations derived classes need.
+- Initialize the **base class in the initializer list**, then members in declaration order.
+- Remember the lifetime order: **base → members → constructor body**; destruction reverses it.
+- With multiple inheritance, qualify ambiguous names with `obj.Base::member`. Use virtual inheritance when a diamond must share one base subobject.
+
+---
+
+# Practical rules: polymorphic interfaces
+
+- Declare an operation `virtual` when its behavior must depend on the runtime object type.
+- Write **`override`** in derived classes: the compiler checks the signature, including `const`.
+- Pass polymorphic objects through **base pointers or references**; passing by base value causes **slicing**.
+- Use a **pure virtual function** (`= 0`) to require an implementation in concrete derived classes.
+- Give a base class a **public virtual destructor** when objects may be deleted through base pointers.
+
+---
+
+# Practical rules: ownership and safe use
+
+- Decide explicitly whether each pointer or reference **owns or borrows** its object.
+- Keep borrowed objects alive for as long as their pointers or references are used.
+- Delete each dynamically allocated object **exactly once**, through its owning pointer; never delete an alias separately.
+- Check pointers that may be **`nullptr`** before dereferencing them.
+- For a factory returning an owning pointer, document that **the caller must delete the result**, including on early-return paths.
+- Use pointer `dynamic_cast` for a checked downcast: failure returns **`nullptr`**; success creates an alias and does not transfer ownership.
+
+---
+
 # Exercise 1: inheritance and polymorphism for data analysis
 
 Starting from the files in `hints/ex1`, create a C++ program that models different types of data sources and transformation objects.
