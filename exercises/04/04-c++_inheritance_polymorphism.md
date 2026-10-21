@@ -59,7 +59,7 @@ Starting from the files in `hints/ex1`, create a C++ program that models differe
 2. Implement the `DataTransformer` hierarchy with `LinearScaler`, `LogTransformer` and `MinMaxScaler`.
 3. Select a source and a transformation at runtime, using pointers to the base classes.
 
-**The supplied `data_io.hpp` and `data_io.cpp` handle storage and input. You do not need to implement STL containers or file streams.** See `hints/ex1/README.md` for the completion order.
+**The supplied `data_io.hpp` and `data_io.cpp` handle storage and input. You do not need to implement STL containers or file streams.**
 
 ---
 
@@ -79,7 +79,7 @@ The input helpers open and close files automatically during reading. Empty deriv
 8. Study the supplied `read_data()` implementations: they delegate to the input helpers. File input reads whitespace-separated numbers; console input reads one non-empty line of numbers.
 9. Use `n_elements()` and `operator[]` to inspect or modify data. `std::size_t` is the size/index type used by this supplied interface.
 10. Use `display_info()` and `operator<<` to display the source and its values. File input can be read repeatedly; empty input, invalid numeric tokens and invalid indices print an error and terminate the program.
-11. Try the supplied `data.txt`. Compile and run from the exercise root (`04`), following `README.md`.
+11. Try the supplied `data.txt`. Compile and run from the exercise root (`04`).
 
 ---
 
