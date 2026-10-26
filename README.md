@@ -35,11 +35,10 @@ Unless otherwise specified, all content here is licensed under a
 
 ## :warning: Project: infos and deadlines
 
-- Project tracks are available in the [projects](projects/) folder.
-- Form your group by **Friday 23 October 2026**. Groups normally consist of **two students**. Exceptions may be approved if properly justified.
-- Once your group is formed, choose **one representative** to reply to the Google Classroom post with the **full name and institutional email address of every member**, along with the **chosen project**.
-- If you have a project idea that differs from the assigned tracks, feel free to propose it to me and we can discuss it.
-- If you cannot find a group, reply to the Google Classroom post individually with the project tracks ranked in order of preference. I will try to match you with other students.
+- Deadline for submitting your work: **Wed 16 December 2026, 23:59:59**.
+- Project presentations: **Tue 22-Wed 23 December 2026**, during class hours.
+- Presentations will be held in person. For justified reasons, online attendance may be approved. In that case, please send the instructor a message requesting online participation.
+- For any information, please refer to the [project](project_rules.md) and [exam rules](exam_rules.md).
 
 ---
 
