@@ -287,7 +287,7 @@ private:
 ```
 
 ```cpp
-CountCalls ob1, obj2;
+CountCalls obj1, obj2;
 obj1(); obj1();
 obj2();
 // obj1.n_calls() == 2; obj2.n_calls() == 1.

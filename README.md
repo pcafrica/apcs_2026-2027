@@ -78,8 +78,8 @@ To be defined.
 | Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[Markdown][lecture-04-md]] [[HTML][lecture-04-html]] [[PDF][lecture-04-pdf]] [[Recording][lecture-04-rec]] |
 | Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] |
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 | Functions. Templates and generic programming in C++. [[Markdown][lecture-05-md]] [[HTML][lecture-05-html]] [[PDF][lecture-05-pdf]] [[Recording][lecture-05-rec]] |
-| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
-| Wed 04 Nov 2026 | 11:00 - 13:00 | 005 |  |
+| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Project session |
+| Wed 04 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
 | Tue 10 Nov 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 11 Nov 2026 | 11:00 - 13:00 | 005 |  |
 | Tue 17 Nov 2026 | 14:00 - 16:00 | 005 |  |
@@ -91,8 +91,8 @@ To be defined.
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 |  |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 |  |
-| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (?) |
-| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (?) |
+| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-5) |
+| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 6-10) |
 
 [lecture-01-md]: lectures/01/01-intro_unix.md
 [lecture-01-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.html
