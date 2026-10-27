@@ -26,7 +26,7 @@ _class: titlepage
 
 #### 1. Functions and callable objects
 - Function pointers
-- Functors and state
+- Functors
 - Lambdas and captures
 - Function wrappers (`std::function`)
 
@@ -43,17 +43,6 @@ _class: titlepage
 </div>
 
 **Appendices:** optional advanced techniques; STL previews for the next lecture.
-
----
-
-# Prerequisites and code conventions
-
-- Classes, constructors, references, pointers, arrays and loops are already familiar.
-- `auto` for fundamental types has already been introduced; here we extend its use to callables and deduction.
-- We will use template notation such as `std::function<double(double)>` before explaining templates in Part II.
-- STL containers, iterators and algorithms belong to the **next lecture**.
-
-Code blocks are excerpts: place function/class definitions outside `main`, and usage statements inside `main`. Examples are independent unless a preceding definition is explicitly referenced. Required library headers are indicated; lines marked **Error** remain commented out.
 
 ---
 
@@ -200,13 +189,13 @@ using f_ptr = double (*)(double);
 double midpoint(double a, double b, f_ptr fun) {
     return (b - a) * fun((a + b) / 2.0);
 }
-
-double square(double x) { return x * x; }
 ```
 
 ```cpp
+double square(double x) { return x * x; }
+
 f_ptr f = &square; // The & is optional here.
-double estimate = midpoint(0.0, 2.0, f); // 2.0
+double integral = midpoint(0.0, 2.0, f); // 2.0
 ```
 
 `f_ptr` means “pointer to a function taking a `double` and returning a `double`”. The midpoint rule is an **approximation** of the integral.
@@ -221,8 +210,11 @@ int subtract(int a, int b) { return a - b; }
 
 int choice = 1; // Could come from user input.
 int (*operation)(int, int) = nullptr;
-if (choice == 1) operation = add;
-else if (choice == 2) operation = subtract;
+
+if (choice == 1)
+    operation = add;
+else if (choice == 2)
+    operation = subtract;
 
 if (operation != nullptr) {
     std::cout << operation(10, 5) << '\n';
@@ -295,10 +287,10 @@ private:
 ```
 
 ```cpp
-CountCalls first, second;
-first(); first();
-second();
-// first.n_calls() == 2; second.n_calls() == 1.
+CountCalls ob1, obj2;
+obj1(); obj1();
+obj2();
+// obj1.n_calls() == 2; obj2.n_calls() == 1.
 ```
 
 Here `operator()` is non-const because it changes `count`. Copying a functor normally copies its state; it does not automatically share that state.
@@ -337,7 +329,7 @@ int threshold = 6;
 auto above = [threshold](int x) { return x > threshold; };
 
 int count = 0;
-for (int x : values) {
+for (int x : values) { // Range-based for loop.
     if (above(x)) ++count;
 }
 // count == 3; above contains its own copy of threshold.
@@ -556,7 +548,7 @@ _class: titlepage
 # Define and instantiate a function template
 
 ```cpp
-template <typename T> // Here, class T means the same as typename T.
+template <typename T> // Here, 'class T' would be the same as 'typename T'.
 T add(T a, T b) {
     return a + b;
 }
@@ -584,8 +576,6 @@ auto b = add(3.0, 5.0);         // Both arguments deduce T = double.
 
 Argument deduction is not a search for a convenient common numeric type. The destination variable's type does not resolve conflicting deductions for these parameters.
 
-To inspect the error, uncomment the bad call in a separate compilation.
-
 ---
 
 # Multiple parameters and return conversions
@@ -598,7 +588,7 @@ T multiply_and_add(T a, U b, T c) {
 ```
 
 ```cpp
-int a = multiply_and_add(5, 2.5, 3);       // T=int, U=double; returns 15.
+int a = multiply_and_add(5, 2.5, 3);      // T=int, U=double; returns 15.
 int b = multiply_and_add<int>(2, 3, 1);   // T=int, U=int; returns 7.
 float c = multiply_and_add<float, int>(2.5f, 3, 1.0f); // 8.5f
 ```
@@ -619,9 +609,9 @@ auto a = zero();      // T cannot be deduced: use default double.
 auto b = zero<int>(); // Explicit T = int.
 ```
 
-For a function template, a default fills an argument not specified explicitly or obtained by deduction. Unlike the usual class-template rule, a defaulted function-template parameter can precede a later deducible parameter.
+For a function template, a default fills an argument not specified explicitly or obtained by deduction. Here, a defaulted function-template parameter can precede a later deducible parameter.
 
-Keep first examples simple; do not confuse default **function arguments** with default **template arguments**.
+Do not confuse default **function arguments** with default **template arguments**.
 
 ---
 
@@ -648,12 +638,12 @@ double c = midpoint(0.0, 2.0,
 
 # Function pointer, wrapper or template?
 
-| Interface | Useful when |
-|---|---|
-| Function pointer | A compatible function address is sufficient; no captured state. |
-| `std::function<Signature>` | Different compatible target types need one common runtime wrapper type. |
-| Function-template parameter | The caller's callable type can remain a compile-time parameter. |
-
+| Interface                   | Useful when                                                             |
+|-----------------------------|-------------------------------------------------------------------------|
+| Function pointer            | A compatible function address is sufficient; no captured state.         |
+| `std::function<Signature>`  | Different compatible target types need one common runtime wrapper type. |
+| Function-template parameter | The caller's callable type can remain a compile-time parameter.         |
+    
 A template specialization may expose the concrete callable type to optimization, but **inlining is not guaranteed**. A wrapper can trade some overhead for a uniform interface.
 
 All three still require valid callable targets and valid lifetimes.
@@ -664,7 +654,7 @@ All three still require valid callable targets and valid lifetimes.
 _class: titlepage
 -->
 
-# Class templates and compile-time values
+# Class templates
 
 ---
 
@@ -751,7 +741,7 @@ Array<double, 3> coordinates;
 coordinates[0] = 1.5;
 ```
 
-Here `N` is a compile-time integer value; indices must satisfy **0 <= i < N**. `static_assert` checks a condition during compilation. C++17 also permits other non-type parameter categories, such as pointers; they are not integral types.
+Here `N` is a compile-time integer value; indices must satisfy **0 <= i < N**. `static_assert` checks a condition during compilation. C++17 also permits other non-type parameter categories, such as pointers, which are not integral types.
 
 ---
 
@@ -770,11 +760,11 @@ An alias template gives a parameterized name to an existing type. `IntArray<5>` 
 
 ---
 
-# Instantiation: some checks now, others later
+# Template instantiation: some checks now, others later
 
 - Templates are parsed when their definitions are read; syntax and non-dependent names are checked then.
 - Substitution and many checks depending on a template parameter happen when a specialization is instantiated.
-- Instantiating a class does not ordinarily instantiate the definitions of all unused member functions.
+- Implicitly instantiating a class does not ordinarily instantiate the definitions of all unused member functions.
 
 ```cpp
 // template <typename T>
@@ -818,12 +808,32 @@ Include this header where `twice` is used. If only a declaration is visible and 
 # Three common organization patterns
 
 1. **Header-only:** put template declarations and definitions in `module.hpp`.
-2. **Included implementation header:** put declarations in `module.hpp`, definitions in `module.tpl.hpp`, and include the latter at the end of the former, inside its guard.
+2. **Included implementation header:** put declarations in `module.hpp`, definitions in `module.tpl.hpp` (another header file), and `#include` the latter at the end of the former, inside its guard.
 3. **Explicit instantiation for a fixed set of types:** keep definitions in a `.cpp` and explicitly instantiate the supported specializations there.
 
 Multiple units can instantiate the same template specialization; this is supported when the relevant definition rules are respected. Implementations commonly consolidate generated copies.
 
 Exact code emission depends on compiler/linker optimizations. Repeated processing can still increase compilation time.
+
+---
+
+# Included implementation header
+
+```cpp
+// Alternative twice.hpp: declarations only.
+#ifndef TWICE_HPP
+#define TWICE_HPP
+template <typename T> T twice(T value);
+
+#include "twice.tpl.hpp"
+#endif
+```
+
+```cpp
+// twice.tpl.hpp: definitions. It is still a header file.
+template <typename T>
+T twice(T value) { return value + value; }
+```
 
 ---
 
@@ -843,6 +853,7 @@ template <typename T> T twice(T value);
 template <typename T>
 T twice(T value) { return value + value; }
 
+// Explicit instantiations.
 template int twice<int>(int);
 template double twice<double>(double);
 ```
@@ -861,9 +872,7 @@ template class Box<double>;
 
 A class explicit-instantiation definition covers the applicable **non-template members defined at that point**; it does not automatically instantiate every possible member template or inherited operation.
 
-With header-visible definitions, `extern template` declarations can suppress selected implicit instantiations in callers. This is an optional build-time technique, not needed for first examples.
-
-Start with header-visible definitions; choose a restricted supported-type set deliberately.
+With header-visible definitions, `extern template` declarations can suppress selected implicit instantiations in callers (although this is an optional build-time technique).
 
 ---
 
@@ -898,8 +907,6 @@ Start with header-visible definitions; choose a restricted supported-type set de
 5. Why does hiding a template definition in a `.cpp` often cause an undefined reference?
 6. How can the same midpoint algorithm accept a function, functor or capturing lambda?
 
-**Core material ends here.** Appendix A contains optional follow-up topics; Appendix B previews the next STL lecture.
-
 ---
 
 <!--
@@ -910,48 +917,79 @@ _class: titlepage
 
 ---
 
-# Full class-template specialization
+# Member-function pointers: the class interface
 
 ```cpp
-template <typename T>
-class Label {
+class Shape {
 public:
-    const char* text() const { return "generic"; }
+    virtual ~Shape() = default;
+    virtual double area() const = 0;
 };
 
-template <>
-class Label<bool> { // Full specialization: all arguments are fixed.
+class Square : public Shape {
 public:
-    const char* text() const { return "boolean"; }
+    Square(double side) : side(side) {}
+    double area() const override { return side * side; }
+private:
+    double side;
 };
 ```
 
-`Label<int>` uses the primary template; `Label<bool>` uses the full specialization. A specialization defines its own class interface; it does not inherit the primary template's members.
+This independent example reuses last lecture's runtime-polymorphism model. Next we store the address of an operation in this interface; calling it still requires an object.
 
 ---
 
-# Partial specialization
+# Member-function pointers: call through an object
 
 ```cpp
-template <typename T, int N>
-class Array {
-    static_assert(N > 0, "Positive size required");
-public:
-    T& operator[](int i) { return values[i]; }
-private:
-    T values[N]{};
-};
+Square small(2.0), large(3.0);
+Shape* shapes[] = {&small, &large};
+double (Shape::*area_fun)() const = &Shape::area;
 
-template <typename T>
-class Array<T, 1> { // Partial specialization: T remains a parameter.
-public:
-    T& operator[](int) { return value; } // Valid index: 0 only.
-private:
-    T value{};
-};
+for (const Shape* shape : shapes) {
+    double area = (shape->*area_fun)(); // 4.0, then 9.0.
+    std::cout << area << '\n';
+}
 ```
 
-This independent example specializes a subset of argument combinations. Function templates cannot be partially specialized; use **overloading** instead. Class templates can have partial specializations.
+`->*` combines a pointer to an object with a member pointer; for an object/reference use `.*`.
+
+Since `area()` is virtual, dispatch reaches `Square::area()`. These pointers borrow automatic objects: **do not delete them**.
+
+---
+
+# std::bind and function adapters
+
+```cpp
+#include <functional>
+
+int add(int a, int b) { return a + b; }
+
+std::function<int(int)> add5 = std::bind(add, 5, std::placeholders::_1);
+int a = add5(3); // 8
+
+auto add5_lambda = [](int value) { return add(5, value); };
+int b = add5_lambda(3); // 8
+```
+
+`bind` fixes/rearranges arguments. For straightforward adaptations, a lambda usually makes the captured values and call easier to read. This adapter is optional, not a prerequisite for understanding callables.
+
+---
+
+# Wrapper and virtual dispatch: different mechanisms
+
+```cpp
+#include <functional>
+
+auto compute_area = [](const Shape& shape) { return shape.area(); };
+std::function<double(const Shape&)> wrapped = compute_area;
+
+Square square(3.0);
+double a = compute_area(square); // 9.0
+double b = wrapped(square);      // 9.0
+```
+
+Both calls reach `Square::area()` because **area is virtual**. Wrapping a callable is separate from virtual dispatch in the Shape hierarchy.
 
 ---
 
@@ -977,6 +1015,51 @@ This is a **full** function specialization. For ordinary alternative parameter p
 
 ---
 
+# Full class-template specialization
+
+```cpp
+template <typename T>
+class Label {
+public:
+    const char* text() const { return "generic"; }
+};
+
+template <>
+class Label<bool> { // Full specialization: all arguments are fixed.
+public:
+    const char* text() const { return "boolean"; }
+};
+```
+
+`Label<int>` uses the primary template; `Label<bool>` uses the full specialization. A specialization defines its own class interface; it does not inherit the primary template's members.
+
+---
+
+# Partial specialization (only for class templates)
+
+```cpp
+template <typename T, int N>
+class Array {
+    static_assert(N > 0, "Positive size required");
+public:
+    T& operator[](int i) { return values[i]; }
+private:
+    T values[N]{};
+};
+
+template <typename T>
+class Array<T, 1> { // Partial specialization: T remains a parameter.
+public:
+    T& operator[](int) { return value; } // Valid index: 0 only.
+private:
+    T value{};
+};
+```
+
+This independent example specializes a subset of argument combinations. Function templates cannot be partially specialized; use **overloading** instead.
+
+---
+
 # Nested aliases and dependent type names
 
 ```cpp
@@ -998,7 +1081,7 @@ In C++17, a **qualified dependent name** not already known to denote a type gene
 
 ---
 
-# Dependent bases and this->
+# Dependent bases and `this->`
 
 ```cpp
 int selected() { return 1; }
@@ -1012,8 +1095,8 @@ public:
 template <typename T>
 class Derived : public Base<T> {
 public:
-    int first() const { return selected(); }       // Global: returns 1.
-    int second() const { return this->selected(); }// Base member: returns 2.
+    int first() const { return selected(); }        // Global: returns 1.
+    int second() const { return this->selected(); } // Base member: returns 2.
 };
 ```
 
@@ -1047,11 +1130,11 @@ auto add_trailing(int a, double b) -> decltype(a + b) {
 }
 
 int value = 3;
-decltype(value) copy = value;      // int
-decltype((value)) alias = value;   // int&
+decltype(value) copy = value;    // int
+decltype((value)) alias = value; // int&
 ```
 
-`decltype` describes the type of an expression without evaluating it, and can preserve reference information that plain `auto` deduction would discard. This prepares the optional SFINAE example.
+`decltype` describes the type of an expression without evaluating it, and can preserve reference information that plain `auto` deduction would discard. This prepares the following SFINAE example.
 
 ---
 
@@ -1155,17 +1238,59 @@ For simple numeric calculations, a `constexpr` function is often clearer; templa
 
 ---
 
+# Traits and policy-based design
+
+Traits describe properties of a type; policies provide interchangeable behavior selected through template arguments.
+
+```cpp
+struct ConsolePolicy {
+    static void log(const std::string& message) {
+        std::cout << message << '\n';
+    }
+};
+struct SilentPolicy {
+    static void log(const std::string&) {}
+};
+
+template <typename LogPolicy>
+struct Processor {
+    void run() { LogPolicy::log("Running task..."); }
+};
+```
+
+`Processor<ConsolePolicy> a; a.run();` logs a message. `Processor<SilentPolicy> b; b.run();` stays silent. The policy choice is part of the class type.
+
+---
+
+# CRTP: static polymorphism
+
+```cpp
+template <typename Derived>
+class Shape {
+public:
+    double area() const {
+        return static_cast<const Derived*>(this)->area_impl();
+    }
+};
+
+class Circle : public Shape<Circle> { // Curiously Recurring Template Pattern.
+public:
+    Circle(double radius) : radius(radius) {}
+    double area_impl() const { return 3.14159265359 * radius * radius; }
+private:
+    double radius;
+};
+```
+
+`Circle c(2.0); c.area();` selects the derived implementation through a compile-time pattern. There is no virtual dispatch here. `Shape<Circle>` and `Shape<Other>` would be **different base types**, not one heterogeneous runtime base interface.
+
+---
+
 # SFINAE: substitution failure is not an error
 
 During function-template candidate formation, certain invalid substitutions in the **immediate context** remove a candidate instead of producing a hard error.
 
 This can select overloads based on whether a type supports an operation. It does **not** make every error in a function body disappear.
-
-The following optional example uses:
-- a dependent expression in a trailing return type;
-- `decltype` (unevaluated type inspection);
-- `std::declval<U&>()` to describe an object without constructing one;
-- `std::true_type` / `std::false_type` to represent a Boolean type result.
 
 ---
 
@@ -1206,133 +1331,6 @@ std::cout << has_print<int>::value << '\n';    // false
 ```
 
 The detected property is **a valid public zero-argument call on a non-const lvalue**, not merely the existence of any member named `print`. Overloads and qualifiers can affect the result.
-
----
-
-# CRTP: static polymorphism
-
-```cpp
-template <typename Derived>
-class Shape {
-public:
-    double area() const {
-        return static_cast<const Derived*>(this)->area_impl();
-    }
-};
-
-class Circle : public Shape<Circle> {
-public:
-    Circle(double radius) : radius(radius) {}
-    double area_impl() const { return 3.14159265359 * radius * radius; }
-private:
-    double radius;
-};
-```
-
-`Circle c(2.0); c.area();` selects the derived implementation through a compile-time pattern. There is no virtual dispatch here. `Shape<Circle>` and `Shape<Other>` would be **different base types**, not one heterogeneous runtime base interface.
-
----
-
-# Traits and policy-based design
-
-Traits describe properties of a type; policies provide interchangeable behavior selected through template arguments.
-
-```cpp
-#include <string>
-
-struct ConsolePolicy {
-    static void log(const std::string& message) {
-        std::cout << message << '\n';
-    }
-};
-struct SilentPolicy {
-    static void log(const std::string&) {}
-};
-
-template <typename LogPolicy>
-class Processor {
-public:
-    void run() { LogPolicy::log("Running task..."); }
-};
-```
-
-`Processor<ConsolePolicy> a; a.run();` logs a message. `Processor<SilentPolicy> b; b.run();` stays silent. The policy choice is part of the class type.
-
----
-
-# Member-function pointers: the class interface
-
-```cpp
-class Shape {
-public:
-    virtual ~Shape() = default;
-    virtual double area() const = 0;
-};
-class Square : public Shape {
-public:
-    Square(double side) : side(side) {}
-    double area() const override { return side * side; }
-private:
-    double side;
-};
-```
-
-This independent example reuses last lecture's runtime-polymorphism model. Next we store the address of an operation in this interface; calling it still requires an object.
-
----
-
-# Member-function pointers: call through an object
-
-```cpp
-Square small(2.0), large(3.0);
-Shape* shapes[] = {&small, &large};
-double (Shape::*area_fun)() const = &Shape::area;
-
-for (const Shape* shape : shapes) {
-    double area = (shape->*area_fun)(); // 4.0, then 9.0.
-    std::cout << area << '\n';
-}
-```
-
-`->*` combines a pointer to an object with a member pointer; for an object/reference use `.*`.
-
-Since `area()` is virtual, dispatch reaches `Square::area()`. These pointers borrow automatic objects: **do not delete them**.
-
----
-
-# std::bind and function adapters
-
-```cpp
-#include <functional>
-
-int add(int a, int b) { return a + b; }
-
-std::function<int(int)> add5 =
-    std::bind(add, 5, std::placeholders::_1);
-int a = add5(3); // 8
-
-auto add5_lambda = [](int value) { return add(5, value); };
-int b = add5_lambda(3); // 8
-```
-
-`bind` fixes/rearranges arguments. For straightforward adaptations, a lambda usually makes the captured values and call easier to read. This adapter is optional, not a prerequisite for understanding callables.
-
----
-
-# Wrapper and virtual dispatch: different mechanisms
-
-```cpp
-#include <functional>
-
-auto compute_area = [](const Shape& shape) { return shape.area(); };
-std::function<double(const Shape&)> wrapped = compute_area;
-
-Square square(3.0);
-double a = compute_area(square); // 9.0
-double b = wrapped(square);      // 9.0
-```
-
-The lambda's type is its closure type, not `std::function`. Both calls reach `Square::area()` because **area is virtual**. Wrapping a callable is separate from virtual dispatch in the Shape hierarchy.
 
 ---
 
@@ -1461,7 +1459,7 @@ This simple implementation copies pushed/popped values and needs suitable `T` op
 std::vector<int> values = {1, 5, 8, 12, 3, 7};
 int threshold = 6;
 auto count = std::count_if(values.begin(), values.end(),
-    [threshold](int value) { return value > threshold; });
+                           [threshold](int value) { return value > threshold; });
 // count == 3
 ```
 

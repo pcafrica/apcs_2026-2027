@@ -296,7 +296,7 @@ using int_ptr = int*;
 
 # `auto` and type conversions.
 
-In many situations, the compiler can determine the correct type of an object using the initialization value.
+In many situations, the compiler can determine the correct type of an object using the initialization value (and/or integer literals).
 
 ```cpp
 auto a{42};       // int.
