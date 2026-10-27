@@ -77,8 +77,8 @@ To be defined.
 | Wed 14 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
 | Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[Markdown][lecture-04-md]] [[HTML][lecture-04-html]] [[PDF][lecture-04-pdf]] [[Recording][lecture-04-rec]] |
 | Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] |
-| Tue 27 Oct 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 |  |
+| Tue 27 Oct 2026 | 14:00 - 16:00 | 005 | Functions. Templates and generic programming in C++. [[Markdown][lecture-05-md]] [[HTML][lecture-05-html]] [[PDF][lecture-05-pdf]] [[Recording][lecture-05-rec]] |
+| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
 | Wed 04 Nov 2026 | 11:00 - 13:00 | 005 |  |
 | Tue 10 Nov 2026 | 14:00 - 16:00 | 005 |  |
 | Wed 11 Nov 2026 | 11:00 - 13:00 | 005 |  |
@@ -131,3 +131,12 @@ To be defined.
 [exercise-04-md]: exercises/04/04-c++_inheritance_polymorphism.md
 [exercise-04-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/04/04-c++_inheritance_polymorphism.html
 [exercise-04-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/04/04-c++_inheritance_polymorphism.pdf
+
+[lecture-05-md]: lectures/05/05-c++_functions_templates.md
+[lecture-05-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/05/05-c++_functions_templates.html
+[lecture-05-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/05/05-c++_functions_templates.pdf
+[lecture-05-rec]: ...
+
+[exercise-05-md]: exercises/05/05-c++_functions_templates.md
+[exercise-05-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/05/05-c++_functions_templates.html
+[exercise-05-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/05/05-c++_functions_templates.pdf

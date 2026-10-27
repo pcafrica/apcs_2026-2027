@@ -335,7 +335,7 @@ for (int x : values) { // Range-based for loop.
 // count == 3; above contains its own copy of threshold.
 ```
 
-No STL algorithm is needed to understand the capture. Changing `threshold` later does not change the already captured copy.
+Changing `threshold` later does not change the already captured copy.
 
 ---
 
@@ -454,11 +454,9 @@ result = task(2, 3); // 6
 
 ---
 
-# A closure type is not std::function
+# A closure type is not `std::function`
 
 ```cpp
-#include <functional>
-
 auto lambda = [](double x) { return x * x; };
 std::function<double(double)> wrapped = lambda;
 
@@ -475,8 +473,6 @@ For a direct local call, `auto lambda = ...` is usually sufficient.
 # An array of callable wrappers
 
 ```cpp
-#include <functional>
-
 int add(int a, int b) { return a + b; }
 struct Multiply {
     int operator()(int a, int b) const { return a * b; }
@@ -485,6 +481,7 @@ struct Multiply {
 std::function<int(int, int)> tasks[] = {
     add, Multiply{}, [](int a, int b) { return a - b; }
 };
+
 for (const auto& task : tasks) {
     std::cout << task(3, 4) << '\n'; // 7, then 12, then -1.
 }
@@ -503,10 +500,10 @@ Each element has the same wrapper type, despite the different target types. Refe
 - A wrapper can be empty: check it before calling.
 
 ```cpp
-#include <functional>
-
 std::function<double(double)> task;
-if (task) std::cout << task(2.0) << '\n';
+
+if (task)
+    std::cout << task(2.0) << '\n';
 ```
 
 Flexibility is not automatic lifetime safety. No exception handling is needed in these examples: never invoke an empty wrapper.
@@ -701,7 +698,7 @@ Use the explicit `<>` here to emphasize the default template argument.
 
 ---
 
-# constexpr: constant evaluation when required
+# `constexpr`: constant evaluation when required
 
 ```cpp
 constexpr unsigned long long factorial(unsigned n) {
@@ -1104,7 +1101,7 @@ Unqualified lookup does not automatically search the dependent base `Base<T>`. `
 
 ---
 
-# auto: extend deduction beyond fundamental types
+# `auto`: extend deduction beyond fundamental types
 
 ```cpp
 int value = 5;
@@ -1120,7 +1117,7 @@ Choose `auto` for readability, and choose `&`, `const` and pointer notation deli
 
 ---
 
-# Return-type deduction and decltype
+# Return-type deduction and `decltype`
 
 ```cpp
 auto add_mixed(int a, double b) { return a + b; } // Deduces double.
@@ -1138,7 +1135,7 @@ decltype((value)) alias = value; // int&
 
 ---
 
-# Type traits and if constexpr
+# Type traits and `if constexpr`
 
 ```cpp
 #include <type_traits>
