@@ -77,23 +77,23 @@ To be defined.
 | Tue 13 Oct 2026 | 14:00 - 16:00 | 005 | Object oriented programming. Classes and access control in C++. Operators. [[Markdown][lecture-03-md]] [[HTML][lecture-03-html]] [[PDF][lecture-03-pdf]] [[Recording][lecture-03-rec]] |
 | Wed 14 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-03-md]] [[HTML][exercise-03-html]] [[PDF][exercise-03-pdf]] [[Recording][exercise-03-rec]] |
 | Tue 20 Oct 2026 | 14:00 - 16:00 | 005 | Inheritance and polymorphism. [[Markdown][lecture-04-md]] [[HTML][lecture-04-html]] [[PDF][lecture-04-pdf]] [[Recording][lecture-04-rec]] |
-| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] |
+| Wed 21 Oct 2026 | 11:00 - 13:00 | 004 | Exercise session. [[Markdown][exercise-04-md]] [[HTML][exercise-04-html]] [[PDF][exercise-04-pdf]] |
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 | Functions. Templates and generic programming in C++. [[Markdown][lecture-05-md]] [[HTML][lecture-05-html]] [[PDF][lecture-05-pdf]] [[Recording][lecture-05-rec]] |
-| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Project session |
-| Wed 04 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
-| Tue 10 Nov 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 |  |
-| Tue 17 Nov 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 18 Nov 2026 | 11:00 - 13:00 | 005 |  |
-| Tue 24 Nov 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 25 Nov 2026 | 11:00 - 13:00 | 005 |  |
-| Tue 01 Dec 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 |  |
-| Wed 09 Dec 2026 | 11:00 - 13:00 | 005 |  |
-| Tue 15 Dec 2026 | 14:00 - 16:00 | 005 |  |
-| Wed 16 Dec 2026 | 11:00 - 13:00 | 004 |  |
-| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-5) |
-| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 6-10) |
+| Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Project session. |
+| Wed 04 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
+| Tue 10 Nov 2026 | 14:00 - 16:00 | 005 | The Standard Template Library. |
+| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Smart pointers, move semantics, exceptions, STL utilities. |
+| Tue 17 Nov 2026 | 14:00 - 16:00 | 005 | Project session. |
+| Wed 18 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. |
+| Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. |
+| Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Introduction to CMake. Exercise session. |
+| Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. Exercise session. |
+| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Object-oriented programming in Python. Classes, inheritance and polymorphism. Modules and packages. |
+| Wed 09 Dec 2026 | 11:00 - 13:00 | 005 | Integrating C++ and Python codes. |
+| Tue 15 Dec 2026 | 14:00 - 16:00 | 005 | Exercise session. |
+| Wed 16 Dec 2026 | 11:00 - 13:00 | 004 | Project session. |
+| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-5). |
+| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 6-10). |
 
 [projects-overview-md]: projects/projects_overview.md
 [projects-overview-html]: https://pcafrica.github.io/apcs_2026-2027/projects/projects_overview.html
