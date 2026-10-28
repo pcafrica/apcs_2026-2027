@@ -140,7 +140,7 @@ To be defined.
 [lecture-05-md]: lectures/05/05-c++_functions_templates.md
 [lecture-05-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/05/05-c++_functions_templates.html
 [lecture-05-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/05/05-c++_functions_templates.pdf
-[lecture-05-rec]: ...
+[lecture-05-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261027_142950-Meeting%20Recording.mp4&share=cQoVmIWbNCyEQZOuNZd0XJa6EgUCkg_ZBDsXGo3w1UUqiBiQdQ&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
 [exercise-05-md]: exercises/05/05-c++_functions_templates.md
 [exercise-05-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/05/05-c++_functions_templates.html
