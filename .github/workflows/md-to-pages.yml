@@ -39,6 +39,11 @@ jobs:
              marp -I exercises/ -o exercises/ --html
              marp -I exercises/ -o exercises/ --pdf --pdf-outlines
 
+      - name: Build projects overview
+        run: |
+             marp projects/projects_overview.md --html
+             marp projects/projects_overview.md --pdf --pdf-outlines
+
       - name: Setup pages
         uses: actions/configure-pages@v6
 

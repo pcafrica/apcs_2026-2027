@@ -33,8 +33,9 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
-## :warning: Project: infos and deadlines
+## :warning: Projects: infos and deadlines
 
+- **Project briefs** [[projects/](projects/)] | **Projects overview** [[Markdown][projects-overview-md]] [[HTML][projects-overview-html]] [[PDF][projects-overview-pdf]]
 - Deadline for submitting your work: **Wed 16 December 2026, 23:59:59**.
 - Project presentations: **Tue 22-Wed 23 December 2026**, during class hours.
 - Presentations will be held in person. For justified reasons, online attendance may be approved. In that case, please send the instructor a message requesting online participation.
@@ -93,6 +94,10 @@ To be defined.
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 |  |
 | Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-5) |
 | Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 6-10) |
+
+[projects-overview-md]: projects/projects_overview.md
+[projects-overview-html]: https://pcafrica.github.io/apcs_2026-2027/projects/projects_overview.html
+[projects-overview-pdf]: https://pcafrica.github.io/apcs_2026-2027/projects/projects_overview.pdf
 
 [lecture-01-md]: lectures/01/01-intro_unix.md
 [lecture-01-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/01/01-intro_unix.html
