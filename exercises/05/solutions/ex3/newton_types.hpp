@@ -7,7 +7,6 @@
 
 struct NewtonOptions {
   double residual_tolerance = 1e-12;
-  double step_tolerance = 1e-12;
   double derivative_threshold = 1e-14;
   unsigned int max_iterations = 100;
 };
