@@ -32,7 +32,7 @@ The focus is on callable objects and templates. The supplied code also uses thes
 | `std::copy_if`                   | Copy elements satisfying a predicate.                         | `<algorithm>`       |
 | `std::back_inserter`             | Produce an output iterator that appends to a container.       | `<iterator>`        |
 
-If these tools are new, use the supplied scaffold and this reference; their detailed study belongs to the STL lesson. Build examples with **C++17**; commands are in `README.md`.
+If these tools are new, use the supplied scaffold and this reference; their detailed study belongs to the STL lesson.
 
 ---
 
@@ -60,7 +60,7 @@ Starting from `hints/ex2.cpp`, sort and filter the supplied collection of books.
 3. Use `std::copy_if` and `std::back_inserter` to fill `filtered_books` with books by a selected author. Implement the filtering predicate using a lambda that captures that author's name.
 4. Display each result. For `"Jane Austen"`, expect exactly two books; also try an author with no matches.
 
-An ordering predicate must return false for equivalent keys: use `<` or `>`, **not `<=` or `>=`**. The original product/book data and print helpers are already supplied.
+The original product/book data and print helpers are already supplied.
 
 ---
 
@@ -100,52 +100,42 @@ The derivative threshold is an **absolute safeguard**, not a universal mathemati
 
 # Exercise 3: residual and stopping rules (3/4)
 
-After every finite update, compute
+5. After every finite update, compute
 
 $$
 r_{k+1}=|f(x_{k+1})|.
 $$
 
 - **Success:** $r_{k+1}\le\varepsilon_f$.
-- **Stagnation:** if the residual is still too large but
-  $$|\delta_k|\le\varepsilon_x(1+|x_{k+1}|),$$
-  return failure: a small step alone is not proof of a root.
 - **Other failures:** invalid input, non-finite values, rejected derivative, or exhausted iteration limit.
 
-Return a supplied **`NewtonResult<T>`** with value, convergence flag, completed-update count, residual, last-step magnitude and a diagnostic message. Inspect the flag; do not encode failure in a `NaN` or compare with one.
+Return a supplied **`NewtonResult<T>`** with value, convergence flag, completed-update count, residual, last-step magnitude and a diagnostic message.
 
 ---
 
 # Exercise 3: wrappers, templates and files (4/4)
 
-1. Complete the real-valued solver using `std::function<double(const double&)>` for both the function and its derivative.
-2. Solve $f(x)=x^2-1$ from $x_0=0.5$: expect a root near **1**.
-3. Make the solver a class template; solve $f(z)=z^2+1$ from $z_0=0.5+0.5i$: expect a root near **$i$**. Keep tolerances real-valued.
-4. Try both organizations: definitions visible in a header, or declarations in a header with `.cpp` definitions and **explicit instantiations for `double` and `std::complex<double>`**.
-5. Print the convergence flag, update count and final residual. Check an initially exact root, a zero derivative away from a root, iteration exhaustion and stagnation.
-
-Complete solutions are in `solutions/ex3/` and `solutions/ex3/header_only/`. The same regression tests can run against both versions; compile them separately.
+6. Complete the real-valued solver using `std::function<double(const double&)>` for both the function and its derivative.
+7. Solve $f(x)=x^2-1$ from $x_0=0.5$: expect a root near **1**.
+8. Make the solver a class template; solve $f(z)=z^2+1$ from $z_0=0.5+0.5i$: expect a root near **$i$**. Keep tolerances real-valued.
+9. Try both organizations: definitions visible in a header, or declarations in a header with `.cpp` definitions and **explicit instantiations for `double` and `std::complex<double>`**.
+10. Print the convergence flag, update count and final residual. Check an initially exact root, a zero derivative away from a root, iteration exhaustion and stagnation.
 
 ---
 
-# Template arguments as policies · guided example
+# A note on the use of template arguments as policies
 
-A **policy** supplies behavior selected through a template argument.
+**:warning: In C++, template arguments can be used as *policies*.**
 
-The `examples/` folder compares strings using two equality policies:
+This allows you to customize the behavior of a class or function without changing its core implementation. As templates provide a way to write generic code that can work with different data types, policies provide a way to write generic code that can behave according to different algorithms or strategies.
 
-- `CaseCompare`: characters must match exactly;
-- `NoCaseCompare`: compare their uppercase forms using safe `unsigned char` conversion;
-- `compare<Policy>` uses the policy in a free function;
-- `CompareString<Policy>` stores the policy in a function object.
+When you use a template argument as a policy, you are essentially saying, "Here is a piece of code, and I want to let users decide certain aspects of its behavior." This can include things like how elements are compared, how data is stored, which specific algorithm to apply, or how certain operations are performed.
 
-These policies test **equality**, not the strict ordering required by `std::sort`. They require default construction; the stored policy must also be callable on a const object.
-
-Case conversion follows the current C locale; this is not general Unicode case folding. Predict the four Boolean results before running the example.
+See the example included in the `examples` folder, comparing strings with two equality policies.
 
 ---
 
-# Exercise 4: template metaprogramming · optional
+# (Optional) Exercise 4: template metaprogramming
 
 Use a class template to calculate factorial values at compile time.
 
