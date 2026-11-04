@@ -57,7 +57,7 @@ Starting from `hints/ex2.cpp`, sort and filter the supplied collection of books.
    - ascending, passing a free function as a **function pointer**;
    - descending, passing a **lambda**.
 2. Using `std::stable_sort`, order books by the full author name in ascending lexicographic order, passing a **functor**. Preserve the preceding order within each equal-author group.
-3. Use `std::copy_if` and `std::back_inserter` to fill `filtered_books` with books by a selected author. Implement the filtering predicate using a lambda that captures that author's name.
+3. Use `std::copy_if` with `std::back_inserter` to fill `filtered_books` with books by a selected author. Implement the filtering predicate using a lambda that captures that author's name.
 4. Display each result. For `"Jane Austen"`, expect exactly two books; also try an author with no matches.
 
 The original product/book data and print helpers are already supplied.
@@ -77,7 +77,6 @@ Begin with $f:\mathbb R\to\mathbb R$, then extend the solver to suitable differe
 Use the supplied `NewtonOptions`:
 
 - residual tolerance $\varepsilon_f=10^{-12}$;
-- scaled-step tolerance $\varepsilon_x=10^{-12}$;
 - derivative threshold $\tau=10^{-14}$;
 - at most **100 updates**.
 
