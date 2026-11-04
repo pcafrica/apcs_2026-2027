@@ -92,8 +92,8 @@ To be defined.
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 | Integrating C++ and Python codes. |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 | Exercise session. |
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 | Project session. |
-| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-5). |
-| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 6-10). |
+| Tue 22 Dec 2026 | 14:00 - 16:00 | 005 | Project presentations (groups 1-6). |
+| Wed 23 Dec 2026 | 11:00 - 13:00 | 005 | Project presentations (groups 7-11). |
 
 [projects-overview-md]: projects/projects_overview.md
 [projects-overview-html]: https://pcafrica.github.io/apcs_2026-2027/projects/projects_overview.html
