@@ -20,7 +20,6 @@ public:
 };
 
 // Equality policies, not ordering predicates for std::sort.
-// Case conversion follows the current C locale; it is not Unicode case folding.
 // Function to compare two strings according to a policy.
 //
 // The policy is provided as a template parameter. We assume that
