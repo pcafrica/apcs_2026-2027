@@ -81,10 +81,10 @@ To be defined.
 | Tue 27 Oct 2026 | 14:00 - 16:00 | 005 | Functions. Templates and generic programming in C++. [[Markdown][lecture-05-md]] [[HTML][lecture-05-html]] [[PDF][lecture-05-pdf]] [[Recording][lecture-05-rec]] |
 | Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Project session. |
 | Wed 04 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
-| Tue 10 Nov 2026 | 14:00 - 16:00 | 005 | The Standard Template Library. |
-| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Smart pointers, move semantics, exceptions, STL utilities. |
+| Tue 10 Nov 2026 | 14:00 - 16:00 | 005 | The Standard Template Library. [[Markdown][lecture-06-md]] [[HTML][lecture-06-html]] [[PDF][lecture-06-pdf]] [[Recording][lecture-06-rec]] |
+| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Smart pointers, move semantics, exceptions, STL utilities. [[Markdown][lecture-07-md]] [[HTML][lecture-07-html]] [[PDF][lecture-07-pdf]] [[Recording][lecture-07-rec]] |
 | Tue 17 Nov 2026 | 14:00 - 16:00 | 005 | Project session. |
-| Wed 18 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. |
+| Wed 18 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-06-md]] [[HTML][exercise-06-html]] [[PDF][exercise-06-pdf]] |
 | Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. |
 | Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Introduction to CMake. Exercise session. |
 | Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. Exercise session. |
@@ -145,3 +145,17 @@ To be defined.
 [exercise-05-md]: exercises/05/05-c++_functions_templates.md
 [exercise-05-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/05/05-c++_functions_templates.html
 [exercise-05-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/05/05-c++_functions_templates.pdf
+
+[lecture-06-md]: lectures/06/06-c++_stl.md
+[lecture-06-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/06/06-c++_stl.html
+[lecture-06-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/06/06-c++_stl.pdf
+[lecture-06-rec]: ...
+
+[lecture-07-md]: lectures/07/07-c++_stl2.md
+[lecture-07-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2.html
+[lecture-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2.pdf
+[lecture-07-rec]: ...
+
+[exercise-06-md]: exercises/06/06-c++_stl_move.md
+[exercise-06-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/06/06-c++_stl_move.html
+[exercise-06-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/06/06-c++_stl_move.pdf
