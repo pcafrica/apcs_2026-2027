@@ -26,7 +26,7 @@ Students will acquire self-directed learning abilities, enabling them to stay cu
 
 ## Required skills
 
-Former knowledge of programming fundamentals (syntax, data types, variables, control structures, functions) is required for this course.
+Prior knowledge of programming fundamentals (syntax, data types, variables, control structures, functions) is required for this course.
 
 While prior experience with a programming language, such as C, C++, Java, or Python, is recommended, it is not mandatory.
 

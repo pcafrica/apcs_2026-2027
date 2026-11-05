@@ -99,7 +99,7 @@ Late milestones or final submissions may be rejected or penalized. Extension req
 
 ### Format
 
-- Submit the exam through Google Classroom using valid personal information and email address.
+- Submit the project through Google Classroom using valid personal information and email address.
 - Only **one student per group** should upload the final project submission on behalf of the entire group.
 - Each submission must list all members, their email addresses, and a concise description of individual contributions.
 - Submit the final project as a single `.tar.gz` or `.zip` archive named `Project_Surname1_Surname2.{zip,tar.gz}`. The archive must contain the source code, tests, documentation, examples, and configuration files needed to reproduce the results.

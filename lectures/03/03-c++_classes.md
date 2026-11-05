@@ -213,7 +213,7 @@ obj2.print(); // Calls the const version.
 
 The `this` pointer is a special keyword in C++ that represents a pointer to the current instance of a class. It is a hidden argument to all non-static member functions and is automatically passed to those functions by the compiler.
 
-It allows to **access members** of an object from within its member functions. It helps **resolve ambiguity** and allows you to access the class's members within its member functions, by allowing to distinguish between the local variables and member variables of a class when they have the same name.
+It allows you to **access members** of an object from within its member functions. It helps **resolve ambiguity** and allows you to access the class's members within its member functions, by allowing you to distinguish between the local variables and member variables of a class when they have the same name.
 
 ```cpp
 class MyClass {

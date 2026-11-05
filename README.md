@@ -33,7 +33,7 @@ Unless otherwise specified, all content here is licensed under a
 
 ---
 
-## :warning: Projects: infos and deadlines
+## :warning: Projects: information and deadlines
 
 - **Project briefs** [[projects/](projects/)] | **Projects overview** [[Markdown][projects-overview-md]] [[HTML][projects-overview-html]] [[PDF][projects-overview-pdf]]
 - Deadline for submitting your work: **Wed 16 December 2026, 23:59:59**.

@@ -305,7 +305,7 @@ Another significant innovation in C++ was the introduction of templates. Templat
 # C++ in the modern era
 
 ## Standardization efforts
-The C++ language has continued to evolve through a series of standards, each introducing new features and improvements. Notable standards include C++98, C++11, C++14, C++17, C++20, C++23, C++26 (released few months ago). These standards have added features like smart pointers, lambda expressions, range-based for loops, and modules, enhancing the language's expressiveness and safety.
+The C++ language has continued to evolve through a series of standards, each introducing new features and improvements. Notable standards include C++98, C++11, C++14, C++17, C++20, C++23, C++26 (released a few months ago). These standards have added features like smart pointers, lambda expressions, range-based for loops, and modules, enhancing the language's expressiveness and safety.
 
 ## Open source and the C++ community
 C++'s success can be attributed in part to the vibrant open-source community that has formed around it. Open-source libraries and frameworks, such as the [Boost](https://www.boost.org/) libraries, have extended C++'s functionality and encouraged collaborative development.
@@ -579,7 +579,7 @@ Initialization files in a shell are scripts or configuration files that are exec
 ---
 
 # Getting started
-To get a little hang of the shell, let’s try a few simple commands:
+To get the hang of the shell, let’s try a few simple commands:
 - `echo`: prints whatever you type at the shell prompt.
 - `date`: displays the current time and date.
 - `clear`: clears the terminal.
@@ -655,9 +655,9 @@ The shell looks for executables with a given name within directories specified i
 
 # A warning about filenames
 
-:warning: In order to live happily and without worries, **don't** use spaces nor accented characters in filenames!
+:warning: In order to live happily and without worries, **don't** use spaces or accented characters in filenames!
 
-Space characters in file names should be forbidden by law! The space is used as separation character, having it in a file name makes things a lot more complicated in any script (not just shell scripts).
+Space characters in file names should be forbidden by law! The space is used as a separator, having it in a file name makes things a lot more complicated in any script (not just shell scripts).
 
 Use underscores (snake case): `my_wonderful_file_name`, or uppercase characters (camel case): `myWonderfulFileName`, or hyphens: `my-wonderful-file-name`, or a mixture:
 `myWonderful_file-name`, instead.
@@ -737,9 +737,9 @@ We can add operators between commands in order to chain them together.
 
 # Advanced commands (2/3)
 - `sed` stands for **stream editor**, and it can perform many operations on files, such as searching, finding and replacing, inserting, or deleting. We give just a hint of its true power:
-    - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/"` replaces the first occurrence of "UNIX" with "Linux".
-    - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/2"` replaces the second occurrence of "UNIX" with "Linux".
-    - `echo "UNIX is great OS. UNIX is open source." | sed "s/UNIX/Linux/g"` replaces all occurrences of "UNIX" with "Linux".
+    - `echo "UNIX is a great OS. UNIX is open source." | sed "s/UNIX/Linux/"` replaces the first occurrence of "UNIX" with "Linux".
+    - `echo "UNIX is a great OS. UNIX is open source." | sed "s/UNIX/Linux/2"` replaces the second occurrence of "UNIX" with "Linux".
+    - `echo "UNIX is a great OS. UNIX is open source." | sed "s/UNIX/Linux/g"` replaces all occurrences of "UNIX" with "Linux".
     - `echo -e "ABC\nabc" | sed "/abc/d"` deletes lines matching "abc".
     - `echo -e "1\n2\n3\n4\n5\n6\n7\n8" | sed "3,6d"` deletes lines from 3 to 6.
 
