@@ -640,7 +640,7 @@ double c = midpoint(0.0, 2.0,
 | Function pointer            | A compatible function address is sufficient; no captured state.         |
 | `std::function<Signature>`  | Different compatible target types need one common runtime wrapper type. |
 | Function-template parameter | The caller's callable type can remain a compile-time parameter.         |
-    
+
 A template specialization may expose the concrete callable type to optimization, but **inlining is not guaranteed**. A wrapper can trade some overhead for a uniform interface.
 
 All three still require valid callable targets and valid lifetimes.

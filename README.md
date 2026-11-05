@@ -113,7 +113,7 @@ To be defined.
 [lecture-02-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/02/02-c++_intro.pdf
 [lecture-02-rec]: https://sissa-my.sharepoint.com/:v:/g/personal/pafrica_sissa_it/IQCwpoLUlVM3RaN8eOALW1RRAZKw09JO7By9loaC-4lkOWA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=K4gles
 
-[exercise-02-md]: exercises/01/01-intro_unix.md
+[exercise-02-md]: exercises/02/02-c++_intro.md
 [exercise-02-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/02/02-c++_intro.html
 [exercise-02-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/02/02-c++_intro.pdf
 [exercise-02-rec]: https://sissa-my.sharepoint.com/:v:/g/personal/pafrica_sissa_it/IQBFfhMfDkTGTpAwALZhpXJFAV8_77KzL6zHYV0CpRa3j48?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=3lMwqB
