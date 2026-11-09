@@ -21,188 +21,179 @@ _class: titlepage
 
 # Outline
 
-1. Containers
-   - Sequence containers
-   - Container adaptors
-   - Associative containers
-   - Special containers
-2. Iterators
-3. Algorithms
-4. Evolution of the STL
+1. Containers: sequences and associative containers
+2. Iterators: ranges, traversal and invalidation
+3. Algorithms: search, sort, transform and accumulate
+4. Parallel execution policies (C++17)
+5. Hands-on challenge
+
+**Examples use C++17**, unless explicitly marked C++20.
+
+**Optional appendices:** container details, utility types and language evolution.
+Headers are shown where space permits; identify any others needed to compile.
 
 ---
 
-<!--
-_class: titlepage
--->
+# The STL and the C++ Standard Library
 
-# An overview of the<br>Standard Template Library (STL) in C++
+- **STL:** generic containers, iterators, algorithms and function objects.
+- **Standard Library:** the STL plus strings, I/O, numerics, resource management and other facilities.
+- Standard C++ library names are generally in `std::` or its sub-namespaces. Macros and C compatibility headers have additional rules.
 
----
-
-# History
-
-In November 1993, Alexander Stepanov introduced the Standard Template Library (STL) to the ANSI/ISO committee for C++ standardization. This library was founded on the principles of generic programming and featured generic containers, iterators, and a comprehensive set of algorithms designed to operate on them.
-
-The proposal was not only accepted but also paved the way for what is now known as the Standard Library. The Standard Library has evolved into a vast collection of tools that play an indispensable role in modern C++ development.
-
-Notably, all functionalities provided by the Standard Library are encapsulated under the `std::` namespace or, in some cases, within sub-namespaces also contained within `std::`.
-
----
-
-# The Boost libraries
-
-Many components added to the Standard Library over the years were originally proposed in the [Boost C++ libraries](https://www.boost.org/), a collection of libraries designed to complement the Standard Library and cater to a wide range of applications.
-
-Notably, one outstanding component within the Boost libraries is the [Boost Graph Library](https://www.boost.org/doc/libs/1_72_0/libs/graph/doc/index.html), widely used by professionals working with graphs and networks.
-
-All Boost libraries are open-source and can be installed individually or as a whole on various Linux platforms using package managers. For instance, on Ubuntu, you can use the command `sudo apt-get install libboost-all-dev`. Alternatively, you can download the source code and compile them manually.
-
----
-
-# An overview of the STL (1/2)
-
-- **Porting of C libraries**: Several C libraries have been adapted to the `std` namespace. As an example, `<math.h>` becomes `<cmath>`, and they all begin with a 'c'.
-- **Containers**: Generic containers and iterators.
-- **Utilities**: Smart pointers, fixed-size collections of heterogeneous values like `pair` and `tuple`, clocks and timers, function wrappers, and predefined functors. Also, the `ratio` class for constant rationals.
-- **Algorithms**: These operate on ranges of values, usually stored in standard containers, to perform specific actions like sorting, transformations, and copying. Some of them even support parallel execution.
-- **Strings and text processing**: The `string` class and its derived classes, regular expressions, and efficient string manipulation tools.
-- **Support for I/O**: I/O streams and related utilities.
-- **Utilities for diagnostics**: Standard exception classes and exception handlers.
-
----
-
-# An overview of the STL (2/2)
-
-- **Numerics**: `complex<T>`, numeric limits, random numbers and distributions, and basic mathematical operators.
-- **Support for generic programming**: Type traits, `decltype`, `declval`, and `as_const`.
-- **Support for reference and move semantics**: Reference wrappers, `move()`, and `forward<T>`.
-- **Support for multithreading and concurrency**: Threads, mutexes, locks, and parallel algorithms.
-- **Support for internationalization**: `locale` and `wide_char`.
-- **Filesystem**: Tools for examining the file system.
-- **Allocators**: Utilities that allow you to change how objects are allocated within containers.
-- **Utilities for hybrid data**: `optional`, `variant`, and `any`.
-
----
-
-# A milestone: C++11
-
-- **Standardization process**: C++11 marked the successful completion of a rigorous standardization process.
-- **Modern features**: C++11 introduced modern language features like lambda expressions and range-based for loops.
-- **Enhanced Standard Library**: New containers, algorithms, and utility classes.
-- **Improved memory management**: Smart pointers were introduced in C++11.
-- **Initializer lists**: C++11 introduced initializer lists, simplifying data structure initialization.
-- **Simpler and safer code**: The addition of lambda expressions improved code readability and maintainability.
-- **Standardized threads**: It brought a standardized threading library, enabling concurrent and parallel programming.
-- **Improved performance**: Move semantics and rvalue references boosted resource management and program performance.
-
----
-
-<!--
-_class: titlepage
--->
-
-# Containers
+In November 1993, Alexander Stepanov presented the STL to the C++ standardization committee. Its generic design became a core part of the Standard Library.
 
 ---
 
 # Sequence containers
 
-Containers can be categorized based on how data is stored and handled internally. The categories include:
+A sequence stores elements in a position that does not depend on their value.
 
-- **Sequence containers**: `std::vector<T>`, `std::array<T,N>`, `std::deque<T>`, `std::list<T>`, `std::forward_list<T>`.
-  - Ordered collections of elements with their position independent of the element value.
-  - In `std::vector` and `std::array`, elements are guaranteed to be contiguous in memory and can be accessed directly using the `[]` operator.
+| Container | Storage and main use |
+|---|---|
+| `std::vector<T>` | Contiguous, dynamic size; a usual starting point |
+| `std::array<T, N>` | Contiguous, size fixed at compile time |
+| `std::deque<T>` | Random access; efficient growth at both ends |
+| `std::list<T>` | Doubly linked nodes; bidirectional traversal |
+| `std::forward_list<T>` | Singly linked nodes; forward traversal |
 
-- **Adaptors**: These are built on top of other containers and provide special operations:
-  - `std::stack<T>`, `std::queue<T>`, and `std::priority_queue<T>`.
+`vector` and `array` own their elements and release their storage automatically. The contiguous-storage statement for `vector` excludes its special `bool` specialization.
 
 ---
 
 # Example: `std::vector`
 
 ```cpp
-std::vector<int> v{2,4,5};      // 2, 4, 5.
-v.push_back(6);                 // 2, 4, 5, 6.
-v.pop_back();                   // 2, 4, 5.
-v[1] = 3;                       // 2, 3, 5.
-std::cout << v[2] << std::endl; // Prints: 5
-for (int x : v)
-    std::cout << x << ' '; // Prints: 2 3 5
-std::cout << std::endl;
+#include <vector>
+#include <iostream>
 
-v.reserve(8);              // Pre-allocate space for 8 elements.
-v.resize(5, 0);            // Resize to 5, fill new elements with 0.
-std::cout << v.capacity() << std::endl;  // Prints: 8
-std::cout << v.size() << std::endl;      // Prints: 5
+int main() {
+    std::vector<double> readings{2.0, 4.0, 5.0};
+    readings.push_back(6.0);          // 2, 4, 5, 6
+    readings.pop_back();              // 2, 4, 5
+    readings[1] = 3.0;                // 2, 3, 5
+    for (double x : readings) std::cout << x << ' ';
+    std::cout << '\n';                // 2 3 5
+}
 ```
+
+`pop_back()` requires a nonempty vector. `readings[i]` requires `i < readings.size()`.
+`at(i)` checks the index and throws `std::out_of_range` if it is invalid; exceptions are covered next lecture.
+
+---
+
+# Size, capacity, reserve and resize
+
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> readings{2.0, 3.0, 5.0};
+    readings.reserve(8); // Capacity >= 8; size remains 3.
+    std::cout << readings.size() << '\n'; // 3
+    readings.resize(5, 0.0);
+    for (double x : readings) std::cout << x << ' ';
+    // 2 3 5 0 0; size is now 5, capacity is still >= 8.
+}
+```
+
+**Size:** number of existing elements. **Capacity:** how many fit without reallocation.
+`reserve` prepares storage; `resize` adds or removes elements. Reserved storage beyond `size()` is not accessible through `[]`.
 
 ---
 
 # Example: `std::array`
 
 ```cpp
-std::array<int, 6> a{4,8,15,16,23,42};
-std::cout << a.size() << std::endl;    // 6
-std::cout << a[0] << std::endl;        // 4
-std::cout << a[3] << std::endl;        // 16
-std::cout << a.front() << std::endl;   // 4
-std::cout << a.back() << std::endl;    // 42
+#include <array>
+#include <iostream>
 
-std::array<int, 3> b{7,8,9};
-// a = b;  // Compiler error: types don't match!
+int main() {
+    std::array<double, 4> quadrature_weights{1, 3, 3, 1};
+    std::cout << quadrature_weights.size() << '\n'; // 4
+    std::cout << quadrature_weights[1] << '\n';     // 3
+    std::cout << quadrature_weights.front() << '\n'; // 1
+    std::cout << quadrature_weights.back() << '\n';  // 1
+    // quadrature_weights = std::array<double, 3>{1, 4, 1};
+    // Error: arrays of different sizes have different types.
+}
 ```
 
----
-
-![bg 70%](images/sequence_containers.png)
-
-[Source](https://hackingcpp.com/cpp/cheat_sheets.html)
+The size is part of the type and cannot change at runtime. `std::array<T, 0>` is allowed, but has no element to access.
 
 ---
 
-# Which sequence container to choose?
+# Range-based loops: values and references
 
-![bg 60%](images/which_container.png)
+```cpp
+#include <vector>
+#include <iostream>
 
----
+int main() {
+    std::vector<double> readings{1.0, 2.0, 3.0};
+    for (double x : readings) std::cout << x << ' ';
+    for (double& x : readings) x *= 2.0;
+    for (const auto& x : readings) std::cout << x << ' ';
+    // Prints: 1 2 3 2 4 6
+}
+```
 
-# Associative containers (1/3)
+- `double x`: a copy of each element.
+- `double& x`: access the element and allow modification.
+- `const auto& x`: read the element without copying it.
 
-- **Associative containers**: These collections have elements whose position depends on their content. They are divided into:
-  - **Maps**: Elements are key-value pairs.
-  - **Sets**: Elements are just values (in sets, keys and values are considered the same).
-  - Furthermore, they can be divided into **ordered** and **unordered**, depending on how the elements are stored, imposing different requirements on element types.
-
-#### :warning: In a set, the terms "value" and "key" are used interchangeably since they are equivalent.
-
-#### Quick examples:
-- **Map**: `std::map<std::string, int> ages = {{"Alice", 25}, {"Bob", 30}};`
-- **Set**: `std::set<int> unique_nums = {1, 2, 3, 2};` stores only `{1, 2, 3}`
-
----
-
-# Associative containers (2/3)
-
-#### Ordered associative containers
-
-- `std::map<Key, T>`, `std::multimap<Key, T>`: Sorted associative containers that contain key-value pairs (maps) and allow multiple elements with the same key (multimaps).
-- `std::set<Key>`, `std::multiset<Key>`: Sorted associative containers that contain unique keys (sets) and allow multiple elements with the same key (multisets).
-- **Requirements**: Elements must be **comparable** (define `operator<` or provide a custom comparator).
-- Typically implemented using **red-black trees** (self-balancing binary search trees).
-- **Complexity**: Insertion, deletion, and search are all $O(\log n)$.
+Copying a container copies its elements; a reference borrows the existing container.
 
 ---
 
-# Associative containers (3/3)
+# Associative containers
 
-#### Unordered associative containers
+Retrieve values by **key**, rather than by a numerical position.
 
-- `std::unordered_map<Key, T>`, `std::unordered_multimap<Key, T>`: Associative containers that contain key-value pairs (maps) and allow multiple elements with the same key (multimaps).
-- `std::unordered_set<Key>`, `std::unordered_multiset<Key>`: Associative containers that contain unique keys (sets) and allow multiple elements with the same key (multisets).
-- **Requirements**: Elements must be **hashable** (define `std::hash<Key>` or provide a custom hash function).
-- Typically implemented using **hash tables**.
-- **Complexity**: Average-case insertion, deletion, and search are all $O(1)$, but worst-case is $O(n)$ (due to hash collisions).
+| Family | One element per equivalent key | Multiple equivalent keys |
+|---|---|---|
+| Ordered key–value pairs | `map` | `multimap` |
+| Ordered keys | `set` | `multiset` |
+| Unordered key–value pairs | `unordered_map` | `unordered_multimap` |
+| Unordered keys | `unordered_set` | `unordered_multiset` |
+
+Use the `std::` prefix. In a set, the element itself is the key; in a map, each element is a key–value pair.
+
+---
+
+# Pairs and structured bindings (C++17)
+
+```cpp
+#include <utility>
+#include <iostream>
+
+int main() {
+    std::pair<double, double> sample{0.5, 1.25};
+    std::cout << sample.first << ' ' << sample.second << '\n';
+    const auto& [time, amplitude] = sample;
+    std::cout << time << ' ' << amplitude << '\n'; // 0.5 1.25
+}
+```
+
+A **pair** groups two values, possibly of different types.
+A **structured binding** gives names to its components.
+`const auto&` reads the original pair; `auto [t, a] = sample` would copy it.
+
+A map element has type `std::pair<const Key, T>`: its key cannot be changed in place.
+
+---
+
+# Ordered associative containers
+
+- Keys are kept sorted by `<`, or by a custom comparator.
+- A comparator must define a **strict weak ordering**: `comp(x, x)` is false; ordering and the induced equivalence are transitive.
+- Two keys are equivalent when both `comp(a, b)` and `comp(b, a)` are false. This need not mean `a == b`.
+- `map` and `set` keep one element per equivalent key.
+- Typically implemented as balanced search trees, often red-black trees.
+
+Search and ordinary single-element insertion take $O(\log n)$ comparisons. Erasing by key can also depend on how many elements match.
+
+Here $n$ is the number of stored elements.
 
 ---
 
@@ -210,21 +201,37 @@ std::array<int, 3> b{7,8,9};
 
 ```cpp
 #include <map>
+#include <string>
+#include <iostream>
 
-std::map<std::string, int> ages;
-ages["Alice"] = 25;
-ages["Bob"] = 30;
-ages.insert({"Charlie", 35});
-
-// Access elements.
-std::cout << ages["Alice"] << std::endl; // 25
-std::cout << ages.at("Bob") << std::endl; // 30
-
-// Iterate over elements (sorted by key).
-for (const auto& [name, age] : ages) {
-    std::cout << name << ": " << age << std::endl;
+int main() {
+    std::map<std::string, int> samples_per_sensor;
+    samples_per_sensor["S1"] = 25;
+    samples_per_sensor["S2"] = 30;
+    samples_per_sensor.insert({"S3", 35});
+    std::cout << samples_per_sensor.at("S2") << '\n'; // 30
+    for (const auto& [sensor, count] : samples_per_sensor) {
+        std::cout << sensor << ": " << count << '\n';
+    } // S1: 25, S2: 30, S3: 35, on separate lines.
 }
 ```
+
+`m[key]` inserts an absent key with an initialized value (`0` for `int`).
+`m.at(key)` throws `std::out_of_range` if absent. `m.find(key)` reports absence through an iterator, introduced next.
+
+---
+
+# Positions and half-open ranges
+
+An **iterator** describes a position and provides access to an element.
+
+- `begin()` points to the first element, if one exists.
+- `end()` is **past the end**: it does not refer to an element.
+- `[begin, end)` includes the first position and excludes the last.
+- For an empty container, `begin() == end()`.
+- A failed `find` returns `end()`; check before dereferencing.
+
+Advance through a range with `++it`, access an element with `*it`, and compare compatible iterators from the same sequence.
 
 ---
 
@@ -232,25 +239,33 @@ for (const auto& [name, age] : ages) {
 
 ```cpp
 #include <set>
+#include <iostream>
 
-std::set<int> numbers = {5, 2, 8, 2, 1};
-// Automatically sorted and duplicates removed: {1, 2, 5, 8}
-
-numbers.insert(3); // {1, 2, 3, 5, 8}
-numbers.erase(2);  // {1, 3, 5, 8}
-
-// Check if element exists.
-if (numbers.find(5) != numbers.end()) {
-    std::cout << "5 is in the set" << std::endl;
-}
-
-std::cout << numbers.count(3) << std::endl; // Either 1 or 0.
-
-// Iterate over elements (sorted).
-for (int num : numbers) {
-    std::cout << num << " ";
+int main() {
+    std::set<int> sensor_ids{5, 2, 8, 2, 1}; // 1, 2, 5, 8
+    sensor_ids.insert(3);                    // 1, 2, 3, 5, 8
+    sensor_ids.erase(2);                     // 1, 3, 5, 8
+    auto it = sensor_ids.find(5);
+    if (it != sensor_ids.end()) std::cout << *it << '\n'; // 5
+    std::cout << sensor_ids.count(3) << '\n';             // 1
+    for (int id : sensor_ids) std::cout << id << ' '; // 1 3 5 8
 }
 ```
+
+In a `set`, `count` is always 0 or 1. Iteration follows key order.
+Keys cannot be modified through set iterators.
+
+---
+
+# Unordered associative containers
+
+- Organize keys using **hash tables**, without sorted iteration.
+- Need a hash function and an equality predicate for keys.
+- Defaults: `std::hash<Key>` and `std::equal_to<Key>`.
+- Equivalent keys must produce the same hash. Equal hashes do not imply equivalent keys: collisions are possible.
+- Search and single-element insertion: $O(1)$ on average, $O(n)$ in the worst case. Erasing by key also depends on the number of matches.
+
+Ordered containers group keys by comparison; unordered containers group keys using equality and hashing.
 
 ---
 
@@ -258,287 +273,174 @@ for (int num : numbers) {
 
 ```cpp
 #include <unordered_map>
+#include <string>
+#include <iostream>
 
-std::unordered_map<std::string, int> scores;
-scores["Alice"] = 95;
-scores["Bob"] = 87;
-scores["Charlie"] = 92;
-
-// Fast average O(1) lookup.
-std::cout << scores["Alice"] << std::endl; // 95
-
-// Iterate (order not guaranteed).
-for (const auto& [name, score] : scores) {
-    std::cout << name << ": " << score << std::endl;
+int main() {
+    std::unordered_map<std::string, int> samples_per_sensor;
+    samples_per_sensor["S1"] = 25;
+    samples_per_sensor["S2"] = 30;
+    samples_per_sensor["S3"] = 35;
+    std::cout << samples_per_sensor.at("S1") << '\n'; // 25
+    for (const auto& [sensor, count] : samples_per_sensor) {
+        std::cout << sensor << ": " << count << '\n';
+    } // All three pairs; their iteration order is unspecified.
 }
 ```
 
----
-
-# Performance comparison
-
-| Operation                  | `vector` | `list` | `deque` | `map`       | `unordered_map` |
-|----------------------------|----------|--------|---------|-------------|-----------------|
-| Random access              | $O(1)$   | $O(n)$ | $O(1)$  | $O(\log n)$ | $O(1)$ avg      |
-| Insert/delete at end       | $O(1)$   | $O(1)$ | $O(1)$  | $O(\log n)$ | $O(1)$ avg      |
-| Insert/delete at beginning | $O(n)$   | $O(1)$ | $O(1)$  | $O(\log n)$ | $O(1)$ avg      |
-| Insert/delete in middle    | $O(n)$   | $O(1)$ | $O(n)$  | $O(\log n)$ | $O(1)$ avg      |
-| Search                     | $O(n)$   | $O(n)$ | $O(n)$  | $O(\log n)$ | $O(1)$ avg      |
-
-:bulb: **Note**: `list` and `map` have higher per-element memory overhead due to pointers/nodes.
+Lookup by key is constant time on average. `[]`, `at` and `find` have the same access/insertion distinctions as in `map`.
 
 ---
 
-# Container adaptors
+# Performance comparison: sequences
 
-Container adaptors provide restricted interfaces to underlying containers:
+| Operation | `vector` | `list` | `deque` |
+|---|---|---|---|
+| Access position $i$ | $O(1)$ | $O(n)$ traversal | $O(1)$ |
+| Append one element | $O(1)$ amortized | $O(1)$ | $O(1)$ |
+| Remove last element | $O(1)$ | $O(1)$ | $O(1)$ |
+| Insert/remove at front | $O(n)$ | $O(1)$ | $O(1)$ |
+| Insert/remove in middle | $O(n)$ | $O(1)$ at known position | $O(n)$ |
+| Search by value | $O(n)$ | $O(n)$ | $O(n)$ |
 
-- **`std::stack<T>`**: LIFO (Last In, First Out) structure.
-  - Operations: `push()`, `pop()`, `top()`.
-  - Default underlying container: `std::deque<T>`.
-
-- **`std::queue<T>`**: FIFO (First In, First Out) structure.
-  - Operations: `push()`, `pop()`, `front()`, `back()`.
-  - Default underlying container: `std::deque<T>`.
-
-- **`std::priority_queue<T>`**: Elements retrieved based on priority (largest element first by default).
-  - Operations: `push()`, `pop()`, `top()`.
-  - Default underlying container: `std::vector<T>`.
+Finding a position in `list` may take $O(n)$; it has no `[]`.
+A vector append that reallocates costs $O(n)$, but a sequence of appends has constant amortized cost per append.
 
 ---
 
-# Example: `std::stack`
+# Performance comparison: keys and container choice
 
-```cpp
-#include <stack>
+| Single-key operation | `map` / `set` | Unordered equivalents |
+|---|---|---|
+| Find | $O(\log n)$ | Average $O(1)$; worst $O(n)$ |
+| Insert | $O(\log n)$ | Average $O(1)$; worst $O(n)$ |
+| Erase by key (unique keys) | $O(\log n)$ | Average $O(1)$; worst $O(n)$ |
 
-std::stack<int> s;
-s.push(1);
-s.push(2);
-s.push(3);
+These count operations as $n$ grows; comparison/hash costs also matter.
+Node-based containers have per-element storage overhead.
 
-std::cout << s.top() << std::endl; // 3
-s.pop();
-std::cout << s.top() << std::endl; // 2
-```
+**Choose by required operations:** fixed-size data → `array`; dynamic sequences → start with `vector`; key lookup → map/set families. Use `deque` for both ends, or `list` for suitable operations at known positions. Measure before optimizing.
 
 ---
 
-# Example: `std::priority_queue`
+# Iterator categories and mutability
 
-```cpp
-#include <queue>
+Readable iterator capabilities build on each other:
 
-std::priority_queue<int> pq;
-pq.push(30);
-pq.push(10);
-pq.push(50);
-pq.push(20);
+**Input → Forward → Bidirectional → Random access**
 
-while (!pq.empty()) {
-    std::cout << pq.top() << " "; // 50 30 20 10
-    pq.pop();
-}
-```
+| Category | Additional capability | Example |
+|---|---|---|
+| Input | Read, single pass | Input stream |
+| Forward | Multiple passes | `forward_list` |
+| Bidirectional | Move backward with `--` | `list`, `map` |
+| Random access | Jump with `+`, `+=`, subtract positions | `vector`, `deque` |
 
----
-
-# Special containers (1/3)
-
-- **`std::pair<T1, T2>`**: Stores two heterogeneous values.
-  ```cpp
-  std::pair<int, std::string> p{1, "one"};
-  std::cout << p.first << ", " << p.second << std::endl;
-  ```
-
-- **`std::tuple<T1, T2, ...>`**: Stores multiple heterogeneous values.
-  ```cpp
-  std::tuple<int, std::string, double> t{1, "one", 1.0};
-  std::cout << std::get<0>(t) << std::endl; // 1
-  ```
-
-- **`std::optional<T>`** (C++17): May or may not contain a value.
-  Useful for dealing with datasets with missing data.
-  ```cpp
-  std::optional<int> opt = 42;
-  if (opt.has_value()) std::cout << *opt << std::endl;
-  ```
-
----
-
-# Special containers (2/3)
-
-- **`std::variant<T1, T2, ...>`** (C++17): Type-safe union.
-  ```cpp
-  std::variant<int, double, std::string> v = 42;
-  v = 3.14;
-  v = "hello";
-  
-  // Check which type is currently held.
-  if (std::holds_alternative<std::string>(v)) {
-    std::cout << "Holds string: " << std::get<std::string>(v) << std::endl;
-  }
-
-  // Safe access using std::get_if (returns nullptr if wrong type).
-  if (auto* ptr = std::get_if<double>(&value)) {
-    std::cout << "Double: " << *ptr << std::endl;
-  }
-
-  // Use std::visit to handle all possible types.
-  std::visit([](const auto &arg) {
-    std::cout << "Value: " << arg << std::endl;
-  }, v);
-  ```
-
----
-
-# Special containers (3/3)
-
-- **`std::any`** (C++17): Can hold any type.
-  ```cpp
-  std::any a = 42;
-  a = std::string("hello");
-  
-  // Check type and extract value safely.
-  if (a.has_value()) {
-    if (a.type() == typeid(std::string)) {
-      std::cout << std::any_cast<std::string>(a) << std::endl; 
-   }
-  }
-  
-  // Direct cast (throws exception if wrong type).
-  std::cout << std::any_cast<std::string>(a) << std::endl;
-  ```
-
----
-
-<!--
-_class: titlepage
--->
-
-# Iterators
-
----
-
-# What are iterators?
-
-Iterators are objects that allow traversal through the elements of a container. They act as a bridge between containers and algorithms, providing a uniform interface for accessing elements.
-
-#### Iterator categories (from least to most powerful):
-
-1. **Input iterators**: Read-only, single-pass (e.g., reading from input stream).
-2. **Output iterators**: Write-only, single-pass (e.g., writing to output stream).
-3. **Forward iterators**: Read/write, multi-pass, forward direction only.
-4. **Bidirectional iterators**: Forward + backward movement (e.g., `std::list`).
-5. **Random access iterators**: Direct access to any element (e.g., `std::vector`).
+**Output iterators** describe writable destinations separately.
+Mutability is independent of this chain: `const_iterator` reads without modifying elements; set iterators also protect keys.
 
 ---
 
 # Iterator example
 
 ```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
+#include <vector>
+#include <iostream>
 
-// Using iterators.
-for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
-    std::cout << *it << " ";
-}
-
-// Using const iterators.
-for (std::vector<int>::const_iterator it = vec.cbegin(); 
-     it != vec.cend(); ++it) {
-    std::cout << *it << " ";
-}
-
-// Reverse iterators.
-for (auto rit = vec.rbegin(); rit != vec.rend(); ++rit) {
-    std::cout << *rit << " "; // 5 4 3 2 1
+int main() {
+    std::vector<double> residuals{0.1, 0.2, 0.3};
+    for (auto it = residuals.begin(); it != residuals.end(); ++it) {
+        *it *= 2.0;
+    }
+    for (auto it = residuals.cbegin(); it != residuals.cend(); ++it) {
+        std::cout << *it << ' '; // 0.2 0.4 0.6
+    }
+    for (auto it = residuals.rbegin(); it != residuals.rend(); ++it) {
+        std::cout << *it << ' '; // 0.6 0.4 0.2
+    }
 }
 ```
+
+`begin()` returns `std::vector<double>::iterator` here; `cbegin()` returns `std::vector<double>::const_iterator`. Reverse iterators visit elements backward.
 
 ---
 
 # Common iterator operations
 
 ```cpp
-std::vector<int> vec = {10, 20, 30, 40, 50};
+#include <vector>
+#include <iterator>
+#include <iostream>
 
-auto it = vec.begin();
-std::cout << *it << std::endl;        // 10 (dereference)
-
-++it;                                 // Move to next element.
-std::cout << *it << std::endl;        // 20
-
-it += 2;                              // Jump forward (random access only).
-std::cout << *it << std::endl;        // 40
-
-auto distance = std::distance(vec.begin(), it); // 3
-std::cout << distance << std::endl;
-
-std::advance(it, 1);                  // Move forward by 1.
-std::cout << *it << std::endl;        // 50
-```
-
----
-
-# Iterator invalidation :warning:
-
-Modifying containers can invalidate iterators:
-
-```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
-
-for (auto it = vec.begin(); it != vec.end(); ++it) {
-    if (*it == 3) {
-        vec.erase(it);  // ⚠️ Invalidates 'it'!
-        // Correct: it = vec.erase(it);
-    }
+int main() {
+    std::vector<int> nodes{10, 20, 30, 40, 50};
+    auto it = nodes.begin();
+    ++it;                                   // Points to 20.
+    it += 2;                                // Points to 40.
+    std::cout << std::distance(nodes.begin(), it) << '\n'; // 3
+    std::advance(it, 1);
+    std::cout << *it << '\n';                // 50
 }
 ```
 
-:bulb: **Rule**: After modifying a container, update or re-obtain iterators.
+`+=` and direct iterator subtraction require random access.
+`distance` and `advance` are constant time for random access, but can be linear for other categories. Stay within valid positions; a negative advance requires bidirectional traversal.
 
 ---
 
-<!--
-_class: titlepage
--->
+# Iterator invalidation: erase safely
 
-# Algorithms
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> sensor_ids{1, 3, 3, 2, 3};
+    for (auto it = sensor_ids.begin(); it != sensor_ids.end();) {
+        if (*it == 3) {
+            it = sensor_ids.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    for (int id : sensor_ids) std::cout << id << ' '; // 1 2
+}
+```
+
+`vector::erase` invalidates iterators and references at or after the erased position. It returns the next valid position, possibly `end()`.
+This loop also handles consecutive matches and an empty vector.
+
+---
+
+# Iterator invalidation: vector growth
+
+- **Reallocation** invalidates all iterators, pointers and references to vector elements.
+- `reserve(n)` reallocates when `n > capacity()`; otherwise it preserves them.
+- `push_back` without reallocation preserves access to existing elements, but invalidates the previous `end()`.
+- `erase` invalidates positions at and after the removal, including the previous `end()`.
+
+Appending while traversing the same vector may invalidate your position and also changes the loop's endpoint. Keep traversal bounds and modifications consistent.
+
+Invalidation rules depend on the container and operation.
 
 ---
 
 # STL algorithms overview
 
-The `<algorithm>` header provides a rich collection of functions for:
-- **Searching**: `find`, `binary_search`, `lower_bound`, `upper_bound`
-- **Sorting**: `sort`, `stable_sort`, `partial_sort`
-- **Modifying**: `copy`, `move`, `transform`, `replace`, `fill`
-- **Removing**: `remove`, `remove_if`, `unique`
-- **Partitioning**: `partition`, `stable_partition`
-- **Min/Max**: `min`, `max`, `min_element`, `max_element`
-- **Numeric**: `accumulate`, `inner_product`, `partial_sum` (in `<numeric>`)
+Algorithms commonly operate on valid half-open iterator ranges.
 
-:bulb: Most algorithms work with iterator ranges `[begin, end)`.
+| Purpose | Examples |
+|---|---|
+| Inspect / search | `find`, `find_if`, `count`, `binary_search` |
+| Sort / partition | `sort`, `stable_sort`, `partial_sort`, `partition` |
+| Modify / copy | `copy`, `transform`, `replace`, `fill`, `reverse` |
+| Logical removal | `remove`, `remove_if`, `unique` |
+| Extrema | `min`, `max`, `min_element`, `max_element` |
+| Sorted set operations | `set_union`, `set_intersection`, `set_difference` |
+| Numeric operations | `accumulate`, `inner_product`, `partial_sum` |
 
----
-
-# Algorithm categories
-
-1. **Non-modifying algorithms**: Inspect but don't change elements
-   - `find`, `count`, `all_of`, `any_of`, `none_of`
-
-2. **Modifying algorithms**: Change elements or container structure
-   - `copy`, `transform`, `replace`, `remove`, `reverse`
-
-3. **Sorting algorithms**: Order elements
-   - `sort`, `stable_sort`, `partial_sort`, `nth_element`
-
-4. **Set algorithms**: Operate on sorted ranges
-   - `set_union`, `set_intersection`, `set_difference`
-
-5. **Numeric algorithms**: Mathematical operations (in `<numeric>`)
-   - `accumulate`, `inner_product`, `adjacent_difference`
+Include `<algorithm>`; numeric operations use `<numeric>`.
+These algorithms modify element values where required; resizing a container requires its own operations.
 
 ---
 
@@ -547,23 +449,21 @@ The `<algorithm>` header provides a rich collection of functions for:
 ```cpp
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
-std::vector<int> vec = {1, 2, 3, 4, 5};
-
-// find: Linear search.
-auto it = std::find(vec.begin(), vec.end(), 3);
-if (it != vec.end()) {
-    std::cout << "Found: " << *it << std::endl;
+int main() {
+    std::vector<int> sensor_ids{1, 2, 3, 4, 5};
+    auto it = std::find(sensor_ids.begin(), sensor_ids.end(), 3);
+    if (it != sensor_ids.end()) std::cout << "Found: " << *it << '\n';
+    auto count = std::count(sensor_ids.begin(), sensor_ids.end(), 3);
+    std::cout << "Count: " << count << '\n'; // 1
+    bool found = std::binary_search(sensor_ids.begin(), sensor_ids.end(), 3);
+    std::cout << "Binary search: " << found << '\n'; // 1
 }
-
-// count: Count occurrences.
-int count = std::count(vec.begin(), vec.end(), 3);
-std::cout << "Count: " << count << std::endl;
-
-// binary_search: Requires sorted range.
-bool found = std::binary_search(vec.begin(), vec.end(), 3);
-std::cout << "Binary search: " << found << std::endl;
 ```
+
+`find` and `count` scan the range; `auto` preserves the count's return type.
+Use `binary_search` on a range sorted with the same ordering used for the search. Its number of comparisons is logarithmic; iterator traversal may be linear without random access.
 
 ---
 
@@ -572,63 +472,80 @@ std::cout << "Binary search: " << found << std::endl;
 ```cpp
 #include <algorithm>
 #include <vector>
+#include <functional>
+#include <cmath>
 
-std::vector<int> vec = {5, 2, 8, 1, 9};
-
-// sort: Average O(n log n).
-std::sort(vec.begin(), vec.end());
-// vec is now: {1, 2, 5, 8, 9}
-
-// Sort in descending order.
-std::sort(vec.begin(), vec.end(), std::greater<int>());
-// vec is now: {9, 8, 5, 2, 1}
-
-// Custom comparator.
-std::sort(vec.begin(), vec.end(), [](int a, int b) {
-    return std::abs(a) < std::abs(b);
-});
+int main() {
+    std::vector<double> residuals{-0.3, 0.1, -0.1, 0.2};
+    std::sort(residuals.begin(), residuals.end());
+    // -0.3, -0.1, 0.1, 0.2
+    std::sort(residuals.begin(), residuals.end(), std::greater<double>{});
+    // 0.2, 0.1, -0.1, -0.3
+    std::sort(residuals.begin(), residuals.end(), [](double a, double b) {
+        return std::abs(a) < std::abs(b);
+    }); // Magnitudes: 0.1, 0.1, 0.2, 0.3
+}
 ```
+
+`sort` needs random-access iterators and movable/assignable elements; `list` provides its own `sort()` member. C++17 guarantees $O(n \log n)$ comparisons.
+
+---
+
+# Comparators and stability
+
+The comparator must define a strict weak ordering (as for ordered containers).
+
+- `comp(x, x)` must be false; ordering and equivalence must be transitive.
+- For magnitude comparison, `-0.1` and `0.1` are equivalent even though they are unequal.
+- `std::sort` may change the relative order of equivalent elements.
+- `std::stable_sort` preserves their relative order from its input range.
+
+For the residual example, use finite values: NaNs would break the required ordering. The final order of the two equal-magnitude residuals is not specified by `sort`.
 
 ---
 
 # Example: Modifying algorithms
 
 ```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
-std::vector<int> result(5);
+#include <algorithm>
+#include <vector>
 
-// copy: Copy elements.
-std::copy(vec.begin(), vec.end(), result.begin());
-
-// transform: Apply function to each element.
-std::transform(vec.begin(), vec.end(), result.begin(),
-               [](int x) { return x * 2; });
-// result is now: {2, 4, 6, 8, 10}
-
-// replace: Replace all occurrences.
-std::replace(vec.begin(), vec.end(), 3, 99);
-// vec is now: {1, 2, 99, 4, 5}
+int main() {
+    std::vector<double> readings{1, 2, 3, 4, 5};
+    std::vector<double> result(readings.size());
+    std::copy(readings.begin(), readings.end(), result.begin());
+    std::transform(readings.begin(), readings.end(), result.begin(),
+                   [](double x) { return x * 1e-3; });
+    // result: 0.001, 0.002, 0.003, 0.004, 0.005 (mm to m)
+    std::replace(readings.begin(), readings.end(), 3.0, 3.5);
+    // readings: 1, 2, 3.5, 4, 5
+}
 ```
+
+The destination must have enough existing writable elements. `reserve` alone would not create them. Here `result` has the same size as `readings`; these algorithms do not resize it.
 
 ---
 
 # Example: Removing algorithms
 
 ```cpp
-std::vector<int> vec = {1, 2, 3, 2, 4, 2, 5};
+#include <algorithm>
+#include <vector>
 
-// remove: Moves elements to end, returns new logical end.
-auto new_end = std::remove(vec.begin(), vec.end(), 2);
-vec.erase(new_end, vec.end()); // Actually remove them.
-// vec is now: {1, 3, 4, 5}
-
-// remove_if: Remove elements satisfying predicate.
-vec = {1, 2, 3, 4, 5, 6};
-new_end = std::remove_if(vec.begin(), vec.end(),
-                         [](int x) { return x % 2 == 0; });
-vec.erase(new_end, vec.end());
-// vec is now: {1, 3, 5}
+int main() {
+    std::vector<int> sensor_ids{1, 2, 3, 2, 4, 2, 5};
+    auto new_end = std::remove(sensor_ids.begin(), sensor_ids.end(), 2);
+    // Size is still 7; [begin, new_end) contains 1, 3, 4, 5.
+    sensor_ids.erase(new_end, sensor_ids.end()); // Size is now 4.
+    sensor_ids = {1, 2, 3, 4, 5, 6};
+    new_end = std::remove_if(sensor_ids.begin(), sensor_ids.end(),
+                             [](int id) { return id % 2 == 0; });
+    sensor_ids.erase(new_end, sensor_ids.end()); // 1, 3, 5
+}
 ```
+
+`remove` / `remove_if` compact retained elements stably and return the new logical end. Values in the remaining tail are unspecified.
+The container's `erase` operation then changes its size.
 
 ---
 
@@ -637,130 +554,198 @@ vec.erase(new_end, vec.end());
 ```cpp
 #include <numeric>
 #include <vector>
+#include <functional>
+#include <iostream>
 
-std::vector<int> vec = {1, 2, 3, 4, 5};
-
-// accumulate: Sum of elements.
-int sum = std::accumulate(vec.begin(), vec.end(), 0);
-std::cout << "Sum: " << sum << std::endl; // 15
-
-// Product of elements.
-int product = std::accumulate(vec.begin(), vec.end(), 1,
-                              std::multiplies<int>());
-std::cout << "Product: " << product << std::endl; // 120
-
-// inner_product: Dot product.
-std::vector<int> vec2 = {1, 2, 3, 4, 5};
-int dot = std::inner_product(vec.begin(), vec.end(), vec2.begin(), 0);
-std::cout << "Dot product: " << dot << std::endl; // 55
+int main() {
+    std::vector<double> samples{0.5, 1.5, 2.5};
+    double sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+    double product = std::accumulate(samples.begin(), samples.end(),
+                                      1.0, std::multiplies<double>{});
+    std::vector<double> weights{1.0, 2.0, 1.0};
+    double dot = std::inner_product(samples.begin(), samples.end(),
+                                    weights.begin(), 0.0);
+    std::cout << sum << ' ' << product << ' ' << dot << '\n';
+    // 4.5 1.875 6
+}
 ```
+
+The second range of `inner_product` must contain at least as many elements as the first. The products are evaluated before being accumulated.
+
+---
+
+# Choose the accumulator type
+
+```cpp
+#include <numeric>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> samples{0.5, 1.5};
+    auto truncated = std::accumulate(samples.begin(), samples.end(), 0);
+    auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+    std::cout << truncated << ' ' << sum << '\n'; // 1 2
+}
+```
+
+- The initial value selects the accumulator type: `0` → `int`, `0.0` → `double`.
+- Each step stores the result back into that type; integer accumulation truncates these fractional intermediate results.
+- Empty ranges return the initial value (`0.0` for sums, `1.0` for products).
+- Integer products can overflow before reaching a wider accumulator.
 
 ---
 
 # Why use STL algorithms?
 
-Comparing manual loops vs STL algorithms:
-
 ```cpp
-// Manual loop (error-prone, verbose).
-std::vector<int> vec = {1, 2, 3, 4, 5};
-int sum = 0;
-for (size_t i = 0; i < vec.size(); ++i) {
-    sum += vec[i];
-}
+#include <vector>
+#include <numeric>
+#include <cstddef>
+#include <iostream>
 
-// STL algorithm (concise, expressive).
-int sum = std::accumulate(vec.begin(), vec.end(), 0);
+int main() {
+    std::vector<double> samples{0.5, 1.5, 2.5};
+    double manual_sum = 0.0;
+    for (std::size_t i = 0; i < samples.size(); ++i) {
+        manual_sum += samples[i];
+    }
+    double algorithm_sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+    std::cout << (manual_sum == algorithm_sum) << '\n'; // 1
+}
 ```
 
-:fire: **Benefits**: More readable, less error-prone, potentially optimized, supports parallel execution (C++17).
+Algorithms express intent and reuse standard implementations. This sum performs the same ordered additions as the loop.
+`accumulate` itself has no execution-policy overload.
 
 ---
 
 # Parallel algorithms (C++17)
 
-Many algorithms support execution policies for parallel/vectorized execution:
-
 ```cpp
 #include <execution>
 #include <algorithm>
+#include <vector>
 
-std::vector<int> vec(1'000'000);
-std::iota(vec.begin(), vec.end(), 0);
-
-// Sequential execution.
-std::sort(std::execution::seq, vec.begin(), vec.end()); // Same as: std::sort(vec.begin(), vec.end()).
-
-// Parallel execution.
-std::sort(std::execution::par, vec.begin(), vec.end());
-
-// Parallel + vectorized execution.
-std::sort(std::execution::par_unseq, vec.begin(), vec.end());
+int main() {
+    std::vector<double> residuals{0.3, -0.2, 0.1, -0.4};
+    std::sort(std::execution::seq, residuals.begin(), residuals.end());
+    std::sort(std::execution::par, residuals.begin(), residuals.end());
+    std::sort(std::execution::par_unseq, residuals.begin(), residuals.end());
+}
 ```
 
----
-
-# Top 10 must-know algorithms
-
-For this course, prioritize mastering these algorithms:
-
-1. **`std::sort`**: Sorting elements
-2. **`std::find` / `std::find_if`**: Searching for elements
-3. **`std::copy`**: Copying elements between containers
-4. **`std::transform`**: Applying functions to ranges
-5. **`std::accumulate`**: Summing or reducing elements
-6. **`std::count` / `std::count_if`**: Counting elements
-7. **`std::remove` / `std::remove_if`**: Removing elements
-8. **`std::for_each`**: Applying function to each element
-9. **`std::max_element` / `std::min_element`**: Finding extrema
-10. **`std::reverse`**: Reversing element order
+- `seq`: sequential execution in the calling thread.
+- `par`: permits parallel execution; `par_unseq` also permits unsequenced execution for vectorization.
+- Policies permit parallelism, without guaranteeing a speedup; measure larger inputs.
+- Support and linking requirements depend on the library/backend.
 
 ---
 
-# Common STL pitfalls
+# Parallel algorithms: functions and guarantees
 
-1. **Iterator invalidation**: Modifying containers while iterating
-   ```cpp
-   for (auto it = vec.begin(); it != vec.end(); ++it) {
-       vec.push_back(42); // ⚠️ Invalidates iterators!
-   }
-   ```
+- Functions invoked by parallel algorithms must avoid data races. For `par_unseq`, they must also avoid operations such as blocking synchronization.
+- A comparator that only reads its arguments, as in our residual example, does not share mutable state.
+- The overload with `seq` is sequential, but differs from the overload without a policy in exception handling: an uncaught exception from a user function causes termination for the standard policies.
+- Select a policy only after checking the algorithm's requirements and measuring a sufficiently large workload.
 
-2. **Copying large containers**: Use references or move semantics
-   ```cpp
-   void process(std::vector<int> v);        // ❌ Copies entire vector.
-   void process(const std::vector<int>& v); // ✅ No copy.
-   ```
-
-3. **Using `[]` on maps**: Creates element if key doesn't exist
-   ```cpp
-   std::map<int, std::string> m;
-   std::cout << m[1]; // ⚠️ Creates entry with key 1.
-   // Use m.at(1) or m.find(1) for safer access.
-   ```
+Exception handling and time measurement are covered next lecture.
 
 ---
 
-# Common STL pitfalls (continued)
+# Common pitfalls: copies and map access
 
-4. **Forgetting to erase after remove**
-   ```cpp
-   vec.remove(vec.begin(), vec.end(), 5); // ❌ Doesn't actually remove.
-   vec.erase(std::remove(vec.begin(), vec.end(), 5), vec.end()); // ✅
-   ```
+- A by-value container parameter copies an lvalue argument; an rvalue may be moved. Use `const std::vector<double>&` to inspect an existing vector without copying it.
+- A reference borrows the container; the original must remain alive.
+- `m[key]` inserts an absent key. Use `at` for checked access (throws if absent), or `find` to test existence.
+- A failed `find` returns `end()`: check it before accessing the element.
+- After `std::remove`, pass the returned logical end to container `erase` to change the size.
+- Compare iterator positions only within their valid comparison domain, normally the same sequence.
 
-5. **Comparing iterators from different containers**
-   ```cpp
-   std::vector<int> v1 = {1, 2, 3};
-   std::vector<int> v2 = {1, 2, 3};
-   if (v1.begin() == v2.begin()) { /* ⚠️ Undefined behavior! */ }
-   ```
+Move semantics and smart pointers are next-lecture topics.
 
-6. **Not checking return values**
-   ```cpp
-   auto it = map.find(key);
-   std::cout << it->second; // ⚠️ Check 'if (it != map.end())' first!
-   ```
+---
+
+# Select data and grow the output
+
+```cpp
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> readings{1.0, -2.0, 3.0};
+    std::vector<double> positive;
+    std::copy_if(readings.begin(), readings.end(),
+                 std::back_inserter(positive),
+                 [](double x) { return x > 0.0; });
+    for (double x : positive) std::cout << x << ' '; // 1 3
+}
+```
+
+`copy_if` copies only elements satisfying the predicate.
+`back_inserter` returns an **output iterator** that appends assigned values using `push_back`; the vector grows as needed.
+
+---
+
+# Hands-on challenge
+
+```cpp
+#include <vector>
+
+int main() {
+    std::vector<double> lengths_mm{1, -2, 3, 0, 5};
+    std::vector<double> lengths_m;
+    for (double length : lengths_mm) {
+        if (length > 0.0) lengths_m.push_back(length * 1e-3);
+    }
+}
+```
+
+Refactor the loop to select positive measured lengths and convert millimetres to metres using STL algorithms.
+
+**Expected:** `{0.001, 0.003, 0.005}`; input remains unchanged.
+**Hint:** `copy_if` with `back_inserter`, followed by `transform` on the output.
+Also consider empty input or no positive measurements.
+
+---
+
+# Hands-on challenge: solution
+
+```cpp
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> lengths_mm{1, -2, 3, 0, 5};
+    std::vector<double> lengths_m;
+    std::copy_if(lengths_mm.begin(), lengths_mm.end(),
+                 std::back_inserter(lengths_m),
+                 [](double length) { return length > 0.0; });
+    std::transform(lengths_m.begin(), lengths_m.end(), lengths_m.begin(),
+                   [](double length) { return length * 1e-3; });
+    for (double length : lengths_m) std::cout << length << ' ';
+    // 0.001 0.003 0.005
+}
+```
+
+Both algorithms handle empty ranges. Transforming this range in place is valid.
+Selection and conversion each take linear time in the range they traverse.
+
+---
+
+# Conclusion and next lecture
+
+1. Choose containers by required operations, storage and access costs.
+2. Use valid half-open ranges, check returned iterators and track invalidation.
+3. Express data operations with algorithms; check iterator requirements, output storage, ordering and numeric types.
+
+**Next lecture:** smart pointers and reference wrappers, move semantics, exceptions, I/O streams, random numbers, time measurement and filesystem.
+
+The following appendices are optional reference material.
 
 ---
 
@@ -768,25 +753,217 @@ For this course, prioritize mastering these algorithms:
 _class: titlepage
 -->
 
-# Evolution of the STL
+# Appendix A<br>Container details and utility types
+
+Optional material; not part of the core lecture.
 
 ---
 
-# Essential vs advanced features
+<div style="position: relative; width: 800px; margin: 0 auto; line-height: 0;">
+<img src="images/sequence_containers.png" style="width: 100%;" alt="Storage diagrams and operations for array, vector, deque, list and forward_list">
+<span style="position:absolute; left:26.2%; top:31.0%; width:32%; background:#f8f8f8; color:#777; font:9px monospace; line-height:13px;">cout &lt;&lt; v.capacity(); // &gt;= 9</span>
+<span style="position:absolute; left:60.2%; top:43.0%; width:36.2%; background:white; color:#333; font:10px sans-serif; line-height:12px;">fast traversal; amortized O(1) append at back</span>
+<span style="position:absolute; left:26.2%; top:51.9%; width:32%; background:#f8f8f8; color:#777; font:9px monospace; line-height:13px;">// common element-access/modifier operations</span>
+<span style="position:absolute; left:26.2%; top:70.4%; width:32%; background:#f8f8f8; color:#777; font:9px monospace; line-height:13px;">l.splice(std::next(l.begin()), std::move(k));</span>
+</div>
 
-## Essential (must master):
-- Containers: `vector`, `map`, `set`, `array`
-- Iterators: basic usage and iteration patterns
-- Algorithms: `sort`, `find`, `transform`, `copy`, `accumulate`
-- Range-based for loops
-- Smart pointers: `unique_ptr`, `shared_ptr`
+[Adapted from Hacking C++](https://hackingcpp.com/cpp/std/sequence_containers.png). `next`: `<iterator>`. `deque` has no `reserve`/`capacity`.
 
-## Advanced:
-- `forward_list`, `deque`
-- Custom allocators
-- Parallel algorithms
-- Ranges library (C++20)
-- Concepts (C++20)
+---
+
+# Which sequence container to choose?
+
+![bg 65%](images/which_container.png)
+
+[Source: Hacking C++](https://hackingcpp.com/cpp/std/sequence_containers.html)
+
+<!-- Allocators and non-standard containers are optional follow-up topics. -->
+
+---
+
+# Container adaptors
+
+Adaptors restrict the interface of an underlying container.
+
+| Adaptor | Retrieval order | Main operations | Default storage |
+|---|---|---|---|
+| `stack<T>` | LIFO: last in, first out | `push`, `pop`, `top` | `deque<T>` |
+| `queue<T>` | FIFO: first in, first out | `push`, `pop`, `front`, `back` | `deque<T>` |
+| `priority_queue<T>` | Largest first by default | `push`, `pop`, `top` | `vector<T>` |
+
+Use the `std::` prefix. These adaptors do not expose `begin/end` iterators.
+Accessing the front/back/top and calling `pop` require a nonempty adaptor. `pop` removes an element without returning it.
+
+---
+
+# Example: `std::stack`
+
+```cpp
+#include <stack>
+#include <iostream>
+
+int main() {
+    std::stack<int> pending_nodes;
+    pending_nodes.push(1);
+    pending_nodes.push(2);
+    pending_nodes.push(3);
+    std::cout << pending_nodes.top() << '\n'; // 3
+    pending_nodes.pop();
+    std::cout << pending_nodes.top() << '\n'; // 2
+}
+```
+
+A LIFO stack can store nodes awaiting a depth-first traversal.
+
+---
+
+# Example: `std::priority_queue`
+
+```cpp
+#include <queue>
+#include <iostream>
+
+int main() {
+    std::priority_queue<double> error_estimates;
+    error_estimates.push(0.3);
+    error_estimates.push(0.1);
+    error_estimates.push(0.5);
+    while (!error_estimates.empty()) {
+        std::cout << error_estimates.top() << ' ';
+        error_estimates.pop();
+    } // 0.5 0.3 0.1
+}
+```
+
+For example, process the largest pending error estimate first in an adaptive computation.
+
+---
+
+# Utility types: tuple and optional
+
+```cpp
+#include <tuple>
+#include <optional>
+#include <iostream>
+
+int main() {
+    std::tuple<int, double, double> sample{7, 0.5, 1.25};
+    const auto& [sensor, time, amplitude] = sample;
+    std::cout << sensor << ' ' << time << ' ' << amplitude << '\n';
+    std::cout << std::get<0>(sample) << '\n'; // 7
+    std::optional<double> measurement = 1.25;
+    if (measurement.has_value()) std::cout << *measurement << '\n';
+}
+```
+
+`tuple` groups values, possibly of different types. `optional<T>` (C++17) stores either a `T` or no value, for example a missing measurement. An empty optional must not be dereferenced.
+These are utility types, not iterable STL containers.
+
+---
+
+# Utility types: variant (C++17)
+
+```cpp
+#include <variant>
+#include <string>
+#include <iostream>
+
+int main() {
+    std::variant<int, double, std::string> value = 42;
+    value = 3.14;
+    value = "missing";
+    if (std::holds_alternative<std::string>(value)) {
+        std::cout << std::get<std::string>(value) << '\n';
+    }
+    if (auto* ptr = std::get_if<double>(&value)) {
+        std::cout << *ptr << '\n'; // Not reached: holds a string.
+    }
+    std::visit([](const auto& arg) { std::cout << arg << '\n'; }, value);
+}
+```
+
+Alternatives are fixed at compile time. `get_if` returns `nullptr` for a different active type; `visit` handles each alternative. Output: `missing`, twice.
+
+---
+
+# Utility types: any (C++17)
+
+```cpp
+#include <any>
+#include <string>
+#include <typeinfo>
+#include <iostream>
+
+int main() {
+    std::any metadata = 42;
+    metadata = std::string("calibrated");
+    if (metadata.has_value() && metadata.type() == typeid(std::string)) {
+        std::cout << std::any_cast<std::string>(metadata) << '\n';
+    }
+    std::cout << std::any_cast<std::string>(metadata) << '\n';
+}
+```
+
+`any` stores a value of a copy-constructible type.
+The value-returning `any_cast<T>` throws `std::bad_any_cast` if the stored type does not match. Here both casts succeed and print `calibrated`.
+
+---
+
+<!--
+_class: titlepage
+-->
+
+# Appendix B<br>Library overview and language evolution
+
+Optional material, beyond the C++17 core examples.
+
+Further study includes detailed container operations, allocators and C++20 ranges/concepts.
+
+---
+
+# The Boost libraries
+
+Many Standard Library facilities originated in [Boost](https://www.boost.org/), a collection of open-source C++ libraries.
+
+The [Boost Graph Library](https://www.boost.org/doc/libs/1_72_0/libs/graph/doc/index.html) provides generic graph data structures and algorithms, useful for scientific networks and meshes.
+
+Installation depends on the platform and selected components; on Ubuntu, `sudo apt-get install libboost-all-dev` installs the packaged collection. Some components are header-only; others require building or linking libraries.
+
+---
+
+# An overview of the C++ Standard Library (1/2)
+
+- **C library facilities:** C++ headers such as `<cmath>` provide declarations in `std::`; compatibility headers and macros have additional rules.
+- **Containers and iterators:** generic storage and traversal.
+- **Algorithms:** search, sort, transform and copy; some offer parallel execution policies.
+- **Utilities:** smart pointers, pairs, tuples, clocks and function wrappers.
+- **Text:** the `basic_string` family (`string`, `wstring`), regular expressions and string views.
+- **I/O and diagnostics:** streams, standard exception classes and exception-handling support.
+
+---
+
+# An overview of the C++ Standard Library (2/2)
+
+- **Numerics:** complex numbers, numeric limits, random engines and distributions.
+- **Generic programming:** type traits and utilities such as `declval`.
+- **References and resource transfer:** reference wrappers, `move`, `forward`.
+- **Concurrency:** threads, mutexes, locks and parallel algorithms.
+- **Internationalization:** locales and wide-character support (`wchar_t`).
+- **Filesystem:** paths, directories and file metadata.
+- **Allocation:** allocators and memory resources.
+- **Utility types:** `optional`, `variant` and `any`.
+
+---
+
+# A milestone: C++11
+
+- **Language:** lambdas, `auto`, range-based loops and initializer lists.
+- **Ownership tools:** `unique_ptr`, `shared_ptr` and `weak_ptr` became standard library facilities.
+- **Resource transfer:** move semantics and rvalue references.
+- **Library growth:** new containers, algorithms and utilities.
+- **Concurrency:** standardized threads and synchronization.
+
+Later standards extend these facilities. Using a language version does not imply every library feature is available in every implementation.
 
 ---
 
@@ -839,7 +1016,7 @@ _class: titlepage
 7. [New library features like `std::variant`, `std::optional`, and `std::any`](https://github.com/AnthonyCalandra/modern-cpp-features/blob/master/CPP17.md#c17-library-features)
 8. ...
 
---- 
+---
 
 # C++20
 
@@ -857,145 +1034,156 @@ _class: titlepage
 
 # C++23
 
-1. **Concepts in STL**: Further adoption of concepts in STL algorithms and containers.
-2. **Improved parallelism**: Expanding parallel algorithms and enhancing support for parallel execution.
-3. **Reflection**: Potential support for reflection, making it easier to inspect and manipulate types at runtime.
-4. **Networking library**: The Networking library might become part of the standard, adding networking capabilities.
-5. **Enhanced ranges**: Expanding and refining the ranges library with new utilities.
-6. ...
+Selected additions, for reference:
 
-#### [Source](https://en.cppreference.com/w/cpp/23)
+- **`std::expected<T, E>`:** stores an expected result or an error value.
+- **`std::ranges::to`:** constructs a container from a range.
+- **Ranges:** additional views and algorithms.
+
+These require C++23 library support and are not used in the core examples.
+
+[Expected objects (C++23 draft)](https://timsong-cpp.github.io/cppwp/n4950/expected)
+[Range conversions (C++23 draft)](https://timsong-cpp.github.io/cppwp/n4950/range.utility.conv)
 
 ---
 
 # Example: the evolution of `for` loops (1/5)
 
-## 1. Traditional `for` loop (pre-C++11)
-
 ```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
-for (size_t i = 0; i < vec.size(); ++i) {
-    std::cout << vec[i] << " ";
+#include <vector>
+#include <cstddef>
+#include <iostream>
+
+int main() {
+    std::vector<double> samples{1, 2, 3, 4, 5};
+    for (std::size_t i = 0; i < samples.size(); ++i) {
+        std::cout << samples[i] << ' ';
+    }
 }
 ```
 
-- **Usage**: Commonly used before C++11.
-- **Explanation**: This form uses an integer index to access elements. It works with any indexable container (like `std::vector` or `std::array`).
-- **Pros**: Allows direct access to both the index and the element, which is useful when you need the position of elements.
-- **Cons**: Can be error-prone with boundary conditions, and may be inefficient if the container recalculates `size()` each time.
+The indexed loop predates C++11; this initializer-list construction uses C++11.
+It provides the position as well as the value, but requires indexable data and careful bounds. `vector::size()` and `array::size()` take constant time.
 
 ---
 
 # Example: the evolution of `for` loops (2/5)
 
-## 2. `for` loop with iterators (pre-C++11)
-
 ```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
-for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
-    std::cout << *it << " ";
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> samples{1, 2, 3, 4, 5};
+    for (std::vector<double>::iterator it = samples.begin();
+         it != samples.end(); ++it) {
+        std::cout << *it << ' ';
+    }
 }
 ```
 
-- **Usage**: A step toward more generic and flexible loops.
-- **Explanation**: Uses iterators instead of an index, making it adaptable to all STL containers, including those without random-access iterators (like `std::list`).
-- **Pros**: Supports non-indexable containers and is more generic.
-- **Cons**: Verbose syntax and the need for dereferencing (`*it`) can make code harder to read.
+The iterator loop predates C++11; this construction uses C++11.
+It supports non-indexable containers such as `list`, provided they expose the necessary iterators. Container adaptors do not expose this interface.
 
 ---
 
 # Example: the evolution of `for` loops (3/5)
 
-## 3. Range-based `for` loop (C++11)
-
 ```cpp
-std::vector<int> vec = {1, 2, 3, 4, 5};
-for (int value : vec) { // Or: for (const auto &value : vec)
-    std::cout << value << " ";
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> samples{1, 2, 3, 4, 5};
+    for (const auto& value : samples) {
+        std::cout << value << ' ';
+    }
 }
 ```
 
-- **Usage**: Introduced in C++11, this syntax is much more concise and readable.
-- **Explanation**: Automatically loops over elements in the container without the need for iterators or indices.
-- **Pros**: Simple, concise, and avoids off-by-one errors. Great for most use cases where you just need the element value.
-- **Cons**: Limited flexibility - doesn't provide access to the index, and modifying elements requires using a reference (`for (int &value : vec)`).
+Range-based loops (C++11) express traversal without spelling out iterators.
+Use `auto&` to modify elements, `const auto&` to read without copying, or `auto` for copies. They do not directly provide an index.
 
 ---
 
 # Example: the evolution of `for` loops (4/5)
 
-## 4. Structured bindings (C++17)
-
 ```cpp
-std::tuple<int, std::string, double> my_tuple{1, "a string", 2.5};
-const auto [i, s, d] = my_tuple; // Unpack tuple.
+#include <tuple>
+#include <map>
+#include <iostream>
 
-std::map<int, std::string> my_map = {{1, "one"}, {2, "two"}};
-for (const auto& [key, value] : my_map) {
-    std::cout << key << ": " << value << "\n";
+int main() {
+    std::tuple<int, double, double> sample{7, 0.5, 1.25};
+    const auto& [sensor, time, amplitude] = sample;
+    std::cout << sensor << ' ' << time << ' ' << amplitude << '\n';
+    std::map<int, double> temperatures{{1, 20.5}, {2, 21.0}};
+    for (const auto& [id, temperature] : temperatures) {
+        std::cout << id << ": " << temperature << '\n';
+    }
 }
 ```
 
-- **Usage**: Simplifies code when looping over key-value pairs in associative containers.
-- **Explanation**: Introduced in C++17, structured bindings allow unpacking of key-value pairs directly within the loop.
-- **Pros**: Very readable and works well with `std::map` and `std::unordered_map`.
-- **Cons**: Limited to associative containers; doesn't add much benefit when used with containers like `std::vector`.
+Structured bindings (C++17) name components of arrays, tuple-like objects and suitable classes. In loops they depend on the element type, not the container family. `const auto&` here binds to the originals.
 
 ---
 
 # Example: the evolution of `for` loops (5/5)
 
-## 5. Range-based `for` with `std::ranges` (C++20)
-
 ```cpp
 #include <ranges>
+#include <vector>
+#include <iostream>
 
-for (int value : vec | std::views::reverse) {
-    std::cout << value << " ";
-}
-```
-
-- **Usage**: Introduced with the ranges library in C++20.
-- **Explanation**: Adds flexibility by allowing modifications (like `reverse`, `filter`, `transform`) directly in the loop using range adaptors.
-- **Pros**: Makes the loop more expressive and reduces the need for external functions to modify sequences.
-- **Cons**: Requires understanding of range adaptors and may not be necessary for simpler loops.
-
----
-
-# Hands-on challenge
-
-Try refactoring this code to use STL algorithms:
-
-```cpp
-// Before: Manual loop
-std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-std::vector<int> evens;
-for (int n : nums) {
-    if (n % 2 == 0) {
-        evens.push_back(n * 2);
+int main() {
+    std::vector<double> samples{1, 2, 3, 4, 5};
+    for (double value : samples | std::views::reverse) {
+        std::cout << value << ' '; // 5 4 3 2 1
     }
 }
 ```
 
-## Hint
-Use `std::copy_if` with `std::back_inserter` and `std::transform`.
-Or, if you have a C++20-ready compiler, use `std::ranges::copy_if` with `std::views::filter` and `std::views::transform`.
+**C++20:** a view provides a different traversal of the original range.
+`views::reverse` reverses the visit order without reordering `samples`.
+Other adaptors can filter or transform values during traversal; range adaptors introduce additional requirements and lifetime considerations.
 
 ---
 
-# Conclusion
+# Hands-on challenge: C++20 alternative
 
-The STL is a fundamental part of the C++ standard library, offering a rich set of data structures, algorithms, and utilities that make C++ a powerful and expressive language. To fully harness the power of the STL:
+```cpp
+#include <algorithm>
+#include <iterator>
+#include <ranges>
+#include <vector>
+#include <iostream>
 
-1. **Algorithm usage**: Algorithms are the backbone of the STL. Utilize them to simplify and optimize common operations, enhancing code readability and maintainability.
-2. **Container selection**: Choose the appropriate container type (e.g., `std::vector`, `std::map`, `std::queue`) based on your specific needs. This decision greatly impacts your code's efficiency.
-3. **Smart pointers**: Smart pointers like `std::shared_ptr` and `std::unique_ptr` are crucial for effective memory management, preventing memory leaks and resource leaks.
-4. **Newer features**: Stay up-to-date with the latest C++ standards (e.g., C++20, C++23) and incorporate new features like ranges, concepts, and structured bindings to write cleaner and more efficient code.
+int main() {
+    std::vector<double> lengths_mm{1, -2, 3, 0, 5};
+    std::vector<double> lengths_m;
+    auto converted = lengths_mm
+        | std::views::filter([](double x) { return x > 0.0; })
+        | std::views::transform([](double x) { return x * 1e-3; });
+    std::ranges::copy(converted, std::back_inserter(lengths_m));
+    for (double x : lengths_m) std::cout << x << ' ';
+}
+```
+
+**C++20:** the views select and convert on traversal; the copy materializes `{0.001, 0.003, 0.005}` in the output vector. The input must remain alive while its views are used.
 
 ---
 
-<!--
-_class: titlepage
--->
+# Top 10 must-know algorithms
 
-# :arrow_right: Smart pointers, move semantics, utilities from the STL.
+A reference checklist for the core data-processing patterns.
+
+1. **`std::sort`**: Sorting elements
+2. **`std::find` / `std::find_if`**: Searching for elements
+3. **`std::copy`**: Copying elements between containers
+4. **`std::transform`**: Applying functions to ranges
+5. **`std::accumulate`**: Summing or reducing elements
+6. **`std::count` / `std::count_if`**: Counting elements
+7. **`std::remove` / `std::remove_if`**: Logical removal; combine with container `erase`
+8. **`std::for_each`**: Applying function to each element
+9. **`std::max_element` / `std::min_element`**: Finding extrema
+10. **`std::reverse`**: Reversing element order
