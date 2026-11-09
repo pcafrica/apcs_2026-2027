@@ -1134,16 +1134,17 @@ Without header guards, if a header file is included multiple times in a source f
 
 - Place `#ifndef`, `#define`, and `#endif` or `#pragma once` directives in the header file.
 - Use a unique identifier (usually based on the filename) as the guard symbol.
+- Use the uppercase filename with dots replaced by underscores and no trailing underscores: `my_module.hpp` becomes `MY_MODULE_HPP`.
 
 **Example (file `my_module.hpp`)**:
 
 ```cpp
-#ifndef MY_MODULE_HPP__
-#define MY_MODULE_HPP__
+#ifndef MY_MODULE_HPP
+#define MY_MODULE_HPP
 
 // ...
 
-#endif // MY_MODULE_HPP__
+#endif // MY_MODULE_HPP
 ```
 
 Modern compilers also support:

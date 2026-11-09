@@ -66,4 +66,4 @@ private:
   Policy compare;
 };
 
-#endif /* COMPARE_POLICY_HPP */
+#endif // COMPARE_POLICY_HPP

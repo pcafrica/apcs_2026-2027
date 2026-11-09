@@ -1,5 +1,5 @@
-#ifndef CALCULATOR_HPP__
-#define CALCULATOR_HPP__
+#ifndef CALCULATOR_HPP
+#define CALCULATOR_HPP
 
 namespace Calculator {
 double add(double a, double b);
@@ -8,4 +8,4 @@ double multiply(double a, double b);
 double divide(double a, double b);
 } // namespace Calculator
 
-#endif // CALCULATOR_HPP__
+#endif // CALCULATOR_HPP

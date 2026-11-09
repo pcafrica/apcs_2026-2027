@@ -823,7 +823,7 @@ Exact code emission depends on compiler/linker optimizations. Repeated processin
 template <typename T> T twice(T value);
 
 #include "twice.tpl.hpp"
-#endif
+#endif // TWICE_HPP
 ```
 
 ```cpp
@@ -841,7 +841,7 @@ T twice(T value) { return value + value; }
 #ifndef TWICE_HPP
 #define TWICE_HPP
 template <typename T> T twice(T value);
-#endif
+#endif // TWICE_HPP
 ```
 
 ```cpp
