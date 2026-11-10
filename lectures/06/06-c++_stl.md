@@ -167,7 +167,7 @@ The size is part of the type and cannot change at runtime. `std::array<T, 0>` is
 
 ---
 
-![height:480px](images/sequence_containers.png)
+![height:600px](images/sequence_containers.png)
 
 [Source: Hacking C++](https://hackingcpp.com/cpp/std/sequence_containers.png).
 
@@ -332,7 +332,7 @@ Lookup by key is constant time on average. `[]`, `at` and `find` have the same a
 
 ---
 
-![height:480px](images/associative_containers.png)
+![height:600px](images/associative_containers.png)
 
 [Source: Hacking C++](https://hackingcpp.com/cpp/std/associative_containers.png).
 
@@ -407,7 +407,7 @@ Mutability is independent of this chain: `const_iterator` reads without modifyin
 
 ![height:480px](images/iterators.png)
 
-[Source: cppreference](https://en.cppreference.com/cpp/iterator#Iterator_categories). Writing is independent of traversal. [C++17 requirements](https://eel.is/c++draft/iterator.cpp17).
+[Source: cppreference](https://en.cppreference.com/cpp/iterator#Iterator_categories). [C++17 requirements](https://timsong-cpp.github.io/cppwp/std17/iterator.requirements).
 
 ---
 
@@ -576,7 +576,7 @@ The comparator must define a strict weak ordering (as for ordered containers).
 - `std::sort` may change the relative order of equivalent elements.
 - `std::stable_sort` preserves their relative order from its input range.
 
-For the residual example, use finite values: NaNs would break the required ordering. The final order of the two equal-magnitude residuals is not specified by `sort`.
+The final order of the two equal-magnitude residuals is not specified by `sort`.
 
 ---
 
@@ -823,7 +823,7 @@ The value-returning `any_cast<T>` throws `std::bad_any_cast` if the stored type 
 
 ---
 
-![height:480px](images/special_containers.png)
+![height:600px](images/special_containers.png)
 
 [Source: Hacking C++](https://hackingcpp.com/cpp/std/special_containers.png).
 
