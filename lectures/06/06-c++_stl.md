@@ -24,12 +24,12 @@ _class: titlepage
 1. Library overview and container structures
 2. Containers, iterators and algorithms
 3. Parallel execution policies (C++17)
-4. Utility types: pair, tuple, optional, variant and any
+4. Utility types: `pair`, `tuple`, `optional`, `variant` and `any`
 5. C++ evolution and loop styles
 6. Hands-on challenge: C++17 and C++20
 
 **Examples use C++17**, unless explicitly marked C++20.
-Code examples are independent function-body snippets; includes belong outside the function.
+
 **Appendix:** container adaptors and examples.
 
 ---
@@ -117,10 +117,13 @@ A sequence stores elements in a position that does not depend on their value.
 #include <iostream>
 
 std::vector<double> readings{2.0, 4.0, 5.0};
-readings.push_back(6.0);          // 2, 4, 5, 6
-readings.pop_back();              // 2, 4, 5
-readings[1] = 3.0;                // 2, 3, 5
+
+readings.push_back(6.0);  // 2, 4, 5, 6
+readings.pop_back();      // 2, 4, 5
+readings[1] = 3.0;        // 2, 3, 5
+
 for (double x : readings) std::cout << x << ' ';
+
 std::cout << '\n';                // 2 3 5
 ```
 
@@ -136,9 +139,13 @@ std::cout << '\n';                // 2 3 5
 #include <iostream>
 
 std::vector<double> readings{2.0, 3.0, 5.0};
+
 readings.reserve(8); // Capacity >= 8; size remains 3.
+
 std::cout << readings.size() << '\n'; // 3
+
 readings.resize(5, 0.0);
+
 for (double x : readings) std::cout << x << ' ';
 // 2 3 5 0 0; size is now 5, capacity is still >= 8.
 ```
@@ -155,10 +162,11 @@ for (double x : readings) std::cout << x << ' ';
 #include <iostream>
 
 std::array<double, 4> quadrature_weights{1, 3, 3, 1};
-std::cout << quadrature_weights.size() << '\n'; // 4
-std::cout << quadrature_weights[1] << '\n';     // 3
-std::cout << quadrature_weights.front() << '\n'; // 1
-std::cout << quadrature_weights.back() << '\n';  // 1
+
+std::cout << quadrature_weights.size() << '\n';   // 4
+std::cout << quadrature_weights[1] << '\n';       // 3
+std::cout << quadrature_weights.front() << '\n';  // 1
+std::cout << quadrature_weights.back() << '\n';   // 1
 // quadrature_weights = std::array<double, 3>{1, 4, 1};
 // Error: arrays of different sizes have different types.
 ```
@@ -180,8 +188,11 @@ The size is part of the type and cannot change at runtime. `std::array<T, 0>` is
 #include <iostream>
 
 std::vector<double> readings{1.0, 2.0, 3.0};
+
 for (double x : readings) std::cout << x << ' ';
+
 for (double& x : readings) x *= 2.0;
+
 for (const auto& x : readings) std::cout << x << ' ';
 // Prints: 1 2 3 2 4 6
 ```
@@ -216,8 +227,11 @@ Use the `std::` prefix. In a set, the element itself is the key; in a map, each 
 #include <iostream>
 
 std::pair<double, double> sample{0.5, 1.25};
+
 std::cout << sample.first << ' ' << sample.second << '\n';
+
 const auto& [time, amplitude] = sample;
+
 std::cout << time << ' ' << amplitude << '\n'; // 0.5 1.25
 ```
 
@@ -246,15 +260,14 @@ Here $n$ is the number of stored elements.
 # Example: `std::map`
 
 ```cpp
-#include <map>
-#include <string>
-#include <iostream>
-
 std::map<std::string, int> samples_per_sensor;
+
 samples_per_sensor["S1"] = 25;
 samples_per_sensor["S2"] = 30;
 samples_per_sensor.insert({"S3", 35});
+
 std::cout << samples_per_sensor.at("S2") << '\n'; // 30
+
 for (const auto& [sensor, count] : samples_per_sensor) {
     std::cout << sensor << ": " << count << '\n';
 } // S1: 25, S2: 30, S3: 35, on separate lines.
@@ -286,11 +299,16 @@ Advance through a range with `++it`, access an element with `*it`, and compare c
 #include <iostream>
 
 std::set<int> sensor_ids{5, 2, 8, 2, 1}; // 1, 2, 5, 8
-sensor_ids.insert(3);                    // 1, 2, 3, 5, 8
-sensor_ids.erase(2);                     // 1, 3, 5, 8
+
+sensor_ids.insert(3);  // 1, 2, 3, 5, 8
+sensor_ids.erase(2);   // 1, 3, 5, 8
+
 auto it = sensor_ids.find(5);
+
 if (it != sensor_ids.end()) std::cout << *it << '\n'; // 5
+
 std::cout << sensor_ids.count(3) << '\n';             // 1
+
 for (int id : sensor_ids) std::cout << id << ' '; // 1 3 5 8
 ```
 
@@ -319,10 +337,13 @@ Ordered containers group keys by comparison; unordered containers group keys usi
 #include <iostream>
 
 std::unordered_map<std::string, int> samples_per_sensor;
+
 samples_per_sensor["S1"] = 25;
 samples_per_sensor["S2"] = 30;
 samples_per_sensor["S3"] = 35;
+
 std::cout << samples_per_sensor.at("S1") << '\n'; // 25
+
 for (const auto& [sensor, count] : samples_per_sensor) {
     std::cout << sensor << ": " << count << '\n';
 } // All three pairs; their iteration order is unspecified.
@@ -418,12 +439,15 @@ Mutability is independent of this chain: `const_iterator` reads without modifyin
 #include <iostream>
 
 std::vector<double> residuals{0.1, 0.2, 0.3};
+
 for (auto it = residuals.begin(); it != residuals.end(); ++it) {
     *it *= 2.0;
 }
+
 for (auto it = residuals.cbegin(); it != residuals.cend(); ++it) {
     std::cout << *it << ' '; // 0.2 0.4 0.6
 }
+
 for (auto it = residuals.rbegin(); it != residuals.rend(); ++it) {
     std::cout << *it << ' '; // 0.6 0.4 0.2
 }
@@ -436,16 +460,16 @@ for (auto it = residuals.rbegin(); it != residuals.rend(); ++it) {
 # Common iterator operations
 
 ```cpp
-#include <vector>
-#include <iterator>
-#include <iostream>
-
 std::vector<int> nodes{10, 20, 30, 40, 50};
 auto it = nodes.begin();
-++it;                                   // Points to 20.
-it += 2;                                // Points to 40.
+
+++it;     // Points to 20.
+it += 2;  // Points to 40.
+
 std::cout << std::distance(nodes.begin(), it) << '\n'; // 3
+
 std::advance(it, 1);
+
 std::cout << *it << '\n';                // 50
 ```
 
@@ -469,6 +493,7 @@ std::cout << *it << '\n';                // 50
 #include <iostream>
 
 std::vector<int> sensor_ids{1, 3, 3, 2, 3};
+
 for (auto it = sensor_ids.begin(); it != sensor_ids.end();) {
     if (*it == 3) {
         it = sensor_ids.erase(it);
@@ -476,6 +501,7 @@ for (auto it = sensor_ids.begin(); it != sensor_ids.end();) {
         ++it;
     }
 }
+
 for (int id : sensor_ids) std::cout << id << ' '; // 1 2
 ```
 
@@ -507,7 +533,7 @@ _class: titlepage
 
 # STL algorithms overview
 
-Algorithms commonly operate on valid half-open iterator ranges.
+Algorithms use half-open ranges and may modify values; container resizing is separate.
 
 | Purpose               | Examples                                           |
 |-----------------------|----------------------------------------------------|
@@ -519,24 +545,25 @@ Algorithms commonly operate on valid half-open iterator ranges.
 | Sorted set operations | `set_union`, `set_intersection`, `set_difference`  |
 | Numeric operations    | `accumulate`, `inner_product`, `partial_sum`       |
 
-Include `<algorithm>`; numeric operations use `<numeric>`.
-These algorithms modify element values where required; resizing a container requires its own operations.
+Headers: `<algorithm>`; numeric functions use `<numeric>`.
 
 ---
 
 # Example: Searching algorithms
 
 ```cpp
-#include <algorithm>
-#include <vector>
-#include <iostream>
-
 std::vector<int> sensor_ids{1, 2, 3, 4, 5};
 auto it = std::find(sensor_ids.begin(), sensor_ids.end(), 3);
-if (it != sensor_ids.end()) std::cout << "Found: " << *it << '\n';
+
+if (it != sensor_ids.end())
+    std::cout << "Found: " << *it << '\n';
+
 auto count = std::count(sensor_ids.begin(), sensor_ids.end(), 3);
+
 std::cout << "Count: " << count << '\n'; // 1
+
 bool found = std::binary_search(sensor_ids.begin(), sensor_ids.end(), 3);
+
 std::cout << "Binary search: " << found << '\n'; // 1
 ```
 
@@ -554,6 +581,7 @@ Use `binary_search` on a range sorted with the same ordering used for the search
 #include <cmath>
 
 std::vector<double> residuals{-0.3, 0.1, -0.1, 0.2};
+
 std::sort(residuals.begin(), residuals.end());
 // -0.3, -0.1, 0.1, 0.2
 std::sort(residuals.begin(), residuals.end(), std::greater<double>{});
@@ -588,6 +616,7 @@ The final order of the two equal-magnitude residuals is not specified by `sort`.
 
 std::vector<double> readings{1, 2, 3, 4, 5};
 std::vector<double> result(readings.size());
+
 std::copy(readings.begin(), readings.end(), result.begin());
 std::transform(readings.begin(), readings.end(), result.begin(),
                [](double x) { return x * 1e-3; });
@@ -609,11 +638,11 @@ The destination must have enough existing writable elements. `reserve` alone wou
 std::vector<int> sensor_ids{1, 2, 3, 2, 4, 2, 5};
 auto new_end = std::remove(sensor_ids.begin(), sensor_ids.end(), 2);
 // Size is still 7; [begin, new_end) contains 1, 3, 4, 5.
-sensor_ids.erase(new_end, sensor_ids.end()); // Size is now 4.
+sensor_ids.erase(new_end, sensor_ids.end());  // Size is now 4.
 sensor_ids = {1, 2, 3, 4, 5, 6};
 new_end = std::remove_if(sensor_ids.begin(), sensor_ids.end(),
                          [](int id) { return id % 2 == 0; });
-sensor_ids.erase(new_end, sensor_ids.end()); // 1, 3, 5
+sensor_ids.erase(new_end, sensor_ids.end());  // 1, 3, 5
 ```
 
 `remove` / `remove_if` compact retained elements stably and return the new logical end. Values in the remaining tail are unspecified.
@@ -633,9 +662,11 @@ std::vector<double> samples{0.5, 1.5, 2.5};
 double sum = std::accumulate(samples.begin(), samples.end(), 0.0);
 double product = std::accumulate(samples.begin(), samples.end(),
                                   1.0, std::multiplies<double>{});
+
 std::vector<double> weights{1.0, 2.0, 1.0};
 double dot = std::inner_product(samples.begin(), samples.end(),
                                 weights.begin(), 0.0);
+
 std::cout << sum << ' ' << product << ' ' << dot << '\n';
 // 4.5 1.875 6
 ```
@@ -654,6 +685,7 @@ The second range of `inner_product` must contain at least as many elements as th
 std::vector<double> samples{0.5, 1.5};
 auto truncated = std::accumulate(samples.begin(), samples.end(), 0);
 auto sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+
 std::cout << truncated << ' ' << sum << '\n'; // 1 2
 ```
 
@@ -667,17 +699,15 @@ std::cout << truncated << ' ' << sum << '\n'; // 1 2
 # Why use STL algorithms?
 
 ```cpp
-#include <vector>
-#include <numeric>
-#include <cstddef>
-#include <iostream>
-
 std::vector<double> samples{0.5, 1.5, 2.5};
 double manual_sum = 0.0;
+
 for (std::size_t i = 0; i < samples.size(); ++i) {
     manual_sum += samples[i];
 }
+
 double algorithm_sum = std::accumulate(samples.begin(), samples.end(), 0.0);
+
 std::cout << (manual_sum == algorithm_sum) << '\n'; // 1
 ```
 
@@ -694,6 +724,7 @@ Algorithms express intent and reuse standard implementations. This sum performs 
 #include <vector>
 
 std::vector<double> residuals{0.3, -0.2, 0.1, -0.4};
+
 std::sort(std::execution::seq, residuals.begin(), residuals.end());
 std::sort(std::execution::par, residuals.begin(), residuals.end());
 std::sort(std::execution::par_unseq, residuals.begin(), residuals.end());
@@ -740,9 +771,11 @@ Move semantics and smart pointers are next-lecture topics.
 
 std::vector<double> readings{1.0, -2.0, 3.0};
 std::vector<double> positive;
+
 std::copy_if(readings.begin(), readings.end(),
              std::back_inserter(positive),
              [](double x) { return x > 0.0; });
+
 for (double x : positive) std::cout << x << ' '; // 1 3
 ```
 
@@ -762,15 +795,15 @@ _class: titlepage
 # Utility types: `std::tuple` and `std::optional`
 
 ```cpp
-#include <tuple>
-#include <optional>
-#include <iostream>
-
 std::tuple<int, double, double> sample{7, 0.5, 1.25};
+
 const auto& [sensor, time, amplitude] = sample;
+
 std::cout << sensor << ' ' << time << ' ' << amplitude << '\n';
 std::cout << std::get<0>(sample) << '\n'; // 7
+
 std::optional<double> measurement = 1.25;
+
 if (measurement.has_value()) std::cout << *measurement << '\n';
 ```
 
@@ -782,20 +815,22 @@ These are utility types, not iterable STL containers.
 # Utility types: `std::variant` (C++17)
 
 ```cpp
-#include <variant>
-#include <string>
-#include <iostream>
-
 std::variant<int, double, std::string> value = 42;
+
 value = 3.14;
 value = "missing";
+
 if (std::holds_alternative<std::string>(value)) {
     std::cout << std::get<std::string>(value) << '\n';
 }
+
 if (auto* ptr = std::get_if<double>(&value)) {
     std::cout << *ptr << '\n'; // Not reached: holds a string.
 }
-std::visit([](const auto& arg) { std::cout << arg << '\n'; }, value);
+
+std::visit([](const auto& arg) {
+    std::cout << arg << '\n';
+}, value);
 ```
 
 Alternatives are fixed at compile time. `get_if` returns `nullptr` for a different active type; `visit` handles each alternative. Output: `missing`, twice.
@@ -811,10 +846,13 @@ Alternatives are fixed at compile time. `get_if` returns `nullptr` for a differe
 #include <iostream>
 
 std::any metadata = 42;
+
 metadata = std::string("calibrated");
+
 if (metadata.has_value() && metadata.type() == typeid(std::string)) {
     std::cout << std::any_cast<std::string>(metadata) << '\n';
 }
+
 std::cout << std::any_cast<std::string>(metadata) << '\n';
 ```
 
@@ -926,6 +964,7 @@ These require C++23 library support and are not used in the core examples.
 #include <iostream>
 
 std::vector<double> samples{1, 2, 3, 4, 5};
+
 for (std::size_t i = 0; i < samples.size(); ++i) {
     std::cout << samples[i] << ' ';
 }
@@ -943,6 +982,7 @@ It provides the position as well as the value, but requires indexable data and c
 #include <iostream>
 
 std::vector<double> samples{1, 2, 3, 4, 5};
+
 for (std::vector<double>::iterator it = samples.begin();
      it != samples.end(); ++it) {
     std::cout << *it << ' ';
@@ -961,6 +1001,7 @@ It supports non-indexable containers such as `list`, provided they expose the ne
 #include <iostream>
 
 std::vector<double> samples{1, 2, 3, 4, 5};
+
 for (const auto& value : samples) {
     std::cout << value << ' ';
 }
@@ -974,14 +1015,14 @@ Use `auto&` to modify elements, `const auto&` to read without copying, or `auto`
 # Example: the evolution of `for` loops (4/5)
 
 ```cpp
-#include <tuple>
-#include <map>
-#include <iostream>
-
 std::tuple<int, double, double> sample{7, 0.5, 1.25};
+
 const auto& [sensor, time, amplitude] = sample;
+
 std::cout << sensor << ' ' << time << ' ' << amplitude << '\n';
+
 std::map<int, double> temperatures{{1, 20.5}, {2, 21.0}};
+
 for (const auto& [id, temperature] : temperatures) {
     std::cout << id << ": " << temperature << '\n';
 }
@@ -999,6 +1040,7 @@ Structured bindings (C++17) name components of arrays, tuple-like objects and su
 #include <iostream>
 
 std::vector<double> samples{1, 2, 3, 4, 5};
+
 for (double value : samples | std::views::reverse) {
     std::cout << value << ' '; // 5 4 3 2 1
 }
@@ -1042,6 +1084,7 @@ _class: titlepage
 
 std::vector<double> lengths_mm{1, -2, 3, 0, 5};
 std::vector<double> lengths_m;
+
 for (double length : lengths_mm) {
     if (length > 0.0) lengths_m.push_back(length * 1e-3);
 }
@@ -1065,11 +1108,13 @@ Also consider empty input or no positive measurements.
 
 std::vector<double> lengths_mm{1, -2, 3, 0, 5};
 std::vector<double> lengths_m;
+
 std::copy_if(lengths_mm.begin(), lengths_mm.end(),
              std::back_inserter(lengths_m),
              [](double length) { return length > 0.0; });
 std::transform(lengths_m.begin(), lengths_m.end(), lengths_m.begin(),
                [](double length) { return length * 1e-3; });
+
 for (double length : lengths_m) std::cout << length << ' ';
 // 0.001 0.003 0.005
 ```
@@ -1094,6 +1139,7 @@ auto converted = lengths_mm
     | std::views::filter([](double x) { return x > 0.0; })
     | std::views::transform([](double x) { return x * 1e-3; });
 std::ranges::copy(converted, std::back_inserter(lengths_m));
+
 for (double x : lengths_m) std::cout << x << ' ';
 ```
 
@@ -1156,11 +1202,15 @@ Accessing the front/back/top and calling `pop` require a nonempty adaptor. `pop`
 #include <iostream>
 
 std::stack<int> pending_nodes;
+
 pending_nodes.push(1);
 pending_nodes.push(2);
 pending_nodes.push(3);
+
 std::cout << pending_nodes.top() << '\n'; // 3
+
 pending_nodes.pop();
+
 std::cout << pending_nodes.top() << '\n'; // 2
 ```
 
@@ -1175,9 +1225,11 @@ A LIFO stack can store nodes awaiting a depth-first traversal.
 #include <iostream>
 
 std::priority_queue<double> error_estimates;
+
 error_estimates.push(0.3);
 error_estimates.push(0.1);
 error_estimates.push(0.5);
+
 while (!error_estimates.empty()) {
     std::cout << error_estimates.top() << ' ';
     error_estimates.pop();
