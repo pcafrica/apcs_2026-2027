@@ -740,8 +740,8 @@ std::sort(std::execution::par_unseq, residuals.begin(), residuals.end());
 # Parallel algorithms: functions and guarantees
 
 - Functions invoked by parallel algorithms must avoid data races. For `par_unseq`, they must also avoid operations such as blocking synchronization.
-- A comparator that only reads its arguments, as in our residual example, does not share mutable state.
-- The overload with `seq` is sequential, but differs from the overload without a policy in exception handling: an uncaught exception from a user function causes termination for the standard policies.
+- Our residual comparator only reads its arguments and does not modify shared data, so concurrent calls do not interfere with each other.
+- Even with `seq`, execution policies change exception handling: if an exception escapes the comparator, the program terminates. Without a policy, the exception propagates to the caller.
 - Select a policy only after checking the algorithm's requirements and measuring a sufficiently large workload.
 
 Exception handling and time measurement are covered next lecture.
@@ -750,7 +750,7 @@ Exception handling and time measurement are covered next lecture.
 
 # Common pitfalls: copies and `std::map` access
 
-- A by-value container parameter copies an lvalue argument; an rvalue may be moved. Use `const std::vector<double>&` to inspect an existing vector without copying it.
+- A by-value container parameter makes a copy. Use `const std::vector<double>&` to inspect an existing vector without copying it.
 - A reference borrows the container; the original must remain alive.
 - `m[key]` inserts an absent key. Use `at` for checked access (throws if absent), or `find` to test existence.
 - A failed `find` returns `end()`: check it before accessing the element.
