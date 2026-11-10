@@ -151,9 +151,9 @@ To be defined.
 [lecture-06-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/06/06-c++_stl.pdf
 [lecture-06-rec]: ...
 
-[lecture-07-md]: lectures/07/07-c++_stl2.md
-[lecture-07-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2.html
-[lecture-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2.pdf
+[lecture-07-md]: lectures/07/07-c++_stl2_move.md
+[lecture-07-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2_move.html
+[lecture-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2_move.pdf
 [lecture-07-rec]: ...
 
 [exercise-06-md]: exercises/06/06-c++_stl_move.md
