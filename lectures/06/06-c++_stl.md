@@ -1237,3 +1237,11 @@ while (!error_estimates.empty()) {
 ```
 
 For example, process the largest pending error estimate first in an adaptive computation.
+
+---
+
+<!--
+_class: titlepage
+-->
+
+# :arrow_right: The Standard Template Library.
