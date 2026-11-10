@@ -21,7 +21,7 @@ _class: titlepage
 
 # Outline
 
-1. Library overview and container structures
+1. Library overview
 2. Containers, iterators and algorithms
 3. Parallel execution policies (C++17)
 4. Utility types: `pair`, `tuple`, `optional`, `variant` and `any`
