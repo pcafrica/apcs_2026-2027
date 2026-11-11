@@ -1261,7 +1261,7 @@ The working directory must be writable. The default copy reports an error if the
 
 ---
 
-# Take-home messages.
+# Take-home messages
 
 - Make ownership explicit: unique by default, shared only when needed; references and ordinary pointers can observe resources.
 - Let RAII members manage resources; this often removes the need for custom special member functions.
