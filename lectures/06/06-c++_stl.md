@@ -1244,4 +1244,4 @@ For example, process the largest pending error estimate first in an adaptive com
 _class: titlepage
 -->
 
-# :arrow_right: The Standard Template Library.
+# :arrow_right: Move semantics, smart pointers, exceptions, Standard Library utilities.

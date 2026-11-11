@@ -8,7 +8,7 @@ _class: titlepage
 # Lecture 07
 <br>
 
-## Smart pointers, move semantics, exceptions, Standard Library utilities.
+## Move semantics, smart pointers, exceptions, Standard Library utilities.
 <br>
 
 #### Advanced Programming for Computational Science<br>SISSA, UniTS, 2026-2027
@@ -21,15 +21,424 @@ _class: titlepage
 
 # Outline
 
-1. Smart pointers and reference wrappers
-2. Move semantics, value categories and elision
+1. RAII, move semantics, value categories and elision
+2. Smart pointers and reference wrappers
 3. Assertions, exceptions and RAII
 4. Standard Library utilities
-   - Streams, random numbers, time measurement and filesystem
+   - Streams
+   - Random numbers
+   - Time measurement
+   - Filesystem
 
 **C++17** unless stated otherwise.
 
-**Appendix:** `Matrix` copy-assignment details and a custom exception example.
+**Appendix:** `weak_ptr` and ownership cycles, `Matrix` copy assignment, custom exceptions.
+
+---
+
+# RAII: tie resources to object lifetime
+
+Recall RAII from Lecture 03: an owning object acquires a resource and releases it when its lifetime ends.
+
+| Resource                        | Owner                   | Automatic cleanup         |
+|---------------------------------|-------------------------|---------------------------|
+| Sequence of measurements        | A vector class          | Releases element storage  |
+| One dynamically selected object | A *smart pointer* class | Destroys the owned object |
+| An open data file               | A file stream class     | Closes its file           |
+
+Prefer owners that perform cleanup in their destructors. A raw pointer alone does not record who must release the object.
+
+---
+
+<!--
+_class: titlepage
+-->
+
+# Move semantics
+
+---
+
+# A copyable `Matrix` (1/3)
+
+```cpp
+class Matrix {
+    std::size_t rows, cols;
+    std::vector<double> values; // Size rows * cols.
+
+public:
+    Matrix(std::size_t r, std::size_t c);
+    Matrix(const Matrix& other);
+    Matrix& operator=(const Matrix& other);
+
+    std::size_t size() const { return values.size(); }
+    double& operator[](std::size_t i) { return values[i]; }
+    const double* storage() const { return values.data(); }
+};
+```
+
+**Version 1.** `values` owns the matrix entries and handles allocation/destruction. `storage()` borrows a pointer to that buffer.
+Assume `r * c` is representable; indexing requires `i < size()`.
+
+---
+
+# A copyable `Matrix` (2/3)
+
+```cpp
+Matrix::Matrix(std::size_t r, std::size_t c)
+    : rows(r), cols(c), values(r * c, 0.0) {}
+
+Matrix::Matrix(const Matrix& other)
+    : rows(other.rows), cols(other.cols), values(other.values) {}
+```
+
+The ordinary constructor creates a zero-filled buffer.
+The copy constructor copies dimensions and the vector's **elements**, allocating independent storage.
+
+For a matrix with $n$ entries, this copy costs $O(n)$. The copy-assignment definition is provided in the appendix; the vector supplies automatic destruction.
+
+---
+
+# A copyable `Matrix` (3/3)
+
+```cpp
+Matrix field(1'000, 1'000);
+field[0] = 1.25;
+
+Matrix copied = field;
+copied[0] = 2.50;
+
+std::cout << field[0] << ' ' << copied[0] << '\n';           // 1.25 2.5
+std::cout << (field.storage() == copied.storage()) << '\n';  // 0
+```
+
+Two independent matrices need two buffers. Copying a million entries is appropriate when both values are needed.
+
+**Next problem:** when the original value is no longer needed, can a new owner reuse its buffer instead of copying the entries?
+
+---
+
+# What changes when we move?
+
+We want to transfer ownership of the **same buffer** to a destination.
+
+| Copy                           | Move in our next `Matrix` version |
+|--------------------------------|-----------------------------------|
+| New buffer with copied entries | Reuse the source buffer           |
+| Source keeps its value         | Source becomes empty              |
+| $O(n)$ work for $n$ entries    | $O(1)$ buffer transfer            |
+
+The source object remains alive. We must express that its old value may be consumed and provide an operation that performs the transfer.
+
+---
+
+# Which expressions can select a move?
+
+For an existing `Matrix field`, distinguish:
+
+| Expression     | Category | Meaning                       |
+|----------------|----------|-------------------------------|
+| `field`        | lvalue   | Refers to the existing matrix |
+| `field[0]`     | lvalue   | Refers to one of its entries  |
+| `Matrix(2, 2)` | rvalue   | Creates a temporary matrix    |
+
+An **lvalue** identifies an object. **Rvalues** include temporary values and, as we show next, expressions allowing reuse of an existing object.
+
+Functions can overload on these categories. A function call need not be an rvalue: `std::min(i, j)` for integer arguments returns a reference and is an lvalue.
+
+---
+
+# Rvalue references: two overloads
+
+**Rvalue** describes an expression (`Matrix(2, 2)`); **rvalue reference** describes a type (`Matrix&&`). Binding a reference does not copy or move the object.
+
+```cpp
+void identify(const Matrix&) {
+    std::cout << "const reference\n";
+}
+
+void identify(Matrix&&) {
+    std::cout << "rvalue reference\n";
+}
+```
+
+```cpp
+Matrix field(2, 2);
+
+identify(field);         // const reference
+identify(Matrix(2, 2));  // rvalue reference
+```
+For the temporary, both overloads are viable; `Matrix&&` is preferred.
+
+---
+
+# `std::move` enables a choice; it does not move
+
+```cpp
+#include <utility>
+
+Matrix field(2, 2);
+const double* buffer = field.storage();
+
+identify(std::move(field));         // rvalue reference
+std::cout << field.size() << '\n';  // Still 4: identify only prints.
+
+Matrix attempted = std::move(field); // Version 1 still COPIES.
+std::cout << (attempted.storage() == buffer) << '\n';  // 0
+std::cout << field.size() << '\n';                     // Still 4.
+```
+
+`std::move(field)` casts to an rvalue reference without changing `field`.
+Version 1 has no move constructor, so construction still selects its copy constructor. We now add the missing operation.
+
+---
+
+# Implicit special member functions
+
+![height:480px](../03/images/03_compiler_implicit.png)
+
+[Source: Howard Hinnant](https://howardhinnant.github.io/classdecl.html). Declaring a copy constructor suppresses implicit moves.
+
+---
+
+# Adding move operations (1/5)
+
+```cpp
+class Matrix {
+    std::size_t rows, cols;
+    std::vector<double> values;
+
+public:
+    Matrix(std::size_t r, std::size_t c);
+    Matrix(const Matrix& other);
+    Matrix& operator=(const Matrix& other);
+
+    Matrix(Matrix&& other);
+    Matrix& operator=(Matrix&& other);
+
+    std::size_t size() const { return values.size(); }
+    double& operator[](std::size_t i) { return values[i]; }
+    const double* storage() const { return values.data(); }
+};
+```
+
+**Version 2 replaces Version 1**, adding a move constructor and move assignment.
+
+---
+
+# Adding move operations (2/5)
+
+```cpp
+Matrix::Matrix(Matrix&& other)
+    : rows(other.rows), cols(other.cols),
+      values(std::move(other.values)) {
+    other.rows = other.cols = 0;
+    other.values.clear();
+}
+```
+
+The vector's move constructor transfers its buffer; no matrix entries are copied. `clear()` removes any remaining entries, making our source state explicitly empty.
+
+The named parameter `other` is an **lvalue expression**, even though its type is `Matrix&&`. This is why the member transfer uses `std::move(other.values)`.
+
+---
+
+# Adding move operations (3/5)
+
+```cpp
+#include <utility>
+
+Matrix field(2, 2);
+field[0] = 1.25;
+const double* buffer = field.storage();
+
+Matrix moved = std::move(field);
+
+std::cout << moved[0] << '\n';                     // 1.25
+std::cout << (moved.storage() == buffer) << '\n';  // 1
+std::cout << field.size() << '\n';                 // 0
+```
+
+Compare this with Version 1: the destination now owns the **original buffer**, and the source is empty.
+This initializes a new object, so it calls the **move constructor**.
+
+---
+
+# Adding move operations (4/5)
+
+```cpp
+Matrix& Matrix::operator=(Matrix&& other) {
+    if (this != &other) {
+        rows = other.rows;
+        cols = other.cols;
+        values = std::move(other.values);
+
+        other.rows = other.cols = 0;
+        other.values.clear();
+    }
+
+    return *this;
+}
+```
+
+Move assignment updates an **existing** matrix. The vector releases the destination's previous buffer and takes ownership of the source buffer.
+The identity check handles self-move; our source becomes empty, just as after move construction.
+
+---
+
+# Adding move operations (5/5)
+
+```cpp
+#include <utility>
+
+Matrix source(2, 2);
+source[0] = 1.25;
+const double* buffer = source.storage();
+
+Matrix target(3, 3); // Already owns a different buffer.
+target = std::move(source);
+
+std::cout << target.size() << ' ' << source.size() << '\n';  // 4 0
+std::cout << (target.storage() == buffer) << '\n';           // 1
+```
+
+`Matrix target = std::move(source)` initializes a new object.
+`target = std::move(source)` assigns to an existing object.
+Both reuse the source buffer, but assignment must also release the destination's old resource.
+
+---
+
+# After a move, and when copying is still needed
+
+```cpp
+#include <utility>
+
+Matrix source(2, 2);
+Matrix moved = std::move(source);
+
+source = Matrix(1, 1);           // A moved-from Matrix can be assigned again.
+source[0] = 4.0;
+std::cout << source[0] << '\n';  // 4
+
+const Matrix fixed(2, 2);
+Matrix copied = std::move(fixed); // Const source selects COPY.
+std::cout << (copied.storage() == fixed.storage()) << '\n';  // 0
+```
+
+Our class defines an empty moved-from state. Check its size before indexing, or assign a new value.
+In general, use moved-from objects according to their type's documented guarantees. A cast does not force a move: `Matrix&&` cannot bind to the const source above.
+
+---
+
+# The same example: copy-based and move-based swap
+
+```cpp
+void copy_swap(Matrix& a, Matrix& b) {
+    Matrix temporary = a;
+    a = b;
+    b = temporary;
+}
+
+void move_swap(Matrix& a, Matrix& b) {
+    Matrix temporary = std::move(a);
+    a = std::move(b);
+    b = std::move(temporary);
+}
+```
+
+The first version copies the matrix entries; its cost is linear in their count. The second version uses the move constructor and both move assignments to exchange buffers in constant time.
+
+Ordinary code can use `std::swap(a, b)`. No universal timing or allocation count follows from these examples.
+
+---
+
+# Returning by value: observe construction (1/3)
+
+A minimal `MatrixTrace` makes constructor calls visible; it stores no numerical data.
+
+```cpp
+struct MatrixTrace {
+    MatrixTrace() {
+        std::cout << "Construction\n";
+    }
+
+    MatrixTrace(const MatrixTrace&) {
+        std::cout << "Copy\n";
+    }
+
+    MatrixTrace(MatrixTrace&&) {
+        std::cout << "Move\n";
+    }
+
+    MatrixTrace& operator=(MatrixTrace&&) = default;
+};
+```
+
+---
+
+# Returning by value: RVO (2/3)
+
+```cpp
+MatrixTrace make_trace() {
+    return MatrixTrace{};
+}
+```
+
+```cpp
+MatrixTrace field = make_trace();
+```
+
+Output in C++17:
+
+```text
+Construction
+```
+
+**Elision** avoids a copy/move construction: the object is built directly in its destination, here `field`.
+
+This is commonly called **RVO** (Return Value Optimization). In C++17 this case is **guaranteed copy elision**: no separate intermediate object is created, and no copy/move constructor is called.
+
+---
+
+# Returning by value: NRVO (3/3)
+
+```cpp
+MatrixTrace make_named_trace() {
+    MatrixTrace local;
+
+    return local;
+}
+```
+
+```cpp
+MatrixTrace field = make_named_trace();
+```
+
+**NRVO** (Named Return Value Optimization) builds `local` directly as `field`. It is **optional** in C++17.
+
+- With NRVO, output: `Construction`.
+- Without NRVO, output: `Construction`, then `Move`.
+- Write `return local;`: `return std::move(local);` prevents NRVO.
+
+**Assignment is different:** `field = make_named_trace();` still calls move assignment.
+
+---
+
+# Moving matrices into a container
+
+```cpp
+#include <vector>
+
+std::vector<Matrix> fields;
+fields.push_back(Matrix(2, 2));
+
+fields.reserve(fields.capacity() + 1); // Forces reallocation.
+```
+
+The temporary is moved into the vector. Reallocation may copy existing matrices even though a move constructor is available: exception guarantees also affect this choice (explained in the exceptions section).
+
+- Containers and algorithms retain their own requirements: `std::copy` still copies.
+- Not every move is constant time: `std::array` moves its elements.
+- Keep the distinction: **cast**, **selected move operation**, **elision**.
 
 ---
 
@@ -41,20 +450,6 @@ _class: titlepage
 
 ---
 
-# RAII: tie resources to object lifetime
-
-Recall RAII from Lecture 03: an owning object acquires a resource and releases it when its lifetime ends.
-
-| Resource                        | Owner                 | Automatic cleanup         |
-|---------------------------------|-----------------------|---------------------------|
-| Sequence of measurements        | `std::vector<double>` | Releases element storage  |
-| One dynamically selected object | `std::unique_ptr<T>`  | Destroys the owned object |
-| An open data file               | `std::ifstream`       | Closes its file           |
-
-Prefer owners that perform cleanup in their destructors. A raw pointer alone does not record who must release the object.
-
----
-
 # Pointer roles in modern C++
 
 | Type                 | Role                              | Keeps the object alive?     |
@@ -62,7 +457,6 @@ Prefer owners that perform cleanup in their destructors. A raw pointer alone doe
 | `T*`, `T&`           | Observe/access an existing object | No                          |
 | `std::unique_ptr<T>` | Exclusive ownership               | Yes                         |
 | `std::shared_ptr<T>` | Shared ownership                  | Yes, while an owner remains |
-| `std::weak_ptr<T>`   | Observe shared ownership          | No                          |
 
 A borrowed pointer/reference may be used only while its target exists. It can be useful even when the variable storing it lives longer, provided the expired target is not accessed.
 
@@ -125,6 +519,28 @@ cell.set_polygon(create_polygon("Square"));
 
 ---
 
+# Passing ownership with `std::unique_ptr`
+
+```cpp
+#include <memory>
+#include <utility>
+
+class MeshCell {
+    std::unique_ptr<Polygon> polygon;
+
+public:
+    void set_polygon(std::unique_ptr<Polygon> p) {
+        polygon = std::move(p);
+    }
+};
+```
+
+The by-value argument receives ownership. Inside the setter, the named parameter `p` is an lvalue; `std::move(p)` enables move assignment into the member.
+
+For an existing unique owner, the caller must explicitly transfer it. A temporary returned by `create_polygon` can initialize the parameter directly.
+
+---
+
 # Using `std::unique_ptr`
 
 ```cpp
@@ -133,7 +549,6 @@ auto sample = std::make_unique<double>(1.25);
 if (sample) std::cout << *sample << '\n'; // 1.25
 
 std::unique_ptr<double> result;
-
 result = std::move(sample); // Releases any previously owned object.
 
 std::cout << static_cast<bool>(sample) << '\n'; // 0
@@ -164,6 +579,7 @@ Prefer `make_unique` / `make_shared` for ordinary construction.
 
 ```cpp
 struct Data { std::vector<double> values{1.0, 2.0, 3.0}; };
+
 struct Preprocessor {
     std::shared_ptr<Data> data;
     void run() {
@@ -180,7 +596,7 @@ struct NumericalSolver {
 };
 ```
 
-Both consumers store an owning copy. Each `run()` requires a nonempty `data`. Include `<memory>`, `<vector>` and `<numeric>`.
+Both classes store an owning copy. Each `run()` requires a nonempty `data`.
 
 ---
 
@@ -210,9 +626,6 @@ Thread safety of ownership counts does not protect the dataset: modifying it con
 # `std::shared_ptr`: assignment and counts
 
 ```cpp
-#include <memory>
-#include <iostream>
-
 auto first = std::make_shared<double>(1.25);
 auto observer_owner = first;
 
@@ -228,75 +641,7 @@ std::cout << *observer_owner << '\n';    // 1.25
 
 Assignment releases one ownership share in the old object and acquires one in the new object. The old value survives through `observer_owner`; neither pointer variable has left its scope.
 
----
-
-# Cycles of `std::shared_ptr` owners
-
-```cpp
-#include <memory>
-
-struct Node {
-    std::shared_ptr<Node> next;
-    std::shared_ptr<Node> prev;
-};
-
-auto node1 = std::make_shared<Node>();
-auto node2 = std::make_shared<Node>();
-
-node1->next = node2;
-node2->prev = node1;
-```
-
-This is an **intentional ownership cycle**: each node has two owners, its local pointer and the other node.
-When both local pointers are destroyed, the two links keep the nodes alive. Reference counting alone does not reclaim this cycle.
-
----
-
-# Break ownership cycles with `std::weak_ptr`
-
-```cpp
-struct Node {
-    std::shared_ptr<Node> next;
-    std::weak_ptr<Node> prev;
-};
-
-auto node1 = std::make_shared<Node>();
-auto node2 = std::make_shared<Node>();
-
-node1->next = node2;
-node2->prev = node1;
-
-if (auto previous = node2->prev.lock()) {
-    std::cout << (previous == node1) << '\n'; // 1
-}
-```
-
-`weak_ptr` does not keep the resource alive. `lock()` returns an owning `shared_ptr`, empty if the resource has expired. Leaving the local-owner scope now destroys both nodes.
-
----
-
-# Expired `std::weak_ptr` observers
-
-```cpp
-#include <memory>
-#include <iostream>
-
-auto current = std::make_shared<double>(1.25);
-std::weak_ptr<double> old = current;
-
-current = std::make_shared<double>(2.50);
-
-std::weak_ptr<double> recent = current;
-auto expired = old.lock(); // An empty shared_ptr<double>.
-
-std::cout << static_cast<bool>(expired) << '\n'; // 0
-
-if (auto live = recent.lock()) {
-    std::cout << *live << '\n'; // 2.5
-}
-```
-
-Replacing the only owner destroys the first value, so `old` expires. The successful `lock()` keeps the second value alive while `live` exists.
+`std::weak_ptr` observes a shared object without keeping it alive. See the appendix for its use and for ownership cycles.
 
 ---
 
@@ -315,418 +660,31 @@ A borrowed pointer is useful for access, but does not acquire responsibility for
 double* raw = new double(1.25);
 
 std::shared_ptr<double> first(raw);
-std::shared_ptr<double> second(raw); // Intentional error: independent owners.
+std::shared_ptr<double> second(raw); // Intentional error: independent owners. Use std::make_shared instead.
 ```
 
-Copy an existing shared pointer to share its control block. These two error examples must be tested separately from valid code.
+Copy an existing shared pointer to share its control block.
 
 ---
 
 # Borrowing with `std::reference_wrapper`
 
 ```cpp
-double t1 = 20.0, t2 = 21.0, t3 = 22.0;
+double t1 = 20.0, t2 = 21.0, t3 = 22.0, t4 = 23.0;
 std::vector<std::reference_wrapper<double>> temperatures{t1, t2};
 
 for (auto ref : temperatures) ref.get() += 0.5;
 temperatures[0] = std::ref(t3); // Rebind; does not change t1.
 temperatures[0].get() = 23.0;
+temperatures.push_back(std::ref(t4));
 
-std::cout << t1 << ' ' << t2 << ' ' << t3 << '\n';
-// 20.5 21.5 23
+std::cout << t1 << ' ' << t2 << ' ' << t3 << ' ' << t4 << '\n';
+// 20.5 21.5 23 23
 ```
 
 A wrapper must be initialized; it stores a reference, not an owned value. Its target must outlive every access through it. Containers cannot store reference types directly.
 
 Binding a local const reference directly to a temporary can extend its lifetime; returning/rebinding references does not generally propagate that extension.
-
----
-
-<!--
-_class: titlepage
--->
-
-# Move semantics
-
----
-
-# A copyable `Matrix` (1/3)
-
-```cpp
-class Matrix {
-    std::size_t rows, cols;
-    std::vector<double> values;
-
-public:
-    Matrix(std::size_t r, std::size_t c);
-    Matrix(const Matrix& other);
-    Matrix& operator=(const Matrix& other);
-
-    std::size_t size() const { return values.size(); }
-    double& operator[](std::size_t i) { return values[i]; }
-    const double* storage() const { return values.data(); }
-};
-```
-
-**Version 1.** `values` owns the matrix entries and handles allocation/destruction. `storage()` borrows a pointer to that buffer.
-Assume `r * c` is representable; indexing requires `i < size()`. Include `<vector>` and `<cstddef>`.
-
----
-
-# A copyable `Matrix` (2/3)
-
-```cpp
-Matrix::Matrix(std::size_t r, std::size_t c)
-    : rows(r), cols(c), values(r * c, 0.0) {}
-
-Matrix::Matrix(const Matrix& other)
-    : rows(other.rows), cols(other.cols), values(other.values) {}
-```
-
-The ordinary constructor creates a zero-filled buffer.
-The copy constructor copies dimensions and the vector's **elements**, allocating independent storage.
-
-For a matrix with $n$ entries, this copy costs $O(n)$. The copy-assignment definition is provided in the appendix; the vector supplies automatic destruction.
-
----
-
-# A copyable `Matrix` (3/3)
-
-```cpp
-#include <iostream>
-
-Matrix field(1'000, 1'000);
-field[0] = 1.25;
-
-Matrix copied = field;
-copied[0] = 2.50;
-
-std::cout << field[0] << ' ' << copied[0] << '\n';           // 1.25 2.5
-std::cout << (field.storage() == copied.storage()) << '\n';  // 0
-```
-
-Two independent matrices need two buffers. Copying a million entries is appropriate when both values are needed.
-
-**Next problem:** when the original value is no longer needed, can a new owner reuse its buffer instead of copying the entries?
-
----
-
-# What changes when we move?
-
-We want to transfer ownership of the **same buffer** to a destination.
-
-| Copy | Move in our next `Matrix` version |
-|---|---|
-| New buffer with copied entries | Reuse the source buffer |
-| Source keeps its value | Source becomes empty |
-| $O(n)$ work for $n$ entries | $O(1)$ buffer transfer |
-
-The source object remains alive. We must express that its old value may be consumed and provide an operation that performs the transfer.
-
----
-
-# Which expressions can select a move?
-
-For an existing `Matrix field`, distinguish:
-
-| Expression | Category | Meaning |
-|---|---|---|
-| `field` | lvalue | Refers to the existing matrix |
-| `field[0]` | lvalue | Refers to one of its entries |
-| `Matrix(2, 2)` | rvalue | Creates a temporary matrix |
-
-An **lvalue** identifies an object. **Rvalues** include temporary values and, as we show next, expressions allowing reuse of an existing object.
-
-Functions can overload on these categories. A function call need not be an rvalue: `std::min(i, j)` for integer arguments returns a reference and is an lvalue.
-
----
-
-# Rvalue references: two overloads
-
-```cpp
-#include <iostream>
-
-void identify(const Matrix&) {
-    std::cout << "const reference\n";
-}
-
-void identify(Matrix&&) {
-    std::cout << "rvalue reference\n";
-}
-```
-
-```cpp
-Matrix field(2, 2);
-
-identify(field);         // const reference
-identify(Matrix(2, 2));  // rvalue reference
-```
-`Matrix&&` is an **rvalue reference**. A const reference can also accept rvalues, but the `&&` overload is preferred here for a non-const rvalue.
-
----
-
-# `std::move` enables a choice; it does not move
-
-```cpp
-#include <utility>
-#include <iostream>
-
-Matrix field(2, 2);
-const double* buffer = field.storage();
-
-identify(std::move(field));         // rvalue reference
-std::cout << field.size() << '\n';  // Still 4: identify only prints.
-
-Matrix attempted = std::move(field); // Version 1 still COPIES.
-std::cout << (attempted.storage() == buffer) << '\n';  // 0
-std::cout << field.size() << '\n';                     // Still 4.
-```
-
-`std::move(field)` casts to an rvalue reference without changing `field`.
-Version 1 has no move constructor, so construction still selects its copy constructor. We now add the missing operation.
-
----
-
-# Implicit special member functions
-
-![height:480px](../03/images/03_compiler_implicit.png)
-
-[Source: Howard Hinnant](https://howardhinnant.github.io/classdecl.html). Declaring a copy constructor suppresses implicit moves.
-
----
-
-# Adding move operations (1/5)
-
-```cpp
-class Matrix {
-    std::size_t rows, cols;
-    std::vector<double> values;
-
-public:
-    Matrix(std::size_t r, std::size_t c);
-    Matrix(const Matrix& other);
-    Matrix& operator=(const Matrix& other);
-
-    Matrix(Matrix&& other) noexcept;
-    Matrix& operator=(Matrix&& other) noexcept;
-
-    std::size_t size() const { return values.size(); }
-    double& operator[](std::size_t i) { return values[i]; }
-    const double* storage() const { return values.data(); }
-};
-```
-
-**Version 2 replaces Version 1.** `noexcept` promises not to throw exceptions (covered next).
-
----
-
-# Adding move operations (2/5)
-
-```cpp
-Matrix::Matrix(Matrix&& other) noexcept
-    : rows(other.rows), cols(other.cols),
-      values(std::move(other.values)) {
-    other.rows = other.cols = 0;
-    other.values.clear();
-}
-```
-
-The vector's move constructor transfers its buffer; no matrix entries are copied. `clear()` removes any remaining entries, making our source state explicitly empty.
-
-The named parameter `other` is an **lvalue expression**, even though its type is `Matrix&&`. This is why the member transfer uses `std::move(other.values)`.
-
-`noexcept` is appropriate for these default-allocator vector operations.
-
----
-
-# Adding move operations (3/5)
-
-```cpp
-#include <utility>
-#include <iostream>
-
-Matrix field(2, 2);
-field[0] = 1.25;
-const double* buffer = field.storage();
-
-Matrix moved = std::move(field);
-
-std::cout << moved[0] << '\n';                     // 1.25
-std::cout << (moved.storage() == buffer) << '\n';  // 1
-std::cout << field.size() << '\n';                 // 0
-```
-
-Compare this with Version 1: the destination now owns the **original buffer**, and the source is empty.
-This initializes a new object, so it calls the **move constructor**.
-
----
-
-# Adding move operations (4/5)
-
-```cpp
-Matrix& Matrix::operator=(Matrix&& other) noexcept {
-    if (this != &other) {
-        rows = other.rows;
-        cols = other.cols;
-        values = std::move(other.values);
-
-        other.rows = other.cols = 0;
-        other.values.clear();
-    }
-
-    return *this;
-}
-```
-
-Move assignment updates an **existing** matrix. The vector releases the destination's previous buffer and takes ownership of the source buffer.
-The identity check handles self-move; our source becomes empty, just as after move construction.
-
----
-
-# Adding move operations (5/5)
-
-```cpp
-#include <utility>
-#include <iostream>
-
-Matrix source(2, 2);
-source[0] = 1.25;
-const double* buffer = source.storage();
-Matrix target(3, 3); // Already owns a different buffer.
-
-target = std::move(source);
-
-std::cout << target.size() << ' ' << source.size() << '\n';  // 4 0
-std::cout << (target.storage() == buffer) << '\n';           // 1
-```
-
-`Matrix target = std::move(source)` initializes a new object.
-`target = std::move(source)` assigns to an existing object.
-Both reuse the source buffer, but assignment must also release the destination's old resource.
-
----
-
-# After a move, and when copying is still needed
-
-```cpp
-#include <utility>
-#include <iostream>
-
-Matrix source(2, 2);
-Matrix moved = std::move(source);
-
-source = Matrix(1, 1);           // A moved-from Matrix can be assigned again.
-source[0] = 4.0;
-std::cout << source[0] << '\n';  // 4
-
-const Matrix fixed(2, 2);
-Matrix copied = std::move(fixed); // Const source selects COPY.
-std::cout << (copied.storage() == fixed.storage()) << '\n';  // 0
-```
-
-Our class defines an empty moved-from state. Check its size before indexing, or assign a new value.
-In general, use moved-from objects according to their type's documented guarantees. A cast does not force a move: `Matrix&&` cannot bind to the const source above.
-
----
-
-# The same example: copy-based and move-based swap
-
-```cpp
-void copy_swap(Matrix& a, Matrix& b) {
-    Matrix temporary = a;
-    a = b;
-    b = temporary;
-}
-
-void move_swap(Matrix& a, Matrix& b) {
-    Matrix temporary = std::move(a);
-    a = std::move(b);
-    b = std::move(temporary);
-}
-```
-
-The first version copies the matrix entries; its cost is linear in their count. The second version uses the move constructor and both move assignments to exchange buffers in constant time.
-
-Ordinary code can use `std::swap(a, b)`. No universal timing or allocation count follows from these examples.
-
----
-
-# Returning a `Matrix` by value (1/2)
-
-```cpp
-Matrix make_matrix() {
-    Matrix result(2, 2);
-    result[0] = 1.25;
-
-    return result;
-}
-```
-
-```cpp
-Matrix field = make_matrix();
-```
-**NRVO** permits construction of the named local directly in `field`. If NRVO is not performed, this return can select our move constructor.
-C++17 does not require an additional move from the function's result into `field`.
-
----
-
-# Returning a `Matrix` by value (2/2)
-
-```cpp
-Matrix make_zero_matrix() {
-    return Matrix(2, 2);
-}
-```
-
-```cpp
-Matrix field = make_zero_matrix();
-
-Matrix existing(3, 3);
-existing = make_zero_matrix(); // Move assignment still applies here.
-```
-For the direct temporary result, **C++17 construction is guaranteed without an intervening copy/move**. This differs from optional NRVO for a named local.
-Returning by value can therefore be efficient; elision is not a move operation.
-
----
-
-# Moving matrices into a container
-
-```cpp
-#include <vector>
-
-std::vector<Matrix> fields;
-fields.push_back(Matrix(2, 2));
-
-fields.reserve(fields.capacity() + 1); // Forces reallocation.
-```
-
-The temporary is moved into the vector. On reallocation, a suitable `noexcept` move allows existing matrices to transfer their buffers rather than copying entries.
-
-- Containers and algorithms retain their own requirements: `std::copy` still copies.
-- Not every move is constant time: `std::array` moves its elements.
-- Keep the distinction: **cast**, **selected move operation**, **elision**.
-
----
-
-# Revisiting the `std::unique_ptr` parameter
-
-```cpp
-#include <memory>
-#include <utility>
-
-class MeshCell {
-    std::unique_ptr<Polygon> polygon;
-
-public:
-    void set_polygon(std::unique_ptr<Polygon> p) {
-        polygon = std::move(p);
-    }
-};
-```
-
-The by-value argument receives ownership. Inside the setter, the named parameter `p` is an lvalue; `std::move(p)` enables move assignment into the member.
-
-For an existing unique owner, the caller must explicitly transfer it. A temporary returned by `create_polygon` can initialize the parameter directly.
 
 ---
 
@@ -875,7 +833,8 @@ Ordinary arithmetic does not automatically throw these exceptions.
 - A status is often appropriate for an expected outcome, such as an iterative solver not converging within its iteration budget.
 - Exceptions can propagate failures that prevent the requested operation from completing. The caller decides how to handle them.
 - The `noexcept` **specifier** promises that no exception escapes a function; violating this promise calls `std::terminate`.
-- Many implementations avoid exception-dispatch work on the ordinary path, but binary size and optimization effects still depend on the implementation.
+- **Move semantics:** since move constructors and assignment operators typically don't involve allocating memory, calling other code, or anything like that, it's a good practice to mark them as `noexcept`.
+- Exception overhead depends on the implementation and execution path.
 
 Keep an error-reporting policy consistent across the application. `exit`, `abort` and `terminate` end execution rather than allowing an ordinary recovery handler.
 
@@ -909,8 +868,6 @@ _class: titlepage
 - `std::iostream` is an alias for `std::basic_iostream<char>`, combining input and output.
 
 ```cpp
-#include <iostream>
-
 double measurement = 0.0;
 
 if (std::cin >> measurement) {
@@ -945,7 +902,6 @@ The class `std::ios_base` defines flags that can be combined with `|`.
 
 ```cpp
 #include <sstream>
-#include <iostream>
 
 std::istringstream row("0.5 1.25");
 double time = 0.0, value = 0.0;
@@ -1071,8 +1027,9 @@ Here the normal distribution has mean `0.0` and standard deviation `0.1`.
 #include <random>
 
 std::mt19937 reproducible{12345}; // Fixed seed for a repeatable engine sequence.
+
 std::random_device source;
-std::mt19937 exploratory{source()};
+std::mt19937 non_reproducible{source()};
 ```
 
 - A seed initializes state; it need not contain fresh entropy.
@@ -1098,7 +1055,6 @@ Use the `std::` prefix and `<random>`. Choose parameters that satisfy the distri
 
 ```cpp
 #include <random>
-#include <iostream>
 
 std::mt19937 engine{12345};
 std::uniform_int_distribution<int> node{0, 9};
@@ -1196,7 +1152,6 @@ Use `steady_clock` for the measurements that follow. A short tick period is not 
 #include <chrono>
 #include <numeric>
 #include <vector>
-#include <iostream>
 
 double timed_squared_norm(const std::vector<double>& values) {
     const auto start = std::chrono::steady_clock::now();
@@ -1288,7 +1243,6 @@ Existence alone does not imply a regular file; available space is a snapshot, no
 
 ```cpp
 #include <filesystem>
-#include <iostream>
 
 const std::filesystem::path source{"measurements.txt"};
 const std::filesystem::path directory{"copied_data"};
@@ -1307,7 +1261,7 @@ The working directory must be writable. The default copy reports an error if the
 
 ---
 
-# Checklist and next lecture
+# Take-home messages.
 
 - Make ownership explicit: unique by default, shared only when needed; references and ordinary pointers can observe resources.
 - Let RAII members manage resources; this often removes the need for custom special member functions.
@@ -1315,9 +1269,7 @@ The working directory must be writable. The default copy reports an error if the
 - Check input/output state and record seeds and software context for reproducible numerical experiments.
 - Use `steady_clock` and floating-point durations for elapsed-time reports; handle filesystem failures.
 
-Correct results are the first requirement; measure before optimizing.
-
-**Next lecture:** static and shared libraries.
+**Correct results are the first requirement**; measure before optimizing.
 
 ---
 
@@ -1325,9 +1277,78 @@ Correct results are the first requirement; measure before optimizing.
 _class: titlepage
 -->
 
-# Appendix<br>Resource-owning implementations
+# Appendix<br>Ownership details and implementations
 
-Optional implementation details for the main examples.
+Optional: weak observers, ownership cycles and implementation details.
+
+---
+
+# Cycles of `std::shared_ptr` owners
+
+```cpp
+#include <memory>
+
+struct Node {
+    std::shared_ptr<Node> next;
+    std::shared_ptr<Node> prev;
+};
+
+auto node1 = std::make_shared<Node>();
+auto node2 = std::make_shared<Node>();
+
+node1->next = node2;
+node2->prev = node1;
+```
+
+This is an **intentional ownership cycle**: each node has two owners, its local pointer and the other node.
+When both local pointers are destroyed, the two links keep the nodes alive. Reference counting alone does not reclaim this cycle.
+
+---
+
+# Break ownership cycles with `std::weak_ptr`
+
+```cpp
+struct Node {
+    std::shared_ptr<Node> next;
+    std::weak_ptr<Node> prev;
+};
+
+auto node1 = std::make_shared<Node>();
+auto node2 = std::make_shared<Node>();
+
+node1->next = node2;
+node2->prev = node1;
+
+if (auto previous = node2->prev.lock()) {
+    std::cout << (previous == node1) << '\n'; // 1
+}
+```
+
+`weak_ptr` does not keep the resource alive. `lock()` returns an owning `shared_ptr`, empty if the resource has expired. Leaving the local-owner scope now destroys both nodes.
+
+---
+
+# Expired `std::weak_ptr` observers
+
+```cpp
+#include <memory>
+
+auto current = std::make_shared<double>(1.25);
+std::weak_ptr<double> old = current;
+
+current = std::make_shared<double>(2.50);
+
+std::weak_ptr<double> recent = current;
+auto expired = old.lock(); // An empty shared_ptr<double>.
+
+std::cout << static_cast<bool>(expired) << '\n'; // 0
+
+if (auto live = recent.lock()) {
+    std::cout << *live << '\n'; // 2.5
+}
+```
+
+Replacing the only owner destroys the first value, so `old` expires. The successful `lock()` keeps the second value alive while `live` exists.
 
 ---
 
@@ -1438,3 +1459,11 @@ The specific handler precedes the general handlers. Failed withdrawals leave the
 | `std::bad_exception`   | Exception-handling support                                 | `<exception>` |
 
 [Exception support](https://timsong-cpp.github.io/cppwp/n4659/support.exception) - [Program termination](https://timsong-cpp.github.io/cppwp/n4659/support.start.term) - [Eigen numerical library](https://libeigen.gitlab.io/)
+
+---
+
+<!--
+_class: titlepage
+-->
+
+# :arrow_right: Static and shared libraries.

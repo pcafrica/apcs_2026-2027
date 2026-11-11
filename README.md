@@ -82,7 +82,7 @@ To be defined.
 | Wed 28 Oct 2026 | 11:00 - 13:00 | 004 | Project session. |
 | Wed 04 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-05-md]] [[HTML][exercise-05-html]] [[PDF][exercise-05-pdf]] |
 | Tue 10 Nov 2026 | 14:00 - 16:00 | 005 | The Standard Template Library. [[Markdown][lecture-06-md]] [[HTML][lecture-06-html]] [[PDF][lecture-06-pdf]] [[Recording][lecture-06-rec]] |
-| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Smart pointers, move semantics, exceptions, STL utilities. [[Markdown][lecture-07-md]] [[HTML][lecture-07-html]] [[PDF][lecture-07-pdf]] [[Recording][lecture-07-rec]] |
+| Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Move semantics, smart pointers, exceptions, STL utilities. [[Markdown][lecture-07-md]] [[HTML][lecture-07-html]] [[PDF][lecture-07-pdf]] [[Recording][lecture-07-rec]] |
 | Tue 17 Nov 2026 | 14:00 - 16:00 | 005 | Project session. |
 | Wed 18 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-06-md]] [[HTML][exercise-06-html]] [[PDF][exercise-06-pdf]] |
 | Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. |
