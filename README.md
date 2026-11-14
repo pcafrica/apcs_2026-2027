@@ -149,12 +149,12 @@ To be defined.
 [lecture-06-md]: lectures/06/06-c++_stl.md
 [lecture-06-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/06/06-c++_stl.html
 [lecture-06-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/06/06-c++_stl.pdf
-[lecture-06-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica%5Fsissa%5Fit%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science%2D20261110%5F141509%2DMeeting%20Recording%2Emp4&share=cQqx3HBpT6NPTqVtaxM3CDgREgUDzhchoCpoDU38uAUtVXdkPQ
+[lecture-06-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261110_141509-Meeting%20Recording.mp4&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&share=cQqx3HBpT6NPTqVtaxM3CDgREgUDzhchoCpoDU38uAUtVXdkPQ
 
 [lecture-07-md]: lectures/07/07-c++_stl2_move.md
 [lecture-07-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2_move.html
 [lecture-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/07/07-c++_stl2_move.pdf
-[lecture-07-rec]: ...
+[lecture-07-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261111_111503-Meeting%20Recording.mp4&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&share=cQq_Nh7nSemZSKnYqcGsKsN8EgUDchXOiOg6eCBXCUz1snCFwg
 
 [exercise-06-md]: exercises/06/06-c++_stl_move.md
 [exercise-06-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/06/06-c++_stl_move.html
