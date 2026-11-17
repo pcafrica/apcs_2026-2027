@@ -1126,7 +1126,7 @@ double add(double a, double b) { // Definition.
 - They ensure that a header file is included only once during compilation.
 - Header guards are essential to avoid redefinition errors.
 
-Without header guards, if a header file is included multiple times in a source file or in the same translation (compilation) unit, it can lead to multiple definition errors.
+Without header guards, if a header file is included multiple times **in a source file** or **in the same translation (compilation) unit**, it can lead to multiple definition errors.
 
 ---
 
@@ -1150,8 +1150,6 @@ Without header guards, if a header file is included multiple times in a source f
 Modern compilers also support:
 ```cpp
 #pragma once
-
-// ...
 ```
 
 ---
