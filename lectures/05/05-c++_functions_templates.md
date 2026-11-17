@@ -341,14 +341,14 @@ Changing `threshold` later does not change the already captured copy.
 
 # Capture specification
 
-| Capture | Meaning |
-|---|---|
-| `[]` | Capture nothing. |
-| `[y]` / `[&y]` | Explicitly capture `y` by copy / reference. |
-| `[=]` / `[&]` | Default to copy / reference for implicit captures. |
-| `[=, &x]` | Copy implicit captures; explicitly capture `x` by reference. |
-| `[this]` | Capture the pointer to the enclosing object. |
-| `[*this]` | Capture a copy of that object (C++17). |
+| Capture        | Meaning                                                      |
+|----------------|--------------------------------------------------------------|
+| `[]`           | Capture nothing.                                             |
+| `[y]` / `[&y]` | Explicitly capture `y` by copy / reference.                  |
+| `[=]` / `[&]`  | Default to copy / reference for implicit captures.           |
+| `[=, &x]`      | Copy implicit captures; explicitly capture `x` by reference. |
+| `[this]`       | Capture the pointer to the enclosing object.                 |
+| `[*this]`      | Capture a copy of that object (C++17).                       |
 
 Capture defaults do **not** copy/reference every local variable indiscriminately. They govern eligible implicit captures needed by the lambda. Explicit captures are listed directly.
 
@@ -1363,16 +1363,16 @@ Today we used ordinary arrays and loops to keep the focus on callables/templates
 
 Include `<functional>`. These are class templates; `T` selects the operand/result type used by the operation.
 
-| Functor | Operation | Arity |
-|---|---|---|
-| `plus<T>`, `minus<T>` | Addition, subtraction | Binary |
-| `multiplies<T>`, `divides<T>` | Multiplication, division | Binary |
-| `modulus<T>` | Remainder (`%`) | Binary |
-| `negate<T>` | Unary minus | Unary |
-| `equal_to<T>`, `not_equal_to<T>` | Equality comparisons | Binary |
-| `greater<T>`, `less<T>`, ... | Ordering comparisons | Binary |
-| `logical_and<T>`, `logical_or<T>` | Logical AND, OR | Binary |
-| `logical_not<T>` | Logical NOT | Unary |
+| Functor                           | Operation                | Arity  |
+|-----------------------------------|--------------------------|--------|
+| `plus<T>`, `minus<T>`             | Addition, subtraction    | Binary |
+| `multiplies<T>`, `divides<T>`     | Multiplication, division | Binary |
+| `modulus<T>`                      | Remainder (`%`)          | Binary |
+| `negate<T>`                       | Unary minus              | Unary  |
+| `equal_to<T>`, `not_equal_to<T>`  | Equality comparisons     | Binary |
+| `greater<T>`, `less<T>`, ...      | Ordering comparisons     | Binary |
+| `logical_and<T>`, `logical_or<T>` | Logical AND, OR          | Binary |
+| `logical_not<T>`                  | Logical NOT              | Unary  |
 
 Use the `std::` prefix. The underlying operation must be valid for the chosen operand type.
 
