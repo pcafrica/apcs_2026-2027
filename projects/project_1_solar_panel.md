@@ -151,7 +151,7 @@ $$
 p(i,j)=(j-1)(N_x-2)+(i-1).
 $$
 
-The grid notation used in this project is shown in the following figure. Blue nodes belong to the prescribed boundary, the orange node is the current interior unknown $T_{i,j}$, and the four green nodes form its five-point stencil.
+The grid notation used in this project is shown in the following figure. Blue nodes mark the prescribed boundary. The orange node represents the current interior unknown $T_{i,j}$; together with its four green neighbours, it forms the five-point stencil.
 
 ![Finite-difference grid with node indices, spacings, boundary nodes, and five-point stencil](assets/project_1_grid.svg)
 
@@ -224,7 +224,7 @@ d=
 |T_{i,j}^{\mathrm{new}}-T_{i,j}^{\mathrm{old}}|.
 $$
 
-Use a strictly positive tolerance and a maximum iteration count of at least one. If $d$ is at most the tolerance, the new grid is the converged solution. Otherwise swap the old and new grids and begin another sweep. If the iteration limit is reached first, return a non-converged result and report it clearly. This update is an accessible first stopping criterion, not an error bound on the exact temperature. Once the sparse system is assembled in Checkpoint 3, report the relative residual for each computed solution, including Jacobi when comparing solvers:
+Use a strictly positive tolerance and a maximum iteration count of at least one. If $d$ is at most the tolerance, the new grid is the converged solution. Otherwise swap the old and new grids and begin another sweep. If the iteration limit is reached first, return a non-converged result and report it clearly. This stopping criterion does not guarantee that the temperature error is at most the tolerance. Once the sparse system is assembled in Checkpoint 3, report the relative residual for each computed solution, including Jacobi when comparing solvers:
 
 $$
 \frac{\lVert \mathbf b-A\mathbf t\rVert_2}{\lVert \mathbf b\rVert_2}.
@@ -256,7 +256,7 @@ The two errors serve different purposes: $E_2$ measures the typical error over t
 
 ### 2.5 Suggested C++ data structures
 
-The mandatory physical computation uses `double`. A template may instead represent any useful varying type; it need not be a floating-point type. Course examples of CMake, pybind11, and vector or matrix classes may be adapted and reused; identify reused code in the README.
+The mandatory physical computation uses `double`. The template parameter may represent the grid element type, such as `double` for temperatures or `std::size_t` for node indices. Course examples of CMake, pybind11, and vector or matrix classes may be adapted and reused; identify reused code in the README.
 
 The following representation is sufficient; equivalent documented designs are acceptable:
 
@@ -265,9 +265,11 @@ The following representation is sufficient; equivalent documented designs are ac
 - `HeatSource`: abstract interface with `virtual double value(double x, double y) const = 0` and a virtual destructor;
 - `UniformSource`, `HotSpotSource`, and `ManufacturedSource`: concrete implementations of `HeatSource`;
 - `SolverOptions`: tolerance and maximum iteration count;
-- `SolverResult`: temperature grid, convergence flag, iteration count, final update or residual, and summary statistics;
+- `SolverResult`: temperature grid, convergence flag, iteration count, convergence diagnostics, and summary statistics;
 - Checkpoint 1 Jacobi storage: two full-grid vectors, one for old values and one for new values;
 - Checkpoint 3 sparse storage: Eigen's sparse matrix type; students must not write their own sparse container.
+
+For Jacobi, the convergence diagnostics include the last computed value of $d$: the maximum absolute temperature change over interior nodes in the last sweep, measured in kelvin. Return this value whether the solver converges or reaches the iteration limit. From Checkpoint 3, also return the relative residual.
 
 Keep grid indexing in one function and validate indices in debug builds. The numerical solver should return a result object rather than relying on global variables. These names are examples; no template is required for the entire thermal model.
 
@@ -297,7 +299,7 @@ $$
 
 4. implement Jacobi on a $9\times7$ grid using tolerance $10^{-10}$ and at most 100,000 sweeps; expose both values as command-line options;
 5. write a CSV whose exact header is `x,y,temperature`. Write rows with $j=0,\ldots,N_y-1$ as the outer loop and $i=0,\ldots,N_x-1$ as the inner loop, and use enough decimal digits to recover a `double` value: `std::setprecision(std::numeric_limits<double>::max_digits10)`;
-6. print iteration count, final update, maximum temperature, its coordinates, and mean temperature.
+6. print the iteration count, the last computed value of $d$ in kelvin, the maximum temperature, its coordinates, and the mean temperature.
 
 Testing in this checkpoint may use `assert` or an ordinary test executable that returns a nonzero exit code when a check fails. Four focused tests are sufficient: indexing and boundary values; one Jacobi update; convergence and invalid input; and the hand-computed $3\times3$ case.
 
@@ -313,7 +315,9 @@ Required Checkpoint 1 deliverables are the source files, one build command, the 
 - use `std::unique_ptr` for exclusive polymorphic ownership and give every polymorphic base class a virtual destructor;
 - avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors.
 
-Apply a requirement when its component is introduced: there is no polymorphic owner in Checkpoint 1. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
+Apply the software-quality requirements above from Checkpoint 1. The requirements on `std::unique_ptr` and virtual destructors apply from Checkpoint 2, when you introduce `HeatSource` and its derived classes.
+
+AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
 Handwritten test executables are sufficient at every checkpoint. A framework such as Catch2 or GoogleTest is optional. Maintain at most four focused test cases; one test case may verify several related properties.
 
@@ -323,7 +327,7 @@ Handwritten test executables are sufficient at every checkpoint. A framework suc
 
 Refactor the working baseline without changing its numerical meaning. Proceed in this order:
 
-1. Implement or adapt one template component that performs useful work with two actual types; test both uses and explain the avoided duplication in the README. For example, use `Grid2D<T>` for `double` temperatures and a `std::size_t` interior-node index map if the map is useful to your assembly. Alternatively, reuse a numerical solver component with `float` and `double` for a small precision comparison. These are examples, not extra mandatory grids or runs. The assessed physical results use `double`.
+1. Implement or adapt one template and use it with two different types in working code. Test both instantiations and explain in the README how the template avoids code duplication. For example, use `Grid2D<T>` for `double` temperatures and a `std::size_t` interior-node index map if the map is useful to your assembly. Alternatively, reuse a numerical solver component with `float` and `double` for a small precision comparison. These are examples, not extra mandatory grids or runs. The assessed physical results use `double`.
 2. Define an abstract `HeatSource` with a virtual destructor and a const virtual `double value(double x, double y)` operation.
 3. Implement `UniformSource`, `HotSpotSource`, and `ManufacturedSource` and select one at run time through `std::unique_ptr<HeatSource>`. This is the mandatory use of dynamic polymorphism; the source classes need not be templates.
 4. Move Jacobi into a reusable library function or concrete class. A second solver interface is not required at this checkpoint.

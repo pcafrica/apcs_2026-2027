@@ -269,7 +269,7 @@ $$
 
 ### 2.5 Suggested data structures
 
-Use `double` for the mandatory numerical models. A useful template need not vary a numerical type: it may instead vary a target or record type. Course examples of CMake, pybind11, and vector or matrix classes may be adapted and reused; identify reused code in the README.
+Use `double` for the mandatory numerical models. The template parameter may represent the target type, such as `double` for regression or `int` for classification. Course examples of CMake, pybind11, and vector or matrix classes may be adapted and reused; identify reused code in the README.
 
 A **flat row-major** representation stores all feature rows in one `std::vector<double>`. The formulas above use one-based indices, but C++ uses zero-based indices. Let `r = 0,...,number_of_rows-1` and `c = 0,...,7`. Store the value corresponding to mathematical $x_{r+1,c+1}$ at `values[r * 8 + c]`. Thus the eight features of one observation are adjacent in memory. Centralize this calculation in a checked access function instead of repeating it throughout the program.
 
@@ -415,7 +415,9 @@ The synthetic experiment checks the implementation; it is not evidence about rea
 - use `std::unique_ptr` for exclusive polymorphic ownership and give every polymorphic base class a virtual destructor;
 - avoid memory leaks, dangling references, out-of-bounds access, and use-after-move errors.
 
-Apply a requirement when its component is introduced: the real CSV loader and polymorphic owner first appear in Checkpoint 2. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
+Apply the software-quality requirements above from Checkpoint 1. CSV validation is required from Checkpoint 2, when you add the CSV loader. The requirements on `std::unique_ptr` and virtual destructors also apply from Checkpoint 2, when you introduce `Model` and its derived classes.
+
+AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
 Handwritten test executables are sufficient at every checkpoint. A framework such as Catch2 or GoogleTest is optional. Maintain at most four focused test cases across the evolving codebase; one test case may verify several related properties.
 
@@ -425,10 +427,10 @@ Handwritten test executables are sufficient at every checkpoint. A framework suc
 
 Refactor the working baseline into reusable components while still using only the standard library for numerical work. Proceed in this order:
 
-1. Introduce reusable dataset and standardizer components using flat row-major storage. Implement or adapt one template component that performs useful work with two actual types; test both uses and explain the avoided duplication in the README. For example, `LabeledSample<Target>` can store `double` regression targets and integer classification labels, or a numerical `Standardizer<Scalar>` can be exercised on `float` and `double`. These are alternatives, not extra mandatory experiments. Real-data numerical models use `double`.
+1. Introduce reusable dataset and standardizer components using flat row-major storage. Implement or adapt one template and use it with two different types in working code. Test both instantiations and explain in the README how the template avoids code duplication. For example, `LabeledSample<Target>` can store `double` regression targets and integer classification labels, or a numerical `Standardizer<Scalar>` can be exercised on `float` and `double`. These are alternatives, not extra mandatory experiments. Real-data numerical models use `double`.
 2. Define an abstract `Model` with a virtual destructor, `fit`, and a const `predict_score` operation. A common `fit(const Dataset&, const TrainingOptions&)` can use the common dataset holding both target fields, as described in Section 2.5.
 3. Implement `LinearRegressor` and `LogisticClassifier` as concrete derived classes. Select the model at run time and own it through `std::unique_ptr<Model>`. This is the mandatory use of dynamic polymorphism; the model classes need not be templates.
-4. Keep task-specific interpretation outside the common interface: a regression score is $\widehat z$, while a classification score is a probability.
+4. Let `predict_score` return the predicted transformed target $\widehat z$ for regression and the class-1 probability for classification. Convert these values to ride counts or class labels in the calling code.
 5. Add the provided-CSV loader with explicit schema validation and clear exceptions for malformed fields, dimension mismatch, invalid settings, non-finite values, and prediction before fitting.
 6. Add simple CMake targets for the library, command-line application, and handwritten tests.
 

@@ -21,11 +21,11 @@ _class: titlepage
 
 # Development path
 
-| Checkpoint                 | Main objective                                                                                                                       |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| **1. Make it work**        | Standard-library-only C++ baseline, one compiler script, small deterministic cases and handwritten tests.                            |
-| **2. Make it reusable**    | One useful template exercised with two actual types; runtime polymorphism; clear exceptions; library/application/test CMake targets. |
-| **3. Connect and compare** | Register tests with CTest; expose C++ through pybind11; compare with SciPy, scikit-learn or PyTorch.                                 |
+| Checkpoint                 | Main objective                                                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Make it work**        | Standard-library-only C++ baseline, one compiler script, small deterministic cases and handwritten tests.                              |
+| **2. Make it reusable**    | One template used and tested with two different types; runtime polymorphism; clear exceptions; library/application/test CMake targets. |
+| **3. Connect and compare** | Register tests with CTest; expose C++ through pybind11; compare with SciPy, scikit-learn or PyTorch.                                   |
 
 Use `double` for the assessed numerical results. No previous knowledge of the scientific models is assumed: formulas and procedures are supplied in the full briefs.
 
@@ -54,7 +54,7 @@ $$
 
 1. **Checkpoint 1:** store the grid in a flat vector and implement the five-point stencil and matrix-free **Jacobi iteration**, using separate old/new grids.
 2. Check indexing, boundary values and the hand-computed **3 × 3** case; run the **9 × 7** baseline and export `x,y,temperature` as CSV.
-3. **Checkpoint 2:** make the solver reusable; introduce a useful two-type template component and an abstract `HeatSource` with uniform, hot-spot and manufactured implementations.
+3. **Checkpoint 2:** make the solver reusable; use and test one template with two different types. Introduce an abstract `HeatSource` with uniform, hot-spot and manufactured implementations.
 
 Select the source at runtime through `std::unique_ptr<HeatSource>`. Return convergence information explicitly; reaching the iteration limit is not a converged solution.
 
@@ -87,7 +87,7 @@ Start from the **provided hourly Citi Bike CSV**: **1,416 hours**, January-Febru
 - **Regression:** fit a linear model to $z=\log(1+c)$; convert its output back to a non-negative predicted ride count.
 - **Classification:** fit logistic regression to low/high demand, with the class threshold defined by the **training-count median**.
 - **Checkpoint 1:** generate the specified **14 synthetic days** in C++; implement both baselines, stable losses and full-batch gradient descent. Verify the prescribed gradients and one-step updates.
-- **Checkpoint 2:** refactor datasets and standardization; exercise a useful template with two types. Implement `LinearRegressor` and `LogisticClassifier`.
+- **Checkpoint 2:** refactor datasets and standardization; use and test one template with two different types. Implement `LinearRegressor` and `LogisticClassifier`.
 - Add validated CSV input, runtime model selection, and finite-difference gradient checks.
 
 Standardize the **five non-binary features using training statistics only**; leave the three binary features unchanged. Do not fit either the scaler or the class threshold on validation/test data.
@@ -125,7 +125,7 @@ Use the original **UCI Room Occupancy Estimation** CSV: **10,129 observations**.
 - **Checkpoint 1:** reuse/adapt the course matrix implementation and build the supplied **2 → 4 → 2 toy network**, using only C++ and the standard library.
 - Implement dense layers, **ReLU**, stable softmax, cross-entropy and complete backpropagation; check the supplied hand calculation and **two scalar-weight gradients** by finite differences.
 - Train on the 12 toy observations: loss must decrease and at least **11 of 12** predictions must be correct.
-- **Checkpoint 2:** test one useful template with two actual types. Introduce abstract `Layer`, concrete `Dense`/`ReLU`, and `Sequential` owning layers through `std::unique_ptr`.
+- **Checkpoint 2:** use and test one template with two different types. Introduce abstract `Layer`, concrete `Dense`/`ReLU`, and `Sequential` owning layers through `std::unique_ptr`.
 - Rerun the toy case; verify forward/backward dimensions and finite values for the final **16 → 8 → 2** network on the specified artificial batch.
 
 No third-party numerical or neural-network library is permitted in Checkpoints 1-2. Finite differences check gradients; **backpropagation trains the network**.

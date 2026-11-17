@@ -291,7 +291,7 @@ $$
 \theta\leftarrow\theta-\eta\frac{\partial L}{\partial\theta};
 $$
 
-   use the parameter values from the start of the update until every new value has been computed;
+   compute all gradients before updating any weight or bias, then update the parameters in place;
 
 5. compute validation loss and accuracy with the new parameters, without running backpropagation or updating them.
 
@@ -301,7 +301,7 @@ Use learning rate $\eta=0.05$ and exactly 500 epochs. Both values must be comman
 
 Implement the network structures below, adapting the C++ vector or matrix examples supplied during the course. Reuse a suitable existing matrix implementation; implement only missing operations and their tests. No third-party numerical or neural-network library is needed for the mandatory network.
 
-The mandatory numerical experiments use `double`. A template can also vary a non-numerical type. No conversion of every network class to `<Scalar>` is required: choose one useful generic component in Checkpoint 2 and exercise it with two real types, as specified there.
+The mandatory numerical experiments use `double`. The template parameter may represent the matrix element type, such as `double` for activations or `std::uint8_t` for ReLU masks. Choose one template component in Checkpoint 2 and use it with two different types, as specified there; you do not need to template every network class.
 
 A matrix with `rows_` rows and `cols_` columns uses a row-major `std::vector<double> data_` of length `rows_ * cols_` for numerical operations. With zero-based row `r` and column `c`, element $(r,c)$ is stored at `data_[r * cols_ + c]`. Check the available course matrix first; implement any missing operations in this order:
 
@@ -523,7 +523,9 @@ Print initial and final loss and the 12 predicted classes. Training must reduce 
 - use `std::unique_ptr` for exclusive polymorphic ownership and give `Layer` a virtual destructor;
 - avoid memory leaks, dangling references, out-of-bounds access, invalid iterator use, and use-after-move errors.
 
-Apply a requirement when its component is introduced: CSV parsing and polymorphic layer ownership begin after Checkpoint 1. AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
+Apply the software-quality requirements above from Checkpoint 1. The requirements on `std::unique_ptr` and virtual destructors apply from Checkpoint 2, when you introduce `Layer` and store the layers in `Sequential`. CSV validation is required from Checkpoint 3, when you load the real dataset.
+
+AI tools may be used under the common project rules; record their use and verification in `AI_USAGE.md`.
 
 Handwritten test executables are sufficient at every checkpoint. A framework such as Catch2 or GoogleTest is optional. Maintain at most four focused test cases; one test case may verify several related properties.
 
@@ -533,7 +535,7 @@ Handwritten test executables are sufficient at every checkpoint. A framework suc
 
 Refactor the working code in this order:
 
-1. implement or adapt one generic component that performs useful work with two actual types; test both uses and explain the avoided duplication in the README. For example, a `Matrix<T>` container can hold `double` activations and `std::uint8_t` ReLU masks (numeric matrix multiplication is required only for `double`). Alternatively, a useful numerical component may be tested with `float` and `double` on a small toy case. These are examples, not extra mandatory training runs; the assessed network uses `double`;
+1. implement or adapt one template and use it with two different types in working code. Test both instantiations and explain in the README how the template avoids code duplication. For example, a `Matrix<T>` container can hold `double` activations and `std::uint8_t` ReLU masks (numeric matrix multiplication is required only for `double`). Alternatively, a useful numerical component may be tested with `float` and `double` on a small toy case. These are examples, not extra mandatory training runs; the assessed network uses `double`;
 2. define the abstract base `Layer` with a virtual destructor and virtual `forward` and `backward` operations;
 3. implement `Dense` and `ReLU` as concrete derived classes;
 4. implement `Sequential` with `std::vector<std::unique_ptr<Layer>>`, visiting layers forward during prediction and in reverse during backpropagation;
