@@ -45,9 +45,9 @@ Unless otherwise specified, all content here is licensed under a
 
 ## :calendar: Exam dates
 
-:warning: **Fri 15 Jan 2027, 09:00** (written + computer-based exam). Room TBD @ SISSA.
+:warning: **Fri 15 Jan 2027, 09:00** (written + computer-based exam). Room 005 @ SISSA.
 
-:warning: **Fri 12 Feb 2027, 09:00** (written + computer-based exam). Room TBD @ SISSA.
+:warning: **Fri 12 Feb 2027, 09:00** (written + computer-based exam). Room 005 @ SISSA.
 
 :information_source: Students from UniTS: please register on [Esse3](https://esse3.units.it/Root.do).
 
