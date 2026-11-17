@@ -261,7 +261,7 @@ The picture identifies the Animal base, the Tag member and their construction/de
 From `lectures/04/examples`:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 02_lifetime.cpp -o /tmp/lifetime
+c++ -std=c++17 -Wall -Wextra 02_lifetime.cpp -o /tmp/lifetime
 /tmp/lifetime
 ```
 
@@ -275,7 +275,7 @@ g++ -std=c++17 -Wall -Wextra 02_lifetime.cpp -o /tmp/lifetime
 Timing: 29–33.
 Expected: Animal constructed, age=4; Tag constructed; Dog constructor body; Dog age=4; Dog destructor body; Tag destroyed; Animal destroyed. Allocate 1 minute for command explanation, 1 for prediction/run and 2 for explanation. No run.sh, Python script or -D flag.
 ```bash
-g++ -std=c++17 -Wall -Wextra 02_lifetime.cpp -o /tmp/lifetime
+c++ -std=c++17 -Wall -Wextra 02_lifetime.cpp -o /tmp/lifetime
 /tmp/lifetime
 ```
 
@@ -440,7 +440,7 @@ dog.Animal::speak();   // Animal sound: qualified call
 ```
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 05_dispatch.cpp -o /tmp/dispatch
+c++ -std=c++17 -Wall -Wextra 05_dispatch.cpp -o /tmp/dispatch
 /tmp/dispatch
 ```
 
@@ -454,7 +454,7 @@ Demo reference:
 **Live commands**
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 05_dispatch.cpp -o /tmp/dispatch
+c++ -std=c++17 -Wall -Wextra 05_dispatch.cpp -o /tmp/dispatch
 /tmp/dispatch
 cp 05_dispatch.cpp /tmp/05_dispatch_edit.cpp
 ```
@@ -462,7 +462,7 @@ cp 05_dispatch.cpp /tmp/05_dispatch_edit.cpp
 In the temporary copy, remove `const` only from `Dog::speak()`; leave `override` and the base method unchanged. Compile to observe the expected rejection:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra /tmp/05_dispatch_edit.cpp -o /tmp/dispatch_edit
+c++ -std=c++17 -Wall -Wextra /tmp/05_dispatch_edit.cpp -o /tmp/dispatch_edit
 ```
 
 Restore `const`, rerun that compilation, and then run `/tmp/dispatch_edit`. The repaired output is:
@@ -523,7 +523,7 @@ void by_value(Animal animal) { animal.speak(); }
 ```
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 06_slicing.cpp -o /tmp/slicing
+c++ -std=c++17 -Wall -Wextra 06_slicing.cpp -o /tmp/slicing
 /tmp/slicing
 ```
 
@@ -538,7 +538,7 @@ Demo reference:
 **Live command and expected output**
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 06_slicing.cpp -o /tmp/slicing
+c++ -std=c++17 -Wall -Wextra 06_slicing.cpp -o /tmp/slicing
 /tmp/slicing
 ```
 
@@ -730,7 +730,7 @@ The factory demo uses exactly this check. static_cast would not check the runtim
 # Live demo 4 · choose, call, inspect, delete
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 07_shapes.cpp -o /tmp/shapes
+c++ -std=c++17 -Wall -Wextra 07_shapes.cpp -o /tmp/shapes
 /tmp/shapes
 ```
 
@@ -751,7 +751,7 @@ Demo reference:
 **Live command**
 
 ```bash
-g++ -std=c++17 -Wall -Wextra 07_shapes.cpp -o /tmp/shapes
+c++ -std=c++17 -Wall -Wextra 07_shapes.cpp -o /tmp/shapes
 /tmp/shapes
 ```
 

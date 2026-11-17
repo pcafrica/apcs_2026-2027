@@ -41,7 +41,7 @@ _class: titlepage
 11. Create a main program file that includes the header and demonstrates the use of the `DataProcessor` class for data analysis.
 12. Compile the program using the following command:
    ```bash
-   g++ -std=c++17 -Wall -Wextra -Wpedantic -O3 data_processor.cpp main.cpp -o data_processor
+   c++ -std=c++17 -Wall -Wextra -Wpedantic -O3 data_processor.cpp main.cpp -o data_processor
    ```
 
 ---

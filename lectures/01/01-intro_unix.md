@@ -458,7 +458,7 @@ _class: titlepage
 3. Semantic analysis: Checking.
 4. Code generation: Assembly/machine code.
 5. Optimization: Efficiency improvement.
-6. Output: Object files. Example: `g++ -c main.cpp -o main.o`
+6. Output: Object files. Example: `c++ -c main.cpp -o main.o`
 
 ### Common compiler options
 `-O`: Optimization levels; `-g`: Debugging info; `-std`: C++ standard.
@@ -474,7 +474,7 @@ _class: titlepage
 2. Relocation: Adjust addresses.
 3. Output: Executable.
 4. Linker errors/warnings.
-5. Example: `g++ main.o helper.o -o my_program`
+5. Example: `c++ main.o helper.o -o my_program`
 
 ### Static vs. dynamic linking
 - Static: Larger binary, library inclusion.

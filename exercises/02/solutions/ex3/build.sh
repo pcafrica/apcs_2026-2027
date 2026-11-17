@@ -2,7 +2,7 @@
 
 set -x
 
-if g++ -std=c++20 -Wall -Wextra -Wpedantic statistics.cpp main.cpp -o main; then
+if c++ -std=c++20 -Wall -Wextra -Wpedantic statistics.cpp main.cpp -o main; then
     set +x
     echo "Build successful! You can run the program using ./main"
 else

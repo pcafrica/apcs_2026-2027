@@ -4,11 +4,11 @@ set -x
 
 mkdir -p build
 
-if g++ -std=c++20 -Wall -Wextra -Wpedantic -Iinclude/ \
+if c++ -std=c++20 -Wall -Wextra -Wpedantic -Iinclude/ \
        src/calculator.cpp -c -o build/calculator.o && \
-   g++ -std=c++20 -Wall -Wextra -Wpedantic -Iinclude/ \
+   c++ -std=c++20 -Wall -Wextra -Wpedantic -Iinclude/ \
        src/main.cpp -c -o build/main.o && \
-   g++ build/calculator.o build/main.o -o build/calculator; then
+   c++ build/calculator.o build/main.o -o build/calculator; then
     set +x
     echo "Build successful! You can run the program using ./build/calculator"
 else

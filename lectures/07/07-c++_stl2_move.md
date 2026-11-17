@@ -740,7 +740,7 @@ Assume finite inputs and representable division. The checks document positive vo
 
 `assert` checks programmer assumptions; it is not a substitute for validating external input. Its expression is not evaluated with `NDEBUG` defined:
 ```bash
-g++ -std=c++17 -DNDEBUG program.cpp -o program
+c++ -std=c++17 -DNDEBUG program.cpp -o program
 ```
 
 ---

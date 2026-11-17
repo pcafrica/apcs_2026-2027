@@ -93,7 +93,7 @@ int main() { // Or, more completely: int main(int argc, char** argv)
 To compile the program:
 
 ```bash
-g++ hello_world.cpp -o hello_world
+c++ hello_world.cpp -o hello_world
 ```
 
 To run the compiled program:
@@ -1202,19 +1202,19 @@ _class: titlepage
 
 - The preprocessor (`cpp`) handles preprocessing directives.
 - It includes headers, performs macro substitution, and removes comments.
-- The compiler (`g++`, `clang++`) translates source code into object files.
-- Preprocessor and compiler commands are combined when you run `g++` or `clang++`.
+- The compiler (`c++`, `clanc++`) translates source code into object files.
+- Preprocessor and compiler commands are combined when you run `c++` or `clanc++`.
 
 ### Example (project with three files: `module.hpp`, `module.cpp`, `main.cpp`):
 
 ```bash
 # Preprocessor.
-g++ -E module.cpp -I/path/to/include/dir -o module_preprocessed.cpp
-g++ -E main.cpp -I/path/to/include/dir -o main_preprocessed.cpp
+c++ -E module.cpp -I/path/to/include/dir -o module_preprocessed.cpp
+c++ -E main.cpp -I/path/to/include/dir -o main_preprocessed.cpp
 
 # Compiler.
-g++ -c module_preprocessed.cpp -o module.o
-g++ -c main_preprocessed.cpp -o main.o
+c++ -c module_preprocessed.cpp -o module.o
+c++ -c main_preprocessed.cpp -o main.o
 ```
 
 ---
@@ -1227,12 +1227,12 @@ g++ -c main_preprocessed.cpp -o main.o
 
 ## Example
 ```bash
-g++ module.o main.o -o my_program
+c++ module.o main.o -o my_program
 ```
 
 Link against an external library:
 ```
-g++ module.o main.o -o my_program -lmy_lib -L/path/to/my/lib
+c++ module.o main.o -o my_program -lmy_lib -L/path/to/my/lib
 ```
 In this example, the `-lmy_lib` flag is used to link against the library `libmy_lib.so`. The `-l` flag is followed by the library name without the `lib` prefix and without the file extension `.so` (dynamic) or `.a` (static).
 
@@ -1243,7 +1243,7 @@ In this example, the `-lmy_lib` flag is used to link against the library `libmy_
 For small projects with few dependencies, the following command performs the preprocessing, compilation and linking phase:
 
 ```bash
-g++ module1.cpp module2.cpp main.cpp -I/path/to/include/dir -o my_program
+c++ module1.cpp module2.cpp main.cpp -I/path/to/include/dir -o my_program
 ```
 
 ## :warning: Warning: different compilers may lead to different behavior!
