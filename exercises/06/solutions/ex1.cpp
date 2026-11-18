@@ -34,7 +34,9 @@ public:
 
   Vector &operator=(Vector &&other) noexcept {
     if (this != &other) {
-      delete[] data_;
+      if (data_)
+        delete[] data_;
+
       data_ = other.data_;
       size_ = other.size_;
       other.data_ = nullptr;
