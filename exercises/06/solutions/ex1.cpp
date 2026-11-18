@@ -7,7 +7,7 @@
 
 class Vector {
 public:
-  explicit Vector(std::size_t size = 0)
+  Vector(std::size_t size = 0)
       : data_(size ? new double[size]{} : nullptr), size_(size) {}
 
   Vector(const Vector &other)
@@ -34,8 +34,7 @@ public:
 
   Vector &operator=(Vector &&other) noexcept {
     if (this != &other) {
-      if (data_)
-        delete[] data_;
+      delete[] data_;
 
       data_ = other.data_;
       size_ = other.size_;
