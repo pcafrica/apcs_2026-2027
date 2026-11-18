@@ -1156,7 +1156,7 @@ Use `steady_clock` for the measurements that follow. A short tick period is not 
 double timed_squared_norm(const std::vector<double>& values) {
     const auto start = std::chrono::steady_clock::now();
     const double norm = std::inner_product(values.begin(), values.end(),
-                                            values.begin(), 0.0);
+                                           values.begin(), 0.0);
     const auto end = std::chrono::steady_clock::now();
     const std::chrono::duration<double, std::micro> elapsed = end - start;
     std::cout << elapsed.count() << " microseconds\n";
