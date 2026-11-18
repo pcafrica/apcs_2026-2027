@@ -4,7 +4,7 @@
 
 class Vector {
 public:
-  explicit Vector(std::size_t size = 0)
+  Vector(std::size_t size = 0)
       : data_(size ? new double[size]{} : nullptr), size_(size) {}
 
   Vector(const Vector &other)
