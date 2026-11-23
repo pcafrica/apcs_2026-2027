@@ -87,9 +87,9 @@ Unless otherwise specified, all content here is licensed under a
 | Wed 11 Nov 2026 | 11:00 - 13:00 | 005 | Move semantics, smart pointers, exceptions, STL utilities. [[Markdown][lecture-07-md]] [[HTML][lecture-07-html]] [[PDF][lecture-07-pdf]] [[Recording][lecture-07-rec]] |
 | Tue 17 Nov 2026 | 14:00 - 16:00 | 005 | Project session. |
 | Wed 18 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session. [[Markdown][exercise-06-md]] [[HTML][exercise-06-html]] [[PDF][exercise-06-pdf]] |
-| Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. |
-| Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Introduction to CMake. Exercise session. |
-| Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. Exercise session. |
+| Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. [[Markdown][lecture-08-md]] [[HTML][lecture-08-html]] [[PDF][lecture-08-pdf]] [[Recording][lecture-08-rec]] |
+| Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session: Introduction to CMake. [[Markdown][exercise-07-md]] [[HTML][exercise-07-html]] [[PDF][exercise-07-pdf]] [[Recording][exercise-07-rec]] |
+| Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. [[Markdown][lecture-09-md]] [[HTML][lecture-09-html]] [[PDF][lecture-09-pdf]] [[Recording][lecture-09-rec]]<br> Exercise session. [[Markdown][exercise-08-md]] [[HTML][exercise-08-html]] [[PDF][exercise-08-pdf]] |
 | Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Object-oriented programming in Python. Classes, inheritance and polymorphism. Modules and packages. |
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 | Integrating C++ and Python codes. |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 | Exercise session. |
@@ -170,3 +170,13 @@ Unless otherwise specified, all content here is licensed under a
 [exercise-07-md]: exercises/07/07-c++_cmake.md
 [exercise-07-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.html
 [exercise-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.pdf
+[exercise-07-rec]: ...
+
+[lecture-09-md]: lectures/09/09-c++_optimization_debugging_testing.md
+[lecture-09-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/09/09-c++_optimization_debugging_testing.html
+[lecture-09-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/09/09-c++_optimization_debugging_testing.pdf
+[lecture-09-rec]: ...
+
+[exercise-08-md]: exercises/08/08-c++_optimization_debugging_testing.md
+[exercise-08-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/08/08-c++_optimization_debugging_testing.html
+[exercise-08-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/08/08-c++_optimization_debugging_testing.pdf
