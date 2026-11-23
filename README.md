@@ -161,3 +161,12 @@ Unless otherwise specified, all content here is licensed under a
 [exercise-06-md]: exercises/06/06-c++_stl_move.md
 [exercise-06-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/06/06-c++_stl_move.html
 [exercise-06-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/06/06-c++_stl_move.pdf
+
+[lecture-08-md]: lectures/08/08-c++_libraries.md
+[lecture-08-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/08/08-c++_libraries.html
+[lecture-08-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/08/08-c++_libraries.pdf
+[lecture-08-rec]: ...
+
+[exercise-07-md]: exercises/07/07-c++_cmake.md
+[exercise-07-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.html
+[exercise-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.pdf
