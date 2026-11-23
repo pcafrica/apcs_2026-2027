@@ -121,7 +121,7 @@ For example, [Eigen](https://libeigen.gitlab.io/) provides matrices, vectors and
 Use **`-I`** to add the directory containing the library's headers:
 
 ```bash
-g++ -I/path/to/library/include ...
+c++ -I/path/to/library/include ...
 ```
 
 No separate binary library is linked for a pure header-only library. The application still needs to be compiled.
@@ -137,13 +137,12 @@ wget https://gitlab.com/libeigen/eigen/-/archive/5.0.1/eigen-5.0.1.tar.gz
 mkdir -p "$HOME/Desktop"
 tar xzf eigen-5.0.1.tar.gz -C "$HOME/Desktop"
 
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -I"$HOME/Desktop/eigen-5.0.1" example_eigen.cpp -o main_eigen
 ./main_eigen
 ```
 
-[The supplied example](examples/example_eigen.cpp) prints the matrix
-$\begin{pmatrix}3 & -1\\2.5 & 1.5\end{pmatrix}$.
+[The supplied example](examples/example_eigen.cpp) prints the matrix $\begin{pmatrix}3 & -1\\2.5 & 1.5\end{pmatrix}$.
 
 The following examples use libraries with separately compiled implementations.
 
@@ -208,7 +207,7 @@ int main() {
 # Compile first, then resolve references
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic -Imath -c main.cpp -o main.o
+c++ -std=c++17 -Wall -Wextra -Wpedantic -Imath -c main.cpp -o main.o
 nm -C main.o
 ```
 
@@ -223,7 +222,7 @@ The output includes these symbols (addresses may vary):
 **`T`** marks a function defined in the code section; **`U`** marks an undefined reference. `-C` prints readable C++ names.
 
 ```bash
-g++ main.o -o main
+c++ main.o -o main
 ```
 
 This link fails with **undefined references to `add` and `multiply`**: a declaration allowed compilation, but the linker still needs the definition.
@@ -235,14 +234,14 @@ This link fails with **undefined references to `add` and `multiply`**: a declara
 Compile the library source, then link the two object files:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -c math/math.cpp -o math/math.o
 
-g++ main.o math/math.o -o main_object
+c++ main.o math/math.o -o main_object
 ./main_object
 ```
 
-The supplied implementation prints:
+The application prints:
 
 ```text
 Addition result: 8
@@ -281,11 +280,11 @@ _class: titlepage
 An archive collects object files. From `examples/example_math`:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -c math/math.cpp -o math/math.o
 ar rcs math/libmath.a math/math.o
 
-g++ main.o math/libmath.a -o main_static
+c++ main.o math/libmath.a -o main_static
 ./main_static
 ```
 
@@ -309,7 +308,7 @@ The first command lists archive members; the second includes `T` definitions for
 For a library with several source files, the general pattern is:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic -c a.cpp b.cpp c.cpp d.cpp
+c++ -std=c++17 -Wall -Wextra -Wpedantic -c a.cpp b.cpp c.cpp d.cpp
 ar rcs libxx.a a.o b.o c.o
 ar rs libxx.a d.o # Add one more object file.
 ```
@@ -327,7 +326,7 @@ ar rs libxx.a d.o # Add one more object file.
 | `-lname`  | Requesting a library named `libname` |
 
 ```bash
-g++ main.o -Lmath -lmath -o main
+c++ main.o -Lmath -lmath -o main
 ```
 
 Within each searched directory, a suitable shared library normally takes precedence over an archive. Directory order also matters.
@@ -341,7 +340,7 @@ To select this archive explicitly, use `math/libmath.a` as above. `-static` inst
 Place each library **after** the object files or libraries that use it:
 
 ```bash
-g++ myprogram.o -lmathrary1 -lmathrary2 -o myprogram
+c++ myprogram.o -llibrary1 -llibrary2 -o myprogram
 ```
 
 If `myprogram` calls library 1, and library 1 calls library 2:
@@ -427,10 +426,10 @@ The SONAME identifies a binary-compatibility series. Its number is chosen by the
 From `examples/example_math`, compile position-independent code and create the library:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
+c++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
     -c math/math.cpp -o math/math.pic.o
 
-g++ -shared math/math.pic.o \
+c++ -shared math/math.pic.o \
     -Wl,-soname,libmath.so.1 -o math/libmath.so.1.0
 
 ln -s libmath.so.1.0 math/libmath.so.1
@@ -448,7 +447,7 @@ The symbolic links above are created once; an update is shown shortly.
 Both library types now exist. `-lmath` selects the shared one here:
 
 ```bash
-g++ main.o -Lmath -lmath -o main_shared
+c++ main.o -Lmath -lmath -o main_shared
 objdump -p main_shared | grep NEEDED
 ```
 
@@ -474,7 +473,7 @@ LD_LIBRARY_PATH="$PWD/math" ./main_shared
 Or relink with a search path stored in the executable:
 
 ```bash
-g++ main.o -Lmath -lmath \
+c++ main.o -Lmath -lmath \
     -Wl,-rpath,'$ORIGIN/math' -o main_shared
 ./main_shared
 ```
@@ -504,10 +503,10 @@ The full search order and system configuration are optional appendix material. [
 After an ABI-compatible implementation change, rebuild `math` while keeping SONAME `libmath.so.1`:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
+c++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
     -c math/math.cpp -o math/math.pic.o
 
-g++ -shared math/math.pic.o \
+c++ -shared math/math.pic.o \
     -Wl,-soname,libmath.so.1 -o math/libmath.so.1.1
 ln -sfn libmath.so.1.1 math/libmath.so.1
 
@@ -640,7 +639,7 @@ A library's **`.pc` file** describes its compilation and linking flags. From `ex
 pkg-config --cflags gsl
 pkg-config --libs gsl
 
-g++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
+c++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
     $(pkg-config --cflags --libs gsl) -o main_gsl
 ./main_gsl
 ```
@@ -744,7 +743,7 @@ Symbol emission depends on compiler and linker choices. This also matters for `c
 A library can be built without setting a SONAME:
 
 ```bash
-g++ -shared math/math.pic.o -o math/libplain.so
+c++ -shared math/math.pic.o -o math/libplain.so
 ```
 
 When linking against it:
@@ -813,4 +812,4 @@ The example instructions also show explicit archive linking and a stored runtime
 _class: titlepage
 -->
 
-# :arrow_right: Makefiles and CMake
+# :arrow_right: CMake

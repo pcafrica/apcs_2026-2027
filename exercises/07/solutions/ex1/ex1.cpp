@@ -11,7 +11,7 @@ int main() {
   mup::Value s("Hello World");
   mup::Value f(1.1);
 
-  // Now add the variable to muParser.
+  // Register the variables with muParserX.
   p.DefineVar("a", mup::Variable(&a));
   p.DefineVar("c", mup::Variable(&c));
   p.DefineVar("s", mup::Variable(&s));

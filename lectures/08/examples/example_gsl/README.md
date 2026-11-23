@@ -28,7 +28,7 @@ gsl_prefix="$HOME/.local/gsl"
 ## Link the GSL archives
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -I"$gsl_prefix/include" example_gsl.cpp \
     "$gsl_prefix/lib/libgsl.a" "$gsl_prefix/lib/libgslcblas.a" \
     -lm -o main_gsl_static
@@ -41,7 +41,7 @@ The executable can still use shared system libraries, including the C++ runtime.
 ## Link the shared libraries
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -I"$gsl_prefix/include" example_gsl.cpp \
     -L"$gsl_prefix/lib" -lgsl -lgslcblas -lm -o main_gsl_shared
 
@@ -56,7 +56,7 @@ paths printed by `ldd` to confirm which files are selected.
 A runtime path can also be recorded while linking:
 
 ```bash
-g++ -std=c++17 -Wall -Wextra -Wpedantic \
+c++ -std=c++17 -Wall -Wextra -Wpedantic \
     -I"$gsl_prefix/include" example_gsl.cpp \
     -L"$gsl_prefix/lib" -Wl,-rpath,"$gsl_prefix/lib" \
     -lgsl -lgslcblas -lm -o main_gsl_rpath
@@ -83,7 +83,7 @@ For the local prefix, select its `.pc` file and compile:
 export PKG_CONFIG_PATH="$gsl_prefix/lib/pkgconfig"
 pkg-config --cflags --libs gsl
 
-g++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
+c++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
     $(pkg-config --cflags --libs gsl) -o main_gsl_pkg
 LD_LIBRARY_PATH="$gsl_prefix/lib" ./main_gsl_pkg
 ```
