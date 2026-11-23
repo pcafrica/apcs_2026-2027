@@ -78,26 +78,6 @@ The executable may have other runtime dependencies, regardless of how one librar
 
 ---
 
-# Runtime and development packages
-
-A precompiled application needs its runtime dependencies. Building code against a library also requires its headers and linking files.
-
-For example:
-
-```bash
-sudo apt install python3
-```
-
-installs the interpreter and its runtime dependencies, whereas
-
-```bash
-sudo apt install libpython3-dev
-```
-
-provides headers and libraries for building applications using Python's C API. [CPython](https://github.com/python/cpython) is the reference Python implementation.
-
----
-
 <!--
 _class: titlepage
 -->
@@ -392,14 +372,18 @@ The library's code is not copied into the executable as it is with an archive.
 
 # Compatibility when updating a library
 
-- **API** (Application Programming Interface): the declarations and behavior used by source code.
-- **ABI** (Application Binary Interface): the interface used by compiled code, including how functions receive arguments and how objects are stored in memory.
+- **API** (Application Programming Interface): declarations and behavior used by source code.
+- **ABI** (Application Binary Interface): interface used by compiled code, including function calls and object layout.
 
-Keeping source code compilable does not by itself guarantee that an old executable can use a new library binary.
+Consider changing a function's parameter types:
 
-A compatible implementation update can be used without relinking. An incompatible update may require rebuilding the application.
+- Original: `int multiply(int, int);`
+- Changed: `int multiply(long, long);`
 
-[Semantic Versioning](https://semver.org/) describes changes to a public API. Binary compatibility must also be managed by the library developer.
+The caller's source still compiles: its `int` arguments convert to `long`.
+The old executable still requests `multiply(int, int)`, which the changed library no longer defines: rebuild the application.
+
+See [Semantic Versioning](https://semver.org/) for API versioning.
 
 ---
 
@@ -481,6 +465,22 @@ c++ main.o -Lmath -lmath \
 **`$ORIGIN`** is expanded by the loader to the executable's directory. Single quotes protect it from shell expansion. This works even when launched from another working directory.
 
 An ordinary relative path, such as `math`, instead depends on the working directory.
+
+---
+
+# Runtime and development packages
+
+For our shared-library example, running and building require different files:
+
+| Task | Files needed from `math` |
+|------|--------------------------|
+| Run the application | `libmath.so.1` and the real library file it points to |
+| Compile the application | `math.hpp` |
+| Link the application | `libmath.so` and the library file it points to |
+
+A **runtime package** supplies files needed to run applications. A **development package** also supplies headers and files used for linking.
+
+The two library names above lead to the same implementation; they are used at different stages.
 
 ---
 
@@ -631,25 +631,6 @@ An application should be able to identify which library installation it is using
 
 ---
 
-# The `pkg-config` tool
-
-A library's **`.pc` file** describes its compilation and linking flags. From `examples/example_gsl`, using an installed GSL:
-
-```bash
-pkg-config --cflags gsl
-pkg-config --libs gsl
-
-c++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
-    $(pkg-config --cflags --libs gsl) -o main_gsl
-./main_gsl
-```
-
-The link flags normally include `-lgsl -lgslcblas -lm`, with library paths where needed.
-
-`pkg-config` supplies build flags. The loader still needs to find the selected shared libraries. See the [GSL instructions](examples/example_gsl/README.md) for a local installation.
-
----
-
 # GSL: use a numerical library
 
 [examples/example_gsl/example_gsl.cpp](examples/example_gsl/example_gsl.cpp) approximates:
@@ -669,7 +650,26 @@ Result: 2
 Estimated error: 2.22045e-14
 ```
 
-The error value is an estimate and can vary with the implementation and platform.
+The error is an estimate and can vary across platforms. Optional: [build GSL locally](examples/example_gsl/README.md).
+
+---
+
+# The `pkg-config` tool
+
+A library's **`.pc` file** describes its compilation and linking flags. From `examples/example_gsl`, using an installed GSL:
+
+```bash
+pkg-config --cflags gsl
+pkg-config --libs gsl
+
+c++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
+    $(pkg-config --cflags --libs gsl) -o main_gsl
+./main_gsl
+```
+
+The shell replaces `$(pkg-config ...)` with the flags printed by that command, normally including `-lgsl -lgslcblas -lm`.
+
+`pkg-config` supplies build flags. The loader still needs to find the selected shared libraries. See the [GSL instructions](examples/example_gsl/README.md) for a local installation.
 
 ---
 
@@ -685,20 +685,6 @@ Return to `examples/example_math` and use the files from the guided example.
 **Checks:** both programs print the same results, 8 and 24; the static executable does not need `libmath.a` at runtime; the shared executable needs the library named by its SONAME.
 
 The file-size comparison is an observation about these builds, not a universal size ratio.
-
----
-
-# From source code to a usable dependency
-
-1. Obtain the library and read its build instructions.
-2. Use a suitable installed package, or configure/build it from source.
-3. Install its headers, libraries and integration files in a known location.
-4. Compile and link the application using those files.
-5. For shared libraries, verify the runtime search path and binary compatibility.
-
-Header-only libraries need no separate binary build. Dependencies installed as binaries have already been compiled.
-
-**Next session:** use CMake to describe targets and dependencies and generate the build commands. The GSL source-build instructions remain available in the appendix and its example directory.
 
 ---
 
@@ -727,14 +713,14 @@ _class: titlepage
 
 [GNU `nm`](https://sourceware.org/binutils/docs/binutils/nm.html) also reports:
 
-- `D` / `G`: initialized data, including small-data sections on some targets.
-- `W` / `V`: weak symbols, with `V` used for weak objects.
+- `D` / `G`: initialized data; `G` refers to small-data sections on some platforms.
+- `W` / `V`: weak definitions; `V` is used for weak objects.
 
-Weak symbols allow particular linker resolution rules. They do not remove the C++ One Definition Rule: multiple C++ definitions still have to satisfy the language requirements.
+The linker can replace a weak definition with an ordinary, non-weak definition of the same symbol. C++ definitions must still obey the One Definition Rule from Lecture 02.
 
-A call expanded inline may need no separate call instruction, but a callable definition can still exist, for example when the function's address is used. Taking an address can retain the symbol even in an optimized build.
+The C++ keyword `inline` does not guarantee that the compiler replaces a function call with the function's body.
 
-Symbol emission depends on compiler and linker choices. This also matters for `constexpr` functions and template instantiations.
+The compiler may keep a separate function implementation. Therefore, an `inline` function can still appear in the output of `nm`.
 
 ---
 
@@ -812,4 +798,8 @@ The example instructions also show explicit archive linking and a stored runtime
 _class: titlepage
 -->
 
-# :arrow_right: CMake
+# Next session: automate the build with CMake
+
+We have compiled sources, created libraries and linked applications manually.
+
+CMake describes targets (libraries and executables) and their dependencies, then generates the build commands.

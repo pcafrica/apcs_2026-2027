@@ -47,7 +47,7 @@ _class: titlepage
 
 A hand-written Makefile describes how to build a project. This gives direct control, but include paths, dependencies and platform differences need maintenance.
 
-CMake describes **targets** and their requirements, then generates files for a build tool such as Make or Ninja.
+A **target** is a named executable or library. CMake describes targets and their requirements, then generates files for Make, Ninja or another build tool.
 
 1. **Configure:** read `CMakeLists.txt`, process options and locate dependencies.
 2. **Generate:** write build files for the selected tool.
@@ -103,6 +103,7 @@ cmake --build build --parallel 4
 ```
 
 `-S` selects the source directory; `-B` selects a separate build directory.
+`Release` selects an optimized build; `--parallel 4` allows up to four build jobs at once.
 
 CMake stores configuration choices in `build/CMakeCache.txt` and generates build files there. Re-run the build after changing a source file.
 
@@ -127,13 +128,14 @@ add_subdirectory(apps)
 
 Each subdirectory contains its own `CMakeLists.txt`. Process `math` first so that `apps` can use its target.
 
+`include(CTest)` prepares testing; we will return to it in the testing section.
 Command names are case insensitive; use lowercase consistently.
 
 ---
 
 # Define the library target
 
-In `math/CMakeLists.txt`:
+In `math/CMakeLists.txt`, `${CMAKE_CURRENT_SOURCE_DIR}` means the `math/` source directory:
 
 ```cmake
 add_library(math SHARED math.cpp math.hpp)
@@ -160,9 +162,9 @@ target_link_libraries(math_app PRIVATE math)
 target_compile_options(math_app PRIVATE -Wall -Wextra -Wpedantic)
 ```
 
-Linking the target also propagates its public include directory and C++ language requirement. No manual `-I`, `-L` or library filename is needed.
+`PUBLIC` passes the header path and C++ requirement from `math` to `math_app`. The table describes include paths and compiler settings:
 
-| Visibility | Used by this target | Passed to its users |
+| Keyword | This target | Targets using it |
 |------------|---------------------|---------------------|
 | `PRIVATE` | Yes | No |
 | `PUBLIC` | Yes | Yes |
@@ -197,77 +199,83 @@ _class: titlepage
 
 ---
 
-# Cache variables persist
+# A configurable sample buffer (1/3)
 
-Cache variables store user choices across configuration runs:
+Create a separate `sample_buffer/` project with `CMakeLists.txt` and `samples.cpp`.
+Start `CMakeLists.txt` with:
 
 ```cmake
+cmake_minimum_required(VERSION 3.15)
+project(Samples LANGUAGES CXX)
+
 set(DATA_LABEL "temperature" CACHE STRING "Name of the measured field")
 option(WITH_ARRAY "Use std::array for the sample buffer" OFF)
+
+add_executable(sample_app samples.cpp)
+target_compile_features(sample_app PRIVATE cxx_std_17)
 ```
 
-```bash
-cmake -S . -B build -DDATA_LABEL=pressure -DWITH_ARRAY=ON
-cmake -S . -B build -L
-```
-
-`set(... CACHE ...)` supplies a default when no cache entry exists. Reconfiguring without `-D` preserves the previous choice; use `-DWITH_ARRAY=OFF` to change it back.
-
-Use a fresh build directory when you want a separate configuration.
+Cache variables store user choices. `set(... CACHE ...)` supplies a default only when no entry exists. `option` creates a boolean choice; the next slide uses it to select the C++ implementation.
 
 ---
 
-# Conditions and compile definitions
+# A configurable sample buffer (2/3)
 
-For an executable target named `sample_app`:
+Append to the same `CMakeLists.txt`:
 
 ```cmake
-option(WITH_ARRAY "Use std::array for the sample buffer" OFF)
-
 if(WITH_ARRAY)
     target_compile_definitions(sample_app PRIVATE USE_ARRAY=1)
 endif()
-```
 
-`if(WITH_ARRAY)` tests the variable's value. For text comparisons, write an explicit comparison:
-
-```cmake
 if(DATA_LABEL STREQUAL "temperature")
     message(STATUS "Processing temperature samples")
 endif()
 ```
 
+From `sample_buffer/`, configure and build each choice:
+
+```bash
+cmake -S . -B build -DWITH_ARRAY=ON
+cmake -S . -B build -L # Inspect cached choices.
+cmake --build build --parallel 4
+./build/sample_app
+```
+
+Repeat with `-DWITH_ARRAY=OFF` and rebuild. Without `-D`, the cached choice persists.
+
 ---
 
-# Select the C++ branch
+# A configurable sample buffer (3/3)
 
-The definition controls preprocessing when `sample_app` is compiled:
+Complete `samples.cpp`:
 
 ```cpp
 #include <array>
+#include <iostream>
 #include <vector>
 
-#ifdef USE_ARRAY
-std::array<double, 100> samples{};
+int main() {
+#ifdef USE_ARRAY // Tests whether the macro is defined.
+    std::array<double, 100> samples{};
+    std::cout << "array: ";
 #else
-std::vector<double> samples(100);
+    std::vector<double> samples(100);
+    std::cout << "vector: ";
 #endif
+    std::cout << samples.size() << " samples\n";
+}
 ```
 
-Both branches create 100 zero-initialized samples. `#ifdef` checks whether the macro exists: even `USE_ARRAY=0` would select the first branch.
-
-The CMake option takes effect when the program is **rebuilt**, not at runtime.
+Expected output: `array: 100 samples` with `WITH_ARRAY=ON`; `vector: 100 samples` with `OFF`. Both buffers start with zeros.
 
 ---
 
 # Find an installed package
 
-`find_package` can use a **find module** or a package's own **config file**:
+`find_package` uses a **find module** (`FindName.cmake`) or a package's own **config file** (e.g. `BoostConfig.cmake`). It locates an installation; it does not download or install the package.
 
-- Modules: `FindName.cmake`, from CMake or `CMAKE_MODULE_PATH`.
-- Config files: e.g. `BoostConfig.cmake`, supplied by an installation.
-
-For a target `simulation` that uses Boost filesystem and graph:
+In a separate simulation project, an existing target `simulation` uses Boost filesystem and graph:
 
 ```cmake
 find_package(Boost 1.92 CONFIG REQUIRED COMPONENTS filesystem graph)
@@ -275,30 +283,33 @@ find_package(Boost 1.92 CONFIG REQUIRED COMPONENTS filesystem graph)
 target_link_libraries(simulation PRIVATE Boost::filesystem Boost::graph)
 ```
 
-These **imported targets** describe installed libraries, including their usage requirements. `REQUIRED` stops configuration if the requested package is unavailable.
+An **imported target**, such as `Boost::filesystem`, describes an installed library and the paths and settings needed to use it. CMake does not compile that library's sources.
 
-`find_package` does not download or install the package.
+`REQUIRED` stops configuration if the requested package is unavailable.
 
 ---
 
 # Help CMake find dependencies
 
-Pass installation prefixes, not source directories:
+An **installation prefix** is the directory under which a package installs its files:
+
+```text
+prefix/
+├── include/   # Headers.
+├── lib/       # Libraries; may also contain CMake package files.
+└── share/     # May also contain CMake package files.
+```
+
+Pass prefixes, rather than source directories:
 
 ```bash
 cmake -S . -B build \
     -DCMAKE_PREFIX_PATH="$HOME/local/boost;$HOME/local/muparserx"
 ```
 
-A package-specific hint is also possible:
+For Boost alone, `-DBoost_ROOT="$HOME/local/boost"` is another hint.
 
-```bash
-cmake -S . -B build -DBoost_ROOT="$HOME/local/boost"
-```
-
-Some packages export variables rather than imported targets. Use their documented interface; we will encounter this with muParserX in Exercise 1.
-
-When diagnosing a lookup problem, check which package configuration and library CMake actually selected.
+Some packages export variables instead of imported targets. Exercise 1 uses muParserX's include and library variables. Check the selected paths when diagnosing a lookup problem.
 
 ---
 
@@ -402,50 +413,57 @@ _class: titlepage
 
 # Exercise 1: use an external library
 
-**20 minutes.** Use the supplied [ex1.cpp](solutions/ex1/ex1.cpp), without looking at the solution's `CMakeLists.txt` yet.
+**20 minutes.** Create a separate `parser_app/` directory and copy only [ex1.cpp](solutions/ex1/ex1.cpp) into it. Write your own `CMakeLists.txt` there.
 
-1. Install [muParserX 4.0.12](https://github.com/beltoforion/muparserx/releases/tag/v4.0.12) in a directory you own (see the next slide).
-2. Create a CMake project with an executable `ex1` and locate muParserX using `find_package(muparserx 4.0.12 EXACT CONFIG REQUIRED)`.
-3. Apply its `muparserx_INCLUDE_DIRS` and `muparserx_LIBRARIES` to the executable with `PRIVATE` visibility.
-4. Configure with `CMAKE_PREFIX_PATH`, build and run. Check the reported library path.
+1. Build and install [muParserX 4.0.12](https://github.com/beltoforion/muparserx/releases/tag/v4.0.12) using the next slide.
+2. Create executable `ex1` and locate the package with `find_package(muparserx 4.0.12 EXACT CONFIG REQUIRED)`.
+3. Apply `muparserx_INCLUDE_DIRS` and `muparserx_LIBRARIES` to `ex1` with `PRIVATE` visibility. Check the selected library path.
 
-**Expected:** 10 evaluations of `a + c * strlen(s) - f`; the first is `0.9`, the last `109.8+108.9i` (formatting may vary).
+**Hint:** `<mpParser.h>` is directly inside the package's include directory. muParserX exports variables, not an imported target.
+
+**Expected:** 10 evaluations; first `0.9`, last `109.8+108.9i` (formatting may vary).
 
 ---
 
 # Exercise 1: dependency setup
 
-Download and extract the release linked on the previous slide. From its source directory:
+Download and extract the linked release. **From the muParserX source directory**:
 
 ```bash
 cmake -S . -B build \
     -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
     -DBUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_INSTALL_PREFIX="$HOME/local/muparserx"
-
 cmake --build build --parallel 4
 cmake --install build
 ```
 
-The policy option allows this release's older CMake setup to configure with CMake 4.
+The policy option enables this release's older CMake setup with CMake 4.
+Then **change to your `parser_app/` directory** and build your application:
 
-**Hint:** the source includes `<mpParser.h>`. The package's include variable points directly to the directory containing that header. Its config file exports variables, not an imported target.
+```bash
+cmake -S . -B build -DCMAKE_PREFIX_PATH="$HOME/local/muparserx"
+cmake --build build --parallel 4
+./build/ex1
+```
+
+Source files, build outputs and the installation prefix are separate locations.
 
 ---
 
 # Exercise 2: transitive dependencies
 
-**20 minutes.** Use these sources without opening the solution's `CMakeLists.txt`:
+**20 minutes.** Create a separate `rectangle_app/` directory. Copy these five sources and write your own `CMakeLists.txt` there:
 
 - [math_lib.hpp](solutions/ex2/math_lib.hpp), [math_lib.cpp](solutions/ex2/math_lib.cpp): multiplication.
 - [graphics_lib.hpp](solutions/ex2/graphics_lib.hpp), [graphics_lib.cpp](solutions/ex2/graphics_lib.cpp): rectangle output.
 - [ex2.cpp](solutions/ex2/ex2.cpp): the application.
 
-Write a CMake project with static targets `math` and `graphics`, and executable `ex2`. Express `graphics` → `math` and `ex2` → `graphics` using `target_link_libraries` and explicit visibility.
+Create static libraries `math` and `graphics`, and executable `ex2`. Declare `graphics` → `math` and `ex2` → `graphics` with explicit visibility. Link `ex2` directly only to `graphics`. Expected area: **0.75**.
 
-**Check:** link the application only to `graphics`; CMake must also arrange linking with `math`. Expected rectangle area: **0.75**.
+**Hint:** only `graphics_lib.cpp` uses `math`, so the dependency is `PRIVATE`. CMake carries this link dependency to `ex2`: static archives do not absorb other libraries.
 
-Use the final **5 minutes** to compare results and inspect any failed builds.
+Final **5 minutes**: compare results.
 
 ---
 
@@ -512,7 +530,7 @@ cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
 
 # Generate a version header (1/2)
 
-Template `print_version.hpp.in`:
+In the root of `example_math`, create template `print_version.hpp.in`:
 
 ```cpp
 #ifndef PRINT_VERSION_HPP
@@ -533,7 +551,7 @@ The version becomes part of a string literal; `inline` permits including this fu
 
 # Generate a version header (2/2)
 
-For an existing target `math_app`, generate the header and make its build directory visible:
+In the root `CMakeLists.txt`, after `add_subdirectory(apps)`:
 
 ```cmake
 set(MY_PROJECT_VERSION "2.1.5")
@@ -546,7 +564,9 @@ configure_file(
 target_include_directories(math_app PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 ```
 
-`@ONLY` replaces `@VAR@` placeholders, preserving `${VAR}` text. The generated header goes in the build directory.
+In `apps/main.cpp`, include `"print_version.hpp"` and call `print_version()` before the calculations. Reconfigure, rebuild and run: the first line is `Version number: 2.1.5`.
+
+`@ONLY` replaces `@VAR@`, preserving `${VAR}` text. The header goes in the build directory.
 
 See also [`#cmakedefine`](https://cmake.org/cmake/help/latest/command/configure_file.html) for conditional definitions.
 
@@ -554,21 +574,27 @@ See also [`#cmakedefine`](https://cmake.org/cmake/help/latest/command/configure_
 
 # Check whether a feature compiles
 
-For a probe source that includes `main`:
+In `example_math`, create `tests/probe.cpp` to check whether `<filesystem>` can be used:
 
-```cmake
-try_compile(HAVE_FEATURE
-    "${CMAKE_CURRENT_BINARY_DIR}/probe-build"
-    "${CMAKE_CURRENT_SOURCE_DIR}/tests/probe.cpp")
+```cpp
+#include <filesystem>
 
-if(HAVE_FEATURE)
-    message(STATUS "Feature available")
-endif()
+int main() {
+    const std::filesystem::path file{"measurements.txt"};
+    return file.empty();
+}
 ```
 
-The result is **`TRUE` or `FALSE`**, not a numeric exit status. This runs during configuration, unlike tests registered with CTest.
+Add to the root `CMakeLists.txt`:
 
-[`try_run`](https://cmake.org/cmake/help/latest/command/try_run.html) also executes the compiled probe.
+```cmake
+try_compile(HAVE_FILESYSTEM "${CMAKE_CURRENT_BINARY_DIR}/probe-build"
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/probe.cpp"
+    CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+message(STATUS "Filesystem available: ${HAVE_FILESYSTEM}")
+```
+
+Reconfigure: the result is `TRUE` or `FALSE`. This compiles and links during configuration; CTest instead runs registered tests. [`try_run`](https://cmake.org/cmake/help/latest/command/try_run.html) also executes a compiled probe.
 
 ---
 
