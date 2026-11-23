@@ -660,10 +660,10 @@ A borrowed pointer is useful for access, but does not acquire responsibility for
 double* raw = new double(1.25);
 
 std::shared_ptr<double> first(raw);
-std::shared_ptr<double> second(raw); // Intentional error: independent owners. Use std::make_shared instead.
+std::shared_ptr<double> second(raw); // Intentional error: separate control blocks.
 ```
 
-Copy an existing shared pointer to share its control block.
+Both control blocks would delete the same object. Share ownership by copying the existing pointer instead: `auto second = first;`.
 
 ---
 
@@ -833,7 +833,7 @@ Ordinary arithmetic does not automatically throw these exceptions.
 - A status is often appropriate for an expected outcome, such as an iterative solver not converging within its iteration budget.
 - Exceptions can propagate failures that prevent the requested operation from completing. The caller decides how to handle them.
 - The `noexcept` **specifier** promises that no exception escapes a function; violating this promise calls `std::terminate`.
-- **Move semantics:** since move constructors and assignment operators typically don't involve allocating memory, calling other code, or anything like that, it's a good practice to mark them as `noexcept`.
+- **Move semantics:** mark move operations `noexcept` when all operations they perform are guaranteed not to let exceptions escape. This can allow containers to move existing elements during reallocation.
 - Exception overhead depends on the implementation and execution path.
 
 Keep an error-reporting policy consistent across the application. `exit`, `abort` and `terminate` end execution rather than allowing an ordinary recovery handler.
