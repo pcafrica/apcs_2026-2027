@@ -116,8 +116,7 @@ wget https://gitlab.com/libeigen/eigen/-/archive/5.0.1/eigen-5.0.1.tar.gz
 mkdir -p "$HOME/Desktop"
 tar xzf eigen-5.0.1.tar.gz -C "$HOME/Desktop"
 
-c++ -std=c++17 -Wall -Wextra -Wpedantic \
-    -I"$HOME/Desktop/eigen-5.0.1" example_eigen.cpp -o main_eigen
+c++ -I"$HOME/Desktop/eigen-5.0.1" example_eigen.cpp -o main_eigen
 ./main_eigen
 ```
 
@@ -186,7 +185,7 @@ int main() {
 # Compile first, then resolve references
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic -Imath -c main.cpp -o main.o
+c++ -Imath -c main.cpp -o main.o
 nm -C main.o
 ```
 
@@ -213,8 +212,7 @@ This link fails with **undefined references to `add` and `multiply`**: a declara
 Compile the library source, then link the two object files:
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic \
-    -c math/math.cpp -o math/math.o
+c++ -c math/math.cpp -o math/math.o
 
 c++ main.o math/math.o -o main_object
 ./main_object
@@ -259,8 +257,7 @@ _class: titlepage
 An archive collects object files. From `examples/example_math`:
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic \
-    -c math/math.cpp -o math/math.o
+c++ -c math/math.cpp -o math/math.o
 ar rcs math/libmath.a math/math.o
 
 c++ main.o math/libmath.a -o main_static
@@ -287,7 +284,7 @@ The first command lists archive members; the second includes `T` definitions for
 For a library with several source files, the general pattern is:
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic -c a.cpp b.cpp c.cpp d.cpp
+c++ -c a.cpp b.cpp c.cpp d.cpp
 ar rcs libxx.a a.o b.o c.o
 ar rs libxx.a d.o # Add one more object file.
 ```
@@ -409,8 +406,7 @@ The SONAME identifies a binary-compatibility series. Its number is chosen by the
 From `examples/example_math`, compile position-independent code and create the library:
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
-    -c math/math.cpp -o math/math.pic.o
+c++ -fPIC -c math/math.cpp -o math/math.pic.o
 
 c++ -shared math/math.pic.o \
     -Wl,-soname,libmath.so.1 -o math/libmath.so.1.0
@@ -502,8 +498,7 @@ The full search order and system configuration are optional appendix material. [
 After an ABI-compatible implementation change, rebuild `math` while keeping SONAME `libmath.so.1`:
 
 ```bash
-c++ -std=c++17 -Wall -Wextra -Wpedantic -fPIC \
-    -c math/math.cpp -o math/math.pic.o
+c++ -fPIC -c math/math.cpp -o math/math.pic.o
 
 c++ -shared math/math.pic.o \
     -Wl,-soname,libmath.so.1 -o math/libmath.so.1.1
@@ -661,8 +656,7 @@ A library's **`.pc` file** describes its compilation and linking flags. From `ex
 pkg-config --cflags gsl
 pkg-config --libs gsl
 
-c++ -std=c++17 -Wall -Wextra -Wpedantic example_gsl.cpp \
-    $(pkg-config --cflags --libs gsl) -o main_gsl
+c++ example_gsl.cpp $(pkg-config --cflags --libs gsl) -o main_gsl
 ./main_gsl
 ```
 
@@ -797,8 +791,4 @@ The example instructions also show explicit archive linking and a stored runtime
 _class: titlepage
 -->
 
-# Next session: automate the build with CMake
-
-We have compiled sources, created libraries and linked applications manually.
-
-CMake describes targets (libraries and executables) and their dependencies, then generates the build commands.
+# :arrow_right: CMake.
