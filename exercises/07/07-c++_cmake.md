@@ -21,12 +21,12 @@ _class: titlepage
 
 # Today's session
 
-**First half: guided examples (45 minutes)**
+**First half: guided examples**
 
 - Configure, build and organize a small library project.
 - Select options, locate dependencies, install and test.
 
-**Second half: exercises (45 minutes)**
+**Second half: exercises**
 
 1. Build an application using muParserX.
 2. Express dependencies between two libraries and an application.
@@ -413,7 +413,7 @@ _class: titlepage
 
 # Exercise 1: use an external library
 
-**20 minutes.** Create a separate `parser_app/` directory and copy only [ex1.cpp](solutions/ex1/ex1.cpp) into it. Write your own `CMakeLists.txt` there.
+Create a separate `parser_app/` directory and copy only [ex1.cpp](solutions/ex1/ex1.cpp) into it. Write your own `CMakeLists.txt` there.
 
 1. Build and install [muParserX 4.0.12](https://github.com/beltoforion/muparserx/releases/tag/v4.0.12) using the next slide.
 2. Create executable `ex1` and locate the package with `find_package(muparserx 4.0.12 EXACT CONFIG REQUIRED)`.
@@ -453,7 +453,7 @@ Source files, build outputs and the installation prefix are separate locations.
 
 # Exercise 2: transitive dependencies
 
-**20 minutes.** Create a separate `rectangle_app/` directory. Copy these five sources and write your own `CMakeLists.txt` there:
+Create a separate `rectangle_app/` directory. Copy these five sources and write your own `CMakeLists.txt` there:
 
 - [math_lib.hpp](solutions/ex2/math_lib.hpp), [math_lib.cpp](solutions/ex2/math_lib.cpp): multiplication.
 - [graphics_lib.hpp](solutions/ex2/graphics_lib.hpp), [graphics_lib.cpp](solutions/ex2/graphics_lib.cpp): rectangle output.
@@ -463,7 +463,7 @@ Create static libraries `math` and `graphics`, and executable `ex2`. Declare `gr
 
 **Hint:** only `graphics_lib.cpp` uses `math`, so the dependency is `PRIVATE`. CMake carries this link dependency to `ex2`: static archives do not absorb other libraries.
 
-Final **5 minutes**: compare results.
+Compare results.
 
 ---
 
