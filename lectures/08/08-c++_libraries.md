@@ -415,7 +415,9 @@ ln -s libmath.so.1.0 math/libmath.so.1
 ln -s libmath.so.1 math/libmath.so
 ```
 
-**PIC** means Position-Independent Code: suitable for mapping a shared library at different addresses. `-shared` creates the shared library; `-Wl,` passes the SONAME option to the linker.
+**PIC** means Position-Independent Code: suitable for mapping a shared library at different addresses. A function with no references to external data or other functions might already support it even without `-fPIC`.
+
+`-shared` creates the shared library; `-Wl,` passes the SONAME option to the linker.
 
 The symbolic links above are created once; an update is shown shortly.
 
