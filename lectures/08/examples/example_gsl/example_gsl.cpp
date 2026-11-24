@@ -24,8 +24,9 @@ int main() {
   const double lower_limit = 0.0;
   const double upper_limit = std::acos(-1.0);
 
-  const int status = gsl_integration_qags(
-      &F, lower_limit, upper_limit, 1e-8, 1e-8, 1000, workspace, &result, &error);
+  const int status =
+      gsl_integration_qags(&F, lower_limit, upper_limit, 1e-8, 1e-8, 1000,
+                           workspace, &result, &error);
 
   gsl_integration_workspace_free(workspace);
 

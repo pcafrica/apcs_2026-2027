@@ -1,5 +1,5 @@
-#include <mpParser.h>
 #include <iostream>
+#include <mpParser.h>
 
 int main() {
   // Create the parser instance.

@@ -4,8 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-template <typename T>
-void print_result(const NewtonResult<T> &result) {
+template <typename T> void print_result(const NewtonResult<T> &result) {
   std::cout << (result.converged ? "Converged" : "Failed")
             << ": value=" << result.value
             << ", iterations=" << result.iterations

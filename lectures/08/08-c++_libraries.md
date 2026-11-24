@@ -26,7 +26,6 @@ _class: titlepage
 3. Static libraries
 4. Shared libraries
 5. Third-party libraries
-6. Hands-on and the next session
 
 **Optional appendix:** weak symbols, loader configuration, plugins and building GSL.
 
