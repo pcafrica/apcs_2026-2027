@@ -19,7 +19,7 @@ _class: titlepage
 
 ---
 
-# Today's session
+# Outline
 
 **First half: guided examples**
 
@@ -43,11 +43,21 @@ _class: titlepage
 
 ---
 
+# Build systems
+
+A **build system** automates compiling and linking a project. It tracks dependencies to determine which files need rebuilding when sources or headers change.
+
+- **Make and Ninja** execute build rules.
+- **CMake and [Meson](https://mesonbuild.com/)** configure projects and generate files for build tools.
+- Other approaches include **[GNU Autotools](https://www.gnu.org/software/automake/manual/), [SCons](https://scons.org/) and [Bazel](https://bazel.build/)**.
+
+Package managers such as [Conan](https://conan.io/) and [vcpkg](https://vcpkg.io/) can supply dependencies. **Finding an installed package and installing it are separate tasks.**
+
+---
+
 # What does CMake do?
 
-A hand-written Makefile describes how to build a project. This gives direct control, but include paths, dependencies and platform differences need maintenance.
-
-A **target** is a named executable or library. CMake describes targets and their requirements, then generates files for Make, Ninja or another build tool.
+A **target** is a named executable or library. CMake describes targets and their requirements, such as include paths, language features and dependencies.
 
 1. **Configure:** read `CMakeLists.txt`, process options and locate dependencies.
 2. **Generate:** write build files for the selected tool.
@@ -56,17 +66,7 @@ A **target** is a named executable or library. CMake describes targets and their
 
 The first two steps normally happen in the same `cmake` invocation.
 
----
-
-# Why CMake?
-
-- It supports several build tools and IDEs across platforms.
-- Targets can carry include paths, language requirements and dependencies.
-- Many scientific libraries provide CMake support, including Eigen, LAPACK and Trilinos.
-
-Other choices include [GNU Autotools](https://www.gnu.org/software/automake/manual/), [Meson](https://mesonbuild.com/) and [Bazel](https://bazel.build/).
-
-Package managers such as [Conan](https://conan.io/) and [vcpkg](https://vcpkg.io/) can supply dependencies. **Finding an installed package and installing it are separate tasks.**
+**Why CMake?** It supports several build tools, IDEs and platforms. Scientific libraries including Eigen, LAPACK and Trilinos provide CMake support.
 
 ---
 
@@ -271,6 +271,41 @@ Expected output: `array: 100 samples` with `WITH_ARRAY=ON`; `vector: 100 samples
 
 ---
 
+# Environment variables and configuration
+
+```cmake
+message(STATUS "PATH: $ENV{PATH}")
+
+set(ENV{DATA_ROOT} "/path/to/data")
+```
+
+This changes the environment of the current CMake process and processes it starts. It does not change the parent shell or a later, separately invoked build.
+
+Prefer cache variables for persistent configuration choices.
+
+For first-time compiler selection, use a **fresh** build directory:
+
+```bash
+cmake -S . -B build-clang -DCMAKE_CXX_COMPILER=clang++
+```
+
+---
+
+# More configuration choices
+
+For Make and Ninja with a single configuration, select `Debug`, `Release`, `RelWithDebInfo` or `MinSizeRel` at configuration time:
+
+```bash
+cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
+```
+
+- Use `target_compile_options` for target-specific flags instead of changing global `CMAKE_CXX_FLAGS`.
+- `CMAKE_LIBRARY_OUTPUT_DIRECTORY` can change where built libraries are placed; it does not control installation.
+- `target_compile_features(math PUBLIC cxx_std_17)` requires at least C++17 and propagates that requirement to users.
+- Alternatively, set `CXX_STANDARD 17` together with `CXX_STANDARD_REQUIRED ON`; these target properties alone do not propagate a language requirement to users.
+
+---
+
 # Find an installed package
 
 `find_package` uses a **find module** (`FindName.cmake`) or a package's own **config file** (e.g. `BoostConfig.cmake`). It locates an installation; it does not download or install the package.
@@ -304,7 +339,7 @@ Pass prefixes, rather than source directories:
 
 ```bash
 cmake -S . -B build \
-    -DCMAKE_PREFIX_PATH="$HOME/local/boost;$HOME/local/muparserx"
+      -DCMAKE_PREFIX_PATH="$HOME/local/boost;$HOME/local/muparserx"
 ```
 
 For Boost alone, `-DBoost_ROOT="$HOME/local/boost"` is another hint.
@@ -403,6 +438,33 @@ Testing is a separate step from building and installing.
 
 ---
 
+# A larger project
+
+```text
+📂 project/
+├── 📂 apps/
+│   ├── 📝 CMakeLists.txt
+│   └── 📄 my_app.cpp
+├── 📂 cmake/
+│   └── 📝 FindSomeLib.cmake
+├── 🔖 doc/
+│   └── 📝 Doxyfile.in
+├── 📂 scripts/
+│   └── 📝 do_something.sh
+├── 📂 src/
+│   ├── 📝 CMakeLists.txt
+│   └── 📄 my_lib.{hpp,tpl.hpp,cpp}
+├── 📂 tests/
+│   ├── 📝 CMakeLists.txt
+│   └── 📄 my_test.cpp
+├── 📒 .gitignore
+├── 📝 CMakeLists.txt
+├── 💼 LICENSE.md
+└── 📰 README.md
+```
+
+---
+
 <!--
 _class: titlepage
 -->
@@ -438,7 +500,7 @@ cmake --build build --parallel 4
 cmake --install build
 ```
 
-The policy option enables this release's older CMake setup with CMake 4.
+The policy option (added in version 4.0) enables this release's older CMake setup.
 Then **change to your `parser_app/` directory** and build your application:
 
 ```bash
@@ -459,7 +521,7 @@ Create a separate `rectangle_app/` directory. Copy these five sources and write 
 - [graphics_lib.hpp](solutions/ex2/graphics_lib.hpp), [graphics_lib.cpp](solutions/ex2/graphics_lib.cpp): rectangle output.
 - [ex2.cpp](solutions/ex2/ex2.cpp): the application.
 
-Create static libraries `math` and `graphics`, and executable `ex2`. Declare `graphics` → `math` and `ex2` → `graphics` with explicit visibility. Link `ex2` directly only to `graphics`. Expected area: **0.75**.
+Create static libraries `math` and `graphics`, and executable `ex2`. Declare `graphics` → `math` and `ex2` → `graphics` and specify visibilities explicitly. Link `ex2` directly only to `graphics`. Expected area: **0.75**.
 
 **Hint:** only `graphics_lib.cpp` uses `math`, so the dependency is `PRIVATE`. CMake carries this link dependency to `ex2`: static archives do not absorb other libraries.
 
@@ -490,41 +552,6 @@ cmake --build build-ninja --parallel 4
 The selected build tool must be installed. Ninja is designed for generated build files and can reduce build overhead in large projects.
 
 CMake generates dependency information for both; actual build times depend on the project and environment.
-
----
-
-# Environment variables and configuration
-
-```cmake
-message(STATUS "PATH: $ENV{PATH}")
-
-set(ENV{DATA_ROOT} "/path/to/data")
-```
-
-This changes the environment of the current CMake process and processes it starts. It does not change the parent shell or a later, separately invoked build.
-
-Prefer cache variables for persistent configuration choices.
-
-For first-time compiler selection, use a **fresh** build directory:
-
-```bash
-cmake -S . -B build-clang -DCMAKE_CXX_COMPILER=clang++
-```
-
----
-
-# More configuration choices
-
-For Make and Ninja with a single configuration, select `Debug`, `Release`, `RelWithDebInfo` or `MinSizeRel` at configuration time:
-
-```bash
-cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
-```
-
-- Use `target_compile_options` for target-specific flags instead of changing global `CMAKE_CXX_FLAGS`.
-- `CMAKE_LIBRARY_OUTPUT_DIRECTORY` can change where built libraries are placed; it does not control installation.
-- `target_compile_features(math PUBLIC cxx_std_17)` requires at least C++17 and propagates that requirement to users.
-- Alternatively, set `CXX_STANDARD 17` together with `CXX_STANDARD_REQUIRED ON`; these target properties alone do not propagate a language requirement to users.
 
 ---
 
@@ -617,22 +644,3 @@ For [GSL 2.8](https://ftp.gnu.org/gnu/gsl/gsl-2.8.tar.gz), from its extracted so
 make -j4
 make install
 ```
-
----
-
-# A larger project
-
-```text
-project/
-├── CMakeLists.txt
-├── apps/       # Applications and their CMakeLists.txt.
-├── src/        # Library sources and their CMakeLists.txt.
-├── tests/      # Test sources and their CMakeLists.txt.
-├── cmake/      # Optional custom find modules.
-├── doc/        # Documentation and templates.
-└── scripts/    # Helper scripts.
-```
-
-Use `add_subdirectory` for directories that define targets. A custom find-module directory can be added with `list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")`.
-
-Sources: [CMake documentation](https://cmake.org/cmake/help/latest/), [Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
