@@ -90,7 +90,7 @@ Unless otherwise specified, all content here is licensed under a
 | Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. [[Markdown][lecture-08-md]] [[HTML][lecture-08-html]] [[PDF][lecture-08-pdf]] [[Recording][lecture-08-rec]] |
 | Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session: Introduction to CMake. [[Markdown][exercise-07-md]] [[HTML][exercise-07-html]] [[PDF][exercise-07-pdf]] [[Recording][exercise-07-rec]] |
 | Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. [[Markdown][lecture-09-md]] [[HTML][lecture-09-html]] [[PDF][lecture-09-pdf]] [[Recording][lecture-09-rec]]<br> Exercise session. [[Markdown][exercise-08-md]] [[HTML][exercise-08-html]] [[PDF][exercise-08-pdf]] |
-| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Object-oriented programming in Python. Classes, inheritance and polymorphism. Modules and packages. |
+| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Introduction to Python.[[Markdown][lecture-10-md]] [[HTML][lecture-10-html]] [[PDF][lecture-10-pdf]]<br>Object-oriented programming in Python. Classes, inheritance and polymorphism. Modules and packages. [[Markdown][lecture-11-md]] [[HTML][lecture-11-html]] [[PDF][lecture-11-pdf]] [[Recording][lecture-11-rec]] |
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 | Integrating C++ and Python codes. |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 | Exercise session. |
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 | Project session. |
@@ -170,7 +170,7 @@ Unless otherwise specified, all content here is licensed under a
 [exercise-07-md]: exercises/07/07-c++_cmake.md
 [exercise-07-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.html
 [exercise-07-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.pdf
-[exercise-07-rec]: ...
+[exercise-07-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261125_111443-Meeting%20Recording.mp4&share=cQpPiDi8LTWIQY3mtw7kNaYGEgUDQLD6DskZZn9nAKQGSDn3LA&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
 [lecture-09-md]: lectures/09/09-c++_optimization_debugging_testing.md
 [lecture-09-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/09/09-c++_optimization_debugging_testing.html
@@ -180,3 +180,12 @@ Unless otherwise specified, all content here is licensed under a
 [exercise-08-md]: exercises/08/08-c++_optimization_debugging_testing.md
 [exercise-08-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/08/08-c++_optimization_debugging_testing.html
 [exercise-08-pdf]: https://pcafrica.github.io/apcs_2026-2027/exercises/08/08-c++_optimization_debugging_testing.pdf
+
+[lecture-10-md]: lectures/10/10-py_intro.md
+[lecture-10-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/10/10-py_intro.html
+[lecture-10-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/10/10-py_intro.pdf
+
+[lecture-11-md]: lectures/11/11-py_classes_modules.md
+[lecture-11-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/11/11-py_classes_modules.html
+[lecture-11-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/11/11-py_classes_modules.pdf
+[lecture-11-rec]: ...
