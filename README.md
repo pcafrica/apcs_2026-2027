@@ -165,7 +165,7 @@ Unless otherwise specified, all content here is licensed under a
 [lecture-08-md]: lectures/08/08-c++_libraries.md
 [lecture-08-html]: https://pcafrica.github.io/apcs_2026-2027/lectures/08/08-c++_libraries.html
 [lecture-08-pdf]: https://pcafrica.github.io/apcs_2026-2027/lectures/08/08-c++_libraries.pdf
-[lecture-08-rec]: ...
+[lecture-08-rec]: https://sissa-my.sharepoint.com/:v:/r/personal/pafrica_sissa_it/_layouts/15/stream.aspx?id=%2Fpersonal%2Fpafrica_sissa_it%2FDocuments%2FRecordings%2FAdvanced%20Programming%20for%20Computational%20Science-20261124_141459-Meeting%20Recording.mp4&share=cQrKXOQ0mh5VQJ-Y69PcvZcnEgUDEyMgXFCDAYSkiD2rCb7fXA&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
 [exercise-07-md]: exercises/07/07-c++_cmake.md
 [exercise-07-html]: https://pcafrica.github.io/apcs_2026-2027/exercises/07/07-c++_cmake.html
