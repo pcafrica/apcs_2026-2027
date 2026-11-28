@@ -31,8 +31,6 @@ Work from [hints/ex1](hints/ex1/). The doubly linked list owns its nodes. Every 
 
 `find` returns a borrowed pointer. `append(Node*)` takes ownership of a non-null, unlinked heap node. `erase(Node*)` accepts a node of this list or `nullptr`.
 
-The solution's [debugging guide](solutions/ex1/README.md) explains how to investigate each issue.
-
 ---
 
 # Exercise 2: testing numerical statistics
@@ -77,7 +75,7 @@ Use the same inputs and compiler options. The transposed version's benefit depen
 
 # Exercise 3: profiling and memory checks (2/3)
 
-From your completed `hints/ex3` project (or `solutions/ex3`), use the optimized Makefile with debug symbols:
+From your completed `hints/ex3` project, use the optimized Makefile with debug symbols:
 
 ```bash
 make clean
@@ -96,10 +94,9 @@ Measure elapsed time natively, with a larger dataset if needed. Timings printed 
 
 # Exercise 3: coverage (3/3)
 
-Use the supplied `Makefile_coverage` with your completed matrix project. From `hints/ex3`, copy it first:
+Use the supplied `Makefile_coverage` with your completed matrix project:
 
 ```bash
-cp ../../solutions/ex3/Makefile_coverage .
 make clean
 make -f Makefile_coverage coverage CPPFLAGS="-I. -DMATRIX_SIZE=20"
 ```
