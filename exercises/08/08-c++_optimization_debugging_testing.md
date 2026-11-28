@@ -21,7 +21,7 @@ _class: titlepage
 
 # Exercise 1: debugging a linked list
 
-Work from [hints/ex1](hints/ex1/). The doubly linked list owns its nodes. Every node has `previous` and `next` pointers; a missing neighbor is represented by `nullptr`.
+Work from [hints/ex1](hints/ex1/). The list owns its nodes; `previous` and `next` are `nullptr` when a neighbor is missing.
 
 1. Fix the compilation errors, then inspect `find`, `print` and `erase` with GDB.
 2. Correct the links when removing the head, a middle node or the tail.
@@ -29,9 +29,13 @@ Work from [hints/ex1](hints/ex1/). The doubly linked list owns its nodes. Every 
 4. Check empty lists, missing values, `erase(nullptr)` and default-constructed nodes.
 5. Run Memcheck and review whether an owning `List` or `Node` can safely be copied.
 
-`find` returns a borrowed pointer. `append(Node*)` takes ownership of a non-null, unlinked heap node. `erase(Node*)` accepts a node of this list or `nullptr`.
+```bash
+cmake -S . -B build -DCMAKE_CXX_COMPILER=c++
+cmake --build build
+gdb ./build/ex1
+```
 
-The solution's [debugging guide](solutions/ex1/README.md) explains how to investigate each issue.
+`find` lends a pointer. `append(Node*)` takes ownership of a non-null, unlinked heap node. `erase(Node*)` accepts a node of this list or `nullptr`. [Debugging guide](solutions/ex1/README.md).
 
 ---
 
@@ -44,7 +48,7 @@ Check empty input, one value, multiple values, mixed signs and a zero mean. Insp
 From `exercises/08`:
 
 ```bash
-cmake -S hints/ex2 -B build-tests
+cmake -S hints/ex2 -B build-tests -DCMAKE_CXX_COMPILER=c++
 cmake --build build-tests --parallel 4
 (cd build-tests && ctest --output-on-failure)
 ```
@@ -77,15 +81,15 @@ Use the same inputs and compiler options. The transposed version's benefit depen
 
 # Exercise 3: profiling and memory checks (2/3)
 
-From your completed `hints/ex3` project (or `solutions/ex3`), use the optimized Makefile with debug symbols:
+From your completed `hints/ex3` project, build with `-O2 -g`:
 
 ```bash
-make clean
-make CPPFLAGS="-I. -DMATRIX_SIZE=20"
-./ex3
-valgrind --tool=callgrind --callgrind-out-file=callgrind.out ./ex3
+cmake -S . -B build-profile -DCMAKE_CXX_COMPILER=c++ -DMATRIX_SIZE=20
+cmake --build build-profile
+./build-profile/ex3
+valgrind --tool=callgrind --callgrind-out-file=callgrind.out ./build-profile/ex3
 callgrind_annotate --auto=yes callgrind.out
-valgrind --tool=memcheck --leak-check=full ./ex3
+valgrind --tool=memcheck --leak-check=full ./build-profile/ex3
 ```
 
 The smaller size keeps instrumented runs manageable. Inspect the baseline and transposed products. Request cache simulation with `--cache-sim=yes` when investigating cache events.
@@ -96,16 +100,16 @@ Measure elapsed time natively, with a larger dataset if needed. Timings printed 
 
 # Exercise 3: coverage (3/3)
 
-Use the supplied `Makefile_coverage` with your completed matrix project. From `hints/ex3`, copy it first:
+From the same project, configure a separate coverage build:
 
 ```bash
-cp ../../solutions/ex3/Makefile_coverage .
-make clean
-make -f Makefile_coverage coverage CPPFLAGS="-I. -DMATRIX_SIZE=20"
+cmake -S . -B build-coverage -DCMAKE_CXX_COMPILER=c++ \
+    -DENABLE_COVERAGE=ON -DMATRIX_SIZE=20
+cmake --build build-coverage --target coverage
 ```
 
-Open `test_coverage/index.html`. Investigate unvisited lines and branches, and add relevant input cases when assessing the implementation.
+Open `build-coverage/test_coverage/index.html`. Investigate unvisited lines and branches, and add relevant input cases when assessing the implementation.
 
-This build uses `-O0 -g --coverage` and is separate from the optimized profiling build. Rebuild after changing build options.
+This build uses `-O0 -g --coverage`. The `coverage` target builds and runs the program, then generates HTML with `lcov` and `genhtml`; both tools must be installed.
 
 The exercise's small cases check rectangular transpose, both matrix products and a matrix-vector product. The source structure follows the [course examples](https://github.com/cme212/course/tree/master/notes/lecture-01).

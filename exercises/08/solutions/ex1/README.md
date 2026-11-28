@@ -4,9 +4,10 @@ Investigate a copy of the intentionally faulty starter. From this directory:
 
 ```bash
 list_work_dir=$(mktemp -d)
-cp ../../hints/ex1/*.cpp ../../hints/ex1/*.hpp "$list_work_dir/"
+cp ../../hints/ex1/{CMakeLists.txt,*.cpp,*.hpp} "$list_work_dir/"
 cd "$list_work_dir"
-c++ -std=c++17 -Wall -Wextra -Wpedantic -g -O0 ex1.cpp list.cpp -o ex1
+cmake -S . -B build -DCMAKE_CXX_COMPILER=c++
+cmake --build build
 ```
 
 ## 1. Resolve the compilation errors
@@ -20,7 +21,7 @@ c++ -std=c++17 -Wall -Wextra -Wpedantic -g -O0 ex1.cpp list.cpp -o ex1
 Recompile, then inspect a search:
 
 ```bash
-gdb ./ex1
+gdb ./build/ex1
 ```
 
 ```text
@@ -83,7 +84,7 @@ removed node's links, then delete it. Clearing `next` matters:
 still-linked node would destroy successors and leave dangling pointers.
 
 ```bash
-valgrind --tool=memcheck --leak-check=full --track-origins=yes ./ex1
+valgrind --tool=memcheck --leak-check=full --track-origins=yes ./build/ex1
 ```
 
 Unreachable chains and detached nodes that were never deleted explain the
@@ -91,7 +92,15 @@ leaks. A null check alone fixes neither problem.
 
 ## 5. Check the completed solution
 
-Build this solution with `make` and run `./ex1` under Memcheck. Check head,
+From this solution directory, build with CMake and run under Memcheck:
+
+```bash
+cmake -S . -B build -DCMAKE_CXX_COMPILER=c++
+cmake --build build
+valgrind --tool=memcheck --leak-check=full ./build/ex1
+```
+
+The CMake project uses `-O0 -g` for debugging. Check head,
 middle and tail removal, an empty list, duplicates, missing values and null.
 The example must progress from `5, 10, 15` to `10, 15`, then `15`, then empty.
 
