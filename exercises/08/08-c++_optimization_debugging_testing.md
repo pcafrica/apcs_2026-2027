@@ -47,7 +47,7 @@ cmake --build build-tests --parallel 4
 (cd build-tests && ctest --output-on-failure)
 ```
 
-GoogleTest supplies the assertions and test runner. CTest runs the discovered cases. Configuration fetches GoogleTest; prepare the dependency before an offline session.
+GoogleTest supplies the assertions and test runner. CTest runs the discovered cases. CMake configuration fetches GoogleTest.
 
 ---
 
