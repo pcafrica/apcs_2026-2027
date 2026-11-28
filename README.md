@@ -90,7 +90,7 @@ Unless otherwise specified, all content here is licensed under a
 | Tue 24 Nov 2026 | 14:00 - 16:00 | 005 | Libraries: principles, building, and use. [[Markdown][lecture-08-md]] [[HTML][lecture-08-html]] [[PDF][lecture-08-pdf]] [[Recording][lecture-08-rec]] |
 | Wed 25 Nov 2026 | 11:00 - 13:00 | 005 | Exercise session: Introduction to CMake. [[Markdown][exercise-07-md]] [[HTML][exercise-07-html]] [[PDF][exercise-07-pdf]] [[Recording][exercise-07-rec]] |
 | Tue 01 Dec 2026 | 14:00 - 16:00 | 005 | Optimization, debugging, profiling, testing. [[Markdown][lecture-09-md]] [[HTML][lecture-09-html]] [[PDF][lecture-09-pdf]] [[Recording][lecture-09-rec]]<br> Exercise session. [[Markdown][exercise-08-md]] [[HTML][exercise-08-html]] [[PDF][exercise-08-pdf]] |
-| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Introduction to Python.[[Markdown][lecture-10-md]] [[HTML][lecture-10-html]] [[PDF][lecture-10-pdf]]<br>Object-oriented programming in Python. Classes, inheritance and polymorphism. Modules and packages. [[Markdown][lecture-11-md]] [[HTML][lecture-11-html]] [[PDF][lecture-11-pdf]] [[Recording][lecture-11-rec]] |
+| Wed 02 Dec 2026 | 11:00 - 13:00 | 005 | Introduction to Python.[[Markdown][lecture-10-md]] [[HTML][lecture-10-html]] [[PDF][lecture-10-pdf]]<br>Object-oriented programming in Python. Modules and packages. [[Markdown][lecture-11-md]] [[HTML][lecture-11-html]] [[PDF][lecture-11-pdf]] [[Recording][lecture-11-rec]] |
 | Wed 09 Dec 2026 | 11:00 - 13:00 | 005 | Integrating C++ and Python codes. |
 | Tue 15 Dec 2026 | 14:00 - 16:00 | 005 | Exercise session. |
 | Wed 16 Dec 2026 | 11:00 - 13:00 | 004 | Project session. |

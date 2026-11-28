@@ -812,4 +812,4 @@ Open the generated `index.html`. Inspect which branches and behaviors were check
 _class: titlepage
 -->
 
-# :arrow_right: Introduction to Python.
+# :arrow_right: Introduction to Python. Object-oriented programming in Python. Modules and packages.
