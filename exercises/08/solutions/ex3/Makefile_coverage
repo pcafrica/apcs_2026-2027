@@ -1,0 +1,31 @@
+CXX = c++
+CPPFLAGS ?= -I.
+CXXFLAGS ?= -std=c++17 -O0 -g --coverage -Wall -Wextra -Wpedantic
+LDFLAGS ?= --coverage
+LDLIBS ?=
+
+EXEC = ex3
+SRCS = $(wildcard *.cpp)
+OBJS = $(SRCS:.cpp=.o)
+
+.PHONY: all clean distclean coverage
+all: $(EXEC)
+
+$(EXEC): $(OBJS)
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+%.o: %.cpp matrix.hpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	$(RM) *.o *.gcda *.gcno
+	$(RM) -r test_coverage test_coverage.info
+
+distclean: clean
+	$(RM) $(EXEC)
+
+coverage: all
+	lcov --directory . --zerocounters
+	./$(EXEC)
+	lcov --directory . --capture --exclude "*/include/c++/*" --output-file test_coverage.info
+	genhtml test_coverage.info --output-directory test_coverage
