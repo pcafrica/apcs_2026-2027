@@ -306,13 +306,13 @@ Call graphs relate costs to functions and their callers. Choose the metric that 
 
 # A small Callgrind experiment
 
-From `exercises/08/solutions/ex3`, build an optimized numerical example with symbols and a small dataset:
+From a completed `exercises/08/hints/ex3` project (or `solutions/ex3` on branch `sol`), build with optimization, symbols and a small dataset:
 
 ```bash
-make clean
-make CPPFLAGS="-I. -DMATRIX_SIZE=20"
+cmake -S . -B build-profile -DCMAKE_CXX_COMPILER=c++ -DMATRIX_SIZE=20
+cmake --build build-profile
 valgrind --tool=callgrind --dump-line=yes \
-    --callgrind-out-file=callgrind.out ./ex3
+    --callgrind-out-file=callgrind.out ./build-profile/ex3
 callgrind_annotate --auto=yes callgrind.out
 ```
 
@@ -464,7 +464,14 @@ _class: titlepage
 
 # Optimization examples
 
-From `examples/optimization`, use `make` to build:
+From `examples/optimization`, build the supplied programs with `-O3`:
+
+```bash
+cmake -S . -B build -DCMAKE_CXX_COMPILER=c++
+cmake --build build
+```
+
+Executables are placed in `build/`:
 
 - `data_alignment`: reports size, alignment and estimated element storage for two member orders.
 - `loop_unrolling`: compares sequential and order-preserving unrolled products; also demonstrates regrouped multiplication.
@@ -641,7 +648,12 @@ Optimized builds may omit variables, inline functions or rearrange statements. [
 
 # Additional debugging examples
 
-The [debug tutorial](examples/debug/README.md), inspired by [this course material](https://github.com/cme212/course/tree/master/notes/lecture-01), accompanies:
+From `examples/debug` ([tutorial](examples/debug/README.md), [source material](https://github.com/cme212/course/tree/master/notes/lecture-01)), build with `-O0 -g`:
+
+```bash
+cmake -S . -B build -DCMAKE_CXX_COMPILER=c++
+cmake --build build
+```
 
 - `defensive.cpp`: express an intention with const-correctness.
 - `print.cpp`, `debug_macro.cpp`: inspect values and macro expansion.
@@ -650,19 +662,17 @@ The [debug tutorial](examples/debug/README.md), inspired by [this course materia
 - `student1.cpp`, `student2.cpp`: inspect objects, pointers and the call stack.
 - `undefined_behaviour.cpp`: compare conversion before addition with integer overflow.
 
-[GDB cheat sheet](https://users.ece.utexas.edu/~adnan/gdb-refcard.pdf), [GDB tutorial](https://gist.github.com/jakelevi1996/6d0add3452eb65bee9210967760a7d30), [LLDB](https://lldb.llvm.org/).
-
-Further reading: [defensive programming](https://gjbex.github.io/Defensive_programming_and_debugging/), [undefined behavior](https://mohitmv.github.io/blog/Cpp-Undefined-Behaviour-101/), [an optimization example](https://mohitmv.github.io/blog/Shocking-Undefined-Behaviour-In-Action/).
+[GDB cheat sheet](https://users.ece.utexas.edu/~adnan/gdb-refcard.pdf), [GDB tutorial](https://gist.github.com/jakelevi1996/6d0add3452eb65bee9210967760a7d30), [LLDB](https://lldb.llvm.org/). Further reading: [defensive programming](https://gjbex.github.io/Defensive_programming_and_debugging/), [undefined behavior](https://mohitmv.github.io/blog/Cpp-Undefined-Behaviour-101/), [an optimization example](https://mohitmv.github.io/blog/Shocking-Undefined-Behaviour-In-Action/).
 
 ---
 
 # Heap usage with Massif
 
-From `exercises/08/solutions/ex3`, after building the small matrix example:
+From the completed matrix project, after building the small example in `build-profile`:
 
 ```bash
 valgrind --tool=massif --massif-out-file=massif.out \
-    --demangle=yes ./ex3
+    --demangle=yes ./build-profile/ex3
 ms_print massif.out > massif.txt
 ```
 
@@ -770,16 +780,18 @@ A successful CI run reports the outcome of its configured checks. Maintain the t
 
 # Coverage with gcov
 
-For the matrix example, use the coverage Makefile after cleaning the previous build:
+From the completed matrix project, configure a separate coverage build:
 
 ```bash
-make clean
-make -f Makefile_coverage CPPFLAGS="-I. -DMATRIX_SIZE=20"
-./ex3
-gcov --branch-probabilities --function-summaries matrix.cpp
+cmake -S . -B build-coverage -DCMAKE_CXX_COMPILER=c++ \
+    -DENABLE_COVERAGE=ON -DMATRIX_SIZE=20
+cmake --build build-coverage
+./build-coverage/ex3
+gcov --branch-probabilities --function-summaries \
+    build-coverage/CMakeFiles/ex3.dir/matrix.cpp.gcno
 ```
 
-The Makefile passes `--coverage` during compilation and linking, with `-O0 -g` for a direct source mapping.
+The CMake project passes `--coverage` during compilation and linking, with `-O0 -g` for a direct source mapping.
 
 - Compilation produces `.gcno` files describing the code structure.
 - Execution produces `.gcda` files containing counters.
@@ -791,20 +803,22 @@ The Makefile passes `--coverage` during compilation and linking, with `-O0 -g` f
 
 # HTML coverage with lcov and genhtml
 
-In the same coverage build directory, the supplied target runs the program, captures counters and generates HTML:
+Using the same `build-coverage` directory, this target runs the program, captures counters and generates HTML:
 
 ```bash
-make -f Makefile_coverage coverage CPPFLAGS="-I. -DMATRIX_SIZE=20"
+cmake --build build-coverage --target coverage
 ```
 
 Its main commands are:
 
 ```bash
-lcov --capture --directory . --output-file coverage.info
-genhtml coverage.info --output-directory coverage-html
+cd build-coverage
+lcov --capture --directory . --exclude "*/include/c++/*" \
+    --output-file test_coverage.info
+genhtml test_coverage.info --output-directory test_coverage
 ```
 
-Open the generated `index.html`. Inspect which branches and behaviors were checked, not only the percentage. Keep performance measurements in a separate optimized build.
+Open `build-coverage/test_coverage/index.html` from the project directory. Inspect which branches and behaviors were checked, not only the percentage. Keep performance measurements in a separate optimized build.
 
 ---
 
